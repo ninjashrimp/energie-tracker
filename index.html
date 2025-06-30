@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHS Energie-Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #f39c12;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #2c3e50;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            background: #f39c12;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .energy-display {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .spoons-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .spoon {
+            font-size: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .spoon.full {
+            filter: brightness(1);
+        }
+
+        .spoon.empty {
+            filter: brightness(0.3);
+            opacity: 0.5;
+        }
+
+        .energy-number {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .energy-status {
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+        }
+
+        .status-good {
+            background: #27ae60;
+        }
+
+        .status-warning {
+            background: #f39c12;
+            animation: pulse 2s infinite;
+        }
+
+        .status-critical {
+            background: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .activity-btn {
+            background: #2c3e50;
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .activity-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .activity-btn.energy-gain {
+            background: #27ae60;
+        }
+
+        .activity-btn.energy-drain-low {
+            background: #34495e;
+        }
+
+        .activity-btn.energy-drain-medium {
+            background: #7f8c8d;
+        }
+
+        .activity-btn.energy-drain-high {
+            background: #c0392b;
+        }
+
+        .energy-cost {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .undo-container {
+            margin-top: 20px;
+            height: 40px;
+        }
+
+        .undo-btn {
+            background: #e67e22;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .undo-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+
+        .history {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #2c3e50;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .history-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .reset-day {
+            background: #e74c3c;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+        }
+
+        .reset-day:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .morning-checkin {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .slider-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f39c12;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #2c3e50;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #f39c12;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #f39c12;
+            cursor: pointer;
+            border: none;
+        }
+
+        .start-day-btn {
+            background: #27ae60;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .start-day-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Statistics Styles */
+        .stats-container {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .export-import {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .export-btn, .import-btn {
+            background: #27ae60;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover, .import-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .import-input {
+            display: none;
+        }
+
+        .insights {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .insight-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #2c3e50;
+            border-radius: 10px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .top-activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .activity-stat {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .activity-stat.drain {
+            border-top: 3px solid #e74c3c;
+        }
+
+        .activity-stat.gain {
+            border-top: 3px solid #27ae60;
+        }
+
+        .activity-stat h4 {
+            color: #f39c12;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .activity-stat p {
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥄 ADHS Energie-Tracker</h1>
+        
+        <div class="navigation hidden" id="navigation">
+            <button class="nav-btn active" onclick="showPage('tracker')">Tracker</button>
+            <button class="nav-btn" onclick="showPage('stats')">Statistiken</button>
+        </div>
+
+        <!-- Tracker Page -->
+        <div class="page active" id="trackerPage">
+            <div class="morning-checkin" id="morningCheckin">
+                <h2>Guten Morgen! Wie viele Löffel hast du heute?</h2>
+                <input type="range" min="1" max="10" value="8" class="slider" id="morningSlider">
+                <div class="slider-value" id="sliderValue">8 Löffel</div>
+                <button class="start-day-btn" onclick="startDay()">Tag starten</button>
+            </div>
+
+            <div class="energy-display hidden" id="mainDisplay">
+                <h2>Deine Energie heute</h2>
+                <div class="spoons-container" id="spoonsContainer"></div>
+                <div class="energy-number" id="energyNumber">8 / 10</div>
+                <div class="energy-status status-good" id="energyStatus">Alles im grünen Bereich!</div>
+                <div class="undo-container" id="undoContainer"></div>
+            </div>
+
+            <div class="activities-grid hidden" id="activitiesGrid"></div>
+
+            <div class="history hidden" id="history">
+                <h3>Heutiger Verlauf</h3>
+                <div id="historyList"></div>
+            </div>
+
+            <button class="reset-day hidden" id="resetBtn" onclick="resetDay()">Tag abschließen & Neuer Tag</button>
+        </div>
+
+        <!-- Statistics Page -->
+        <div class="page" id="statsPage">
+            <div class="stats-container">
+                <h2>Deine Energie-Statistiken</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Getrackte Tage</h3>
+                        <div class="stat-value" id="totalDays">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Ø Startenergie</h3>
+                        <div class="stat-value" id="avgStart">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Ø Endenergie</h3>
+                        <div class="stat-value" id="avgEnd">-</div>
+                    </div>
+                </div>
+
+                <div class="insights">
+                    <h3>Erkenntnisse</h3>
+                    <div id="insightsList"></div>
+                </div>
+
+                <div class="top-activities">
+                    <div class="activity-stat drain">
+                        <h4>Größte Energieräuber</h4>
+                        <div id="topDrains"></div>
+                    </div>
+                    <div class="activity-stat gain">
+                        <h4>Beste Energiequellen</h4>
+                        <div id="topGains"></div>
+                    </div>
+                </div>
+
+                <div class="export-import">
+                    <button class="export-btn" onclick="exportData()">📥 Daten exportieren</button>
+                    <button class="import-btn" onclick="document.getElementById('importInput').click()">📤 Daten importieren</button>
+                    <input type="file" id="importInput" class="import-input" accept=".json" onchange="importData(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentEnergy = 8;
+        let maxEnergy = 10;
+        let dayStarted = false;
+        let history = [];
+        let currentDay = null;
+        let allDays = [];
+        let lastAction = null;
+        let undoTimeout = null;
+
+        const activities = [
+            { name: 'Arzttermin', cost: -4, icon: '🏥' },
+            { name: 'Deadline', cost: -5, icon: '⏰' },
+            { name: 'E-Mails', cost: -1, icon: '📧' },
+            { name: 'Entscheidungen treffen', cost: -2, icon: '🤔' },
+            { name: 'Entspannung', cost: 4, icon: '🧘' },
+            { name: 'Fokusarbeit', cost: -2, icon: '💻' },
+            { name: 'Haushalt', cost: -1, icon: '🏠' },
+            { name: 'Hyperfokus (Arbeit)', cost: 2, icon: '🚀' },
+            { name: 'Hyperfokus (Privat)', cost: 6, icon: '✨' },
+            { name: 'Kochen (einfach)', cost: 1, icon: '🍳' },
+            { name: 'Kochen (komplex)', cost: -2, icon: '👨‍🍳' },
+            { name: 'Konflikt', cost: -4, icon: '⚡' },
+            { name: 'Kreative Tätigkeit', cost: 3, icon: '🎨' },
+            { name: 'Lieblings-Podcast', cost: 2, icon: '🎧' },
+            { name: 'Meeting', cost: -4, icon: '👥' },
+            { name: 'Musik hören', cost: 3, icon: '🎵' },
+            { name: 'Organisation', cost: -2, icon: '📁' },
+            { name: 'Papierkram', cost: -4, icon: '📄' },
+            { name: 'Pause', cost: 2, icon: '☕' },
+            { name: 'Planänderung', cost: -3, icon: '🔄' },
+            { name: 'Power-Nap', cost: 2, icon: '😴' },
+            { name: 'Routineaufgaben', cost: -3, icon: '📋' },
+            { name: 'Socializing (Arbeit)', cost: -6, icon: '🗣️' },
+            { name: 'Socializing (Privat)', cost: -1, icon: '☕' },
+            { name: 'Spaziergang', cost: 3, icon: '🚶' },
+            { name: 'Sport (anstrengend)', cost: -1, icon: '💪' },
+            { name: 'Sport (leicht)', cost: 3, icon: '🧘‍♀️' },
+            { name: 'Stimming/Fidgeting', cost: 1, icon: '🔄' },
+            { name: 'Tagträumen (geplant)', cost: 2, icon: '☁️' },
+            { name: 'Telefonieren', cost: -3, icon: '📞' },
+            { name: 'Unterbrechung', cost: -3, icon: '🚫' },
+            { name: 'Warten/Leerlauf', cost: -3, icon: '⏳' },
+            { name: 'Zeit mit Tieren', cost: 3, icon: '🐾' }
+        ];
+
+        // Slider functionality
+        const slider = document.getElementById('morningSlider');
+        const sliderValue = document.getElementById('sliderValue');
+        
+        slider.addEventListener('input', function() {
+            sliderValue.textContent = `${this.value} Löffel`;
+        });
+
+        function startDay() {
+            maxEnergy = parseInt(slider.value);
+            currentEnergy = maxEnergy;
+            dayStarted = true;
+            history = [];
+            
+            // Create new day record
+            currentDay = {
+                date: new Date().toISOString().split('T')[0],
+                dayOfWeek: new Date().getDay(),
+                startEnergy: maxEnergy,
+                endEnergy: currentEnergy,
+                activities: []
+            };
+            
+            document.getElementById('morningCheckin').classList.add('hidden');
+            document.getElementById('mainDisplay').classList.remove('hidden');
+            document.getElementById('activitiesGrid').classList.remove('hidden');
+            document.getElementById('history').classList.remove('hidden');
+            document.getElementById('resetBtn').classList.remove('hidden');
+            document.getElementById('navigation').classList.remove('hidden');
+            
+            updateDisplay();
+            renderActivities();
+        }
+
+        function updateDisplay() {
+            const spoonsContainer = document.getElementById('spoonsContainer');
+            const energyNumber = document.getElementById('energyNumber');
+            const energyStatus = document.getElementById('energyStatus');
+            
+            // Clear and update spoons
+            spoonsContainer.innerHTML = '';
+            for (let i = 0; i < maxEnergy; i++) {
+                const spoon = document.createElement('span');
+                spoon.className = 'spoon';
+                spoon.textContent = '🥄';
+                if (i >= currentEnergy) {
+                    spoon.classList.add('empty');
+                } else {
+                    spoon.classList.add('full');
+                }
+                spoonsContainer.appendChild(spoon);
+            }
+            
+            // Update number
+            energyNumber.textContent = `${currentEnergy} / ${maxEnergy}`;
+            
+            // Update status
+            energyStatus.classList.remove('status-good', 'status-warning', 'status-critical');
+            if (currentEnergy <= 2) {
+                energyStatus.classList.add('status-critical');
+                energyStatus.textContent = '⚠️ Kritisch! Zeit für eine Pause!';
+            } else if (currentEnergy <= 4) {
+                energyStatus.classList.add('status-warning');
+                energyStatus.textContent = '⚡ Vorsicht - Energie wird knapp!';
+            } else {
+                energyStatus.classList.add('status-good');
+                energyStatus.textContent = '✅ Alles im grünen Bereich!';
+            }
+            
+            // Update current day end energy
+            if (currentDay) {
+                currentDay.endEnergy = currentEnergy;
+            }
+        }
+
+        function renderActivities() {
+            const grid = document.getElementById('activitiesGrid');
+            grid.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const btn = document.createElement('button');
+                btn.className = 'activity-btn';
+                
+                // Color coding based on energy cost
+                if (activity.cost > 0) {
+                    btn.classList.add('energy-gain');
+                } else if (activity.cost >= -2) {
+                    btn.classList.add('energy-drain-low');
+                } else if (activity.cost >= -4) {
+                    btn.classList.add('energy-drain-medium');
+                } else {
+                    btn.classList.add('energy-drain-high');
+                }
+                
+                btn.innerHTML = `
+                    <span style="font-size: 30px">${activity.icon}</span>
+                    <span>${activity.name}</span>
+                    <span class="energy-cost">${activity.cost > 0 ? '+' : ''}${activity.cost} 🥄</span>
+                `;
+                
+                btn.onclick = () => doActivity(activity);
+                grid.appendChild(btn);
+            });
+        }
+
+        function doActivity(activity) {
+            const previousEnergy = currentEnergy;
+            const newEnergy = currentEnergy + activity.cost;
+            
+            // Don't go below 0 or above max
+            currentEnergy = Math.max(0, Math.min(maxEnergy, newEnergy));
+            
+            // Add to history
+            const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            const activityRecord = {
+                time: time,
+                activity: activity.name,
+                cost: activity.cost,
+                icon: activity.icon
+            };
+            
+            history.unshift(activityRecord);
+            
+            // Add to current day
+            if (currentDay) {
+                currentDay.activities.push(activityRecord);
+            }
+            
+            // Store last action for undo
+            lastAction = {
+                activity: activityRecord,
+                previousEnergy: previousEnergy
+            };
+            
+            // Show undo button
+            showUndoButton();
+            
+            updateDisplay();
+            updateHistory();
+            
+            // Alert if energy is critical
+            if (currentEnergy <= 2 && activity.cost < 0) {
+                setTimeout(() => {
+                    if (confirm('⚠️ Deine Energie ist kritisch niedrig! Zeit für eine Pause?')) {
+                        // Auto-suggest energy-giving activities
+                        const restActivities = activities.filter(a => a.cost > 0);
+                        if (restActivities.length > 0) {
+                            alert(`Probier doch: ${restActivities.map(a => a.name).join(', ')}`);
+                        }
+                    }
+                }, 100);
+            }
+        }
+
+        function showUndoButton() {
+            // Clear existing timeout
+            if (undoTimeout) {
+                clearTimeout(undoTimeout);
+            }
+            
+            const undoContainer = document.getElementById('undoContainer');
+            undoContainer.innerHTML = '<button class="undo-btn" onclick="undoLastAction()">↩️ Rückgängig</button>';
+            
+            // Remove button after 5 seconds
+            undoTimeout = setTimeout(() => {
+                undoContainer.innerHTML = '';
+                lastAction = null;
+            }, 5000);
+        }
+
+        function undoLastAction() {
+            if (!lastAction) return;
+            
+            // Restore previous energy
+            currentEnergy = lastAction.previousEnergy;
+            
+            // Remove from history
+            history.shift();
+            
+            // Remove from current day
+            if (currentDay && currentDay.activities.length > 0) {
+                currentDay.activities.pop();
+            }
+            
+            // Clear undo button
+            document.getElementById('undoContainer').innerHTML = '';
+            clearTimeout(undoTimeout);
+            lastAction = null;
+            
+            // Update displays
+            updateDisplay();
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            history.slice(0, 10).forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <div class="history-item-content">
+                        <span>${item.icon} ${item.time} - ${item.activity}</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <span style="color: ${item.cost > 0 ? '#27ae60' : '#e74c3c'}">
+                            ${item.cost > 0 ? '+' : ''}${item.cost} 🥄
+                        </span>
+                        <button class="delete-btn" onclick="deleteActivity(${index})" title="Löschen">❌</button>
+                    </div>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+
+        function deleteActivity(index) {
+            if (!confirm('Diese Aktivität wirklich löschen?')) return;
+            
+            // Get the activity to delete
+            const deletedActivity = history[index];
+            
+            // Reverse the energy change
+            currentEnergy = Math.max(0, Math.min(maxEnergy, currentEnergy - deletedActivity.cost));
+            
+            // Remove from history
+            history.splice(index, 1);
+            
+            // Remove from current day's activities
+            if (currentDay && currentDay.activities.length > 0) {
+                // Find and remove the activity from the day's records
+                const actIndex = currentDay.activities.findIndex(act => 
+                    act.time === deletedActivity.time && 
+                    act.activity === deletedActivity.activity
+                );
+                if (actIndex !== -1) {
+                    currentDay.activities.splice(actIndex, 1);
+                }
+            }
+            
+            // Update displays
+            updateDisplay();
+            updateHistory();
+        }
+
+        function resetDay() {
+            if (confirm('Möchtest du den Tag abschließen und einen neuen starten?')) {
+                // Save current day
+                if (currentDay && currentDay.activities.length > 0) {
+                    allDays.push(currentDay);
+                    updateStatistics();
+                }
+                
+                // Reset for new day
+                currentDay = null;
+                dayStarted = false;
+                history = [];
+                document.getElementById('morningCheckin').classList.remove('hidden');
+                document.getElementById('mainDisplay').classList.add('hidden');
+                document.getElementById('activitiesGrid').classList.add('hidden');
+                document.getElementById('history').classList.add('hidden');
+                document.getElementById('resetBtn').classList.add('hidden');
+            }
+        }
+
+        function showPage(page) {
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show correct page
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            if (page === 'tracker') {
+                document.getElementById('trackerPage').classList.add('active');
+            } else if (page === 'stats') {
+                document.getElementById('statsPage').classList.add('active');
+                updateStatistics();
+            }
+        }
+
+        function updateStatistics() {
+            // Total days
+            document.getElementById('totalDays').textContent = allDays.length;
+            
+            if (allDays.length === 0) {
+                document.getElementById('avgStart').textContent = '-';
+                document.getElementById('avgEnd').textContent = '-';
+                document.getElementById('insightsList').innerHTML = '<div class="insight-item">Noch keine Daten vorhanden. Tracke ein paar Tage, um Einblicke zu erhalten!</div>';
+                document.getElementById('topDrains').innerHTML = '<p>Noch keine Daten</p>';
+                document.getElementById('topGains').innerHTML = '<p>Noch keine Daten</p>';
+                return;
+            }
+            
+            // Average start and end energy
+            const avgStart = allDays.reduce((sum, day) => sum + day.startEnergy, 0) / allDays.length;
+            const avgEnd = allDays.reduce((sum, day) => sum + day.endEnergy, 0) / allDays.length;
+            
+            document.getElementById('avgStart').textContent = avgStart.toFixed(1);
+            document.getElementById('avgEnd').textContent = avgEnd.toFixed(1);
+            
+            // Activity analysis
+            const activityStats = {};
+            allDays.forEach(day => {
+                day.activities.forEach(act => {
+                    if (!activityStats[act.activity]) {
+                        activityStats[act.activity] = { count: 0, totalCost: 0, icon: act.icon };
+                    }
+                    activityStats[act.activity].count++;
+                    activityStats[act.activity].totalCost += act.cost;
+                });
+            });
+            
+            // Top drains and gains
+            const drains = Object.entries(activityStats)
+                .filter(([_, stats]) => stats.totalCost < 0)
+                .sort((a, b) => a[1].totalCost - b[1].totalCost)
+                .slice(0, 5);
+                
+            const gains = Object.entries(activityStats)
+                .filter(([_, stats]) => stats.totalCost > 0)
+                .sort((a, b) => b[1].totalCost - a[1].totalCost)
+                .slice(0, 5);
+            
+            document.getElementById('topDrains').innerHTML = drains
+                .map(([name, stats]) => 
+                    `<p><span>${stats.icon} ${name}</span><span>${stats.totalCost} 🥄 (${stats.count}x)</span></p>`
+                ).join('');
+                
+            document.getElementById('topGains').innerHTML = gains
+                .map(([name, stats]) => 
+                    `<p><span>${stats.icon} ${name}</span><span>+${stats.totalCost} 🥄 (${stats.count}x)</span></p>`
+                ).join('');
+            
+            // Generate insights
+            const insights = [];
+            
+            // Energy difference insight
+            const energyDiff = avgEnd - avgStart;
+            if (energyDiff < -2) {
+                insights.push('💡 Du verbrauchst im Schnitt mehr Energie als du regenerierst. Plane mehr Erholungsphasen ein!');
+            } else if (energyDiff > 1) {
+                insights.push('🌟 Super! Du schaffst es, deine Energie gut zu managen und endest meist mit mehr Löffeln als erwartet.');
+            } else {
+                insights.push('⚖️ Deine Energiebilanz ist ausgeglichen. Das ist ein gutes Zeichen!');
+            }
+            
+            // Most used activity
+            const mostUsed = Object.entries(activityStats)
+                .sort((a, b) => b[1].count - a[1].count)[0];
+            if (mostUsed) {
+                insights.push(`🔄 "${mostUsed[0]}" machst du am häufigsten (${mostUsed[1].count}x)`);
+            }
+            
+            // Days tracked insight
+            if (allDays.length >= 7) {
+                insights.push('📊 Mit ' + allDays.length + ' getrackten Tagen hast du genug Daten für aussagekräftige Muster!');
+            }
+            
+            document.getElementById('insightsList').innerHTML = insights
+                .map(insight => `<div class="insight-item">${insight}</div>`)
+                .join('');
+        }
+
+        function exportData() {
+            const exportObj = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                allDays: allDays,
+                currentDay: currentDay
+            };
+            
+            const dataStr = JSON.stringify(exportObj, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `energie-tracker-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importObj = JSON.parse(e.target.result);
+                    
+                    if (importObj.version !== '1.0') {
+                        alert('Inkompatible Dateiversion');
+                        return;
+                    }
+                    
+                    if (confirm('Möchtest du die importierten Daten zu deinen bestehenden Daten hinzufügen?')) {
+                        allDays = allDays.concat(importObj.allDays || []);
+                        updateStatistics();
+                        alert('Daten erfolgreich importiert!');
+                    }
+                } catch (error) {
+                    alert('Fehler beim Importieren der Datei');
+                }
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
