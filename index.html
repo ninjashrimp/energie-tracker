@@ -1064,7 +1064,7 @@ function checkBackupReminder() {
             }
             
             const daysSinceFirstUse = Math.floor((now - new Date(firstUse)) / (1000 * 60 * 60 * 24));
-            if (daysSinceFirstUse >= 7) {
+            if (daysSinceFirstUse >= 0) {
                 showBackupReminder(true); // true = erstes Backup
             }
         } else {
