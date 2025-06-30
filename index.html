@@ -855,6 +855,7 @@
         }
 
         function updateStatistics() {
+            addBackupStatusToStats();
             // Total days
             document.getElementById('totalDays').textContent = allDays.length;
             
@@ -954,6 +955,7 @@
             linkElement.setAttribute('href', dataUri);
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
+            localStorage.setItem('lastBackupDate', new Date().toISOString());
         }
 
         function importData(event) {
@@ -987,6 +989,7 @@
 window.onload = function() {
     // Try to load saved data
     loadFromLocalStorage();
+    checkBackupReminder();
     
     // If we have a saved state, restore it
     if (dayStarted) {
@@ -1041,6 +1044,214 @@ function loadFromLocalStorage() {
         console.log('Keine gespeicherten Daten gefunden oder LocalStorage nicht verfügbar');
     }
 }
+
+
+// Backup-Reminder System für deinen ADHS Energie-Tracker
+// Einfach diesen Code in dein bestehendes JavaScript einfügen
+
+// Backup-Reminder Funktionen
+function checkBackupReminder() {
+    try {
+        const lastBackup = localStorage.getItem('lastBackupDate');
+        const now = new Date();
+        
+        if (!lastBackup) {
+            // Noch nie ein Backup gemacht - nach 7 Tagen erinnern
+            const firstUse = localStorage.getItem('firstUseDate');
+            if (!firstUse) {
+                localStorage.setItem('firstUseDate', now.toISOString());
+                return;
+            }
+            
+            const daysSinceFirstUse = Math.floor((now - new Date(firstUse)) / (1000 * 60 * 60 * 24));
+            if (daysSinceFirstUse >= 7) {
+                showBackupReminder(true); // true = erstes Backup
+            }
+        } else {
+            // Backup vorhanden - alle 14 Tage erinnern
+            const daysSinceBackup = Math.floor((now - new Date(lastBackup)) / (1000 * 60 * 60 * 24));
+            if (daysSinceBackup >= 14) {
+                showBackupReminder(false); // false = reguläres Backup
+            }
+        }
+    } catch (e) {
+        console.log('Backup-Reminder nicht verfügbar');
+    }
+}
+
+function showBackupReminder(isFirst) {
+    // Erstelle Reminder-Element wenn es noch nicht existiert
+    let reminder = document.getElementById('backupReminder');
+    if (!reminder) {
+        reminder = document.createElement('div');
+        reminder.id = 'backupReminder';
+        reminder.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f39c12;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 300px;
+            font-size: 14px;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        // Animation hinzufügen
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.body.appendChild(reminder);
+    }
+    
+    const message = isFirst 
+        ? '💾 <strong>Tipp:</strong> Du nutzt den Tracker schon eine Woche! Zeit für dein erstes Backup deiner wertvollen Daten.'
+        : '💾 <strong>Backup-Erinnerung:</strong> Dein letztes Backup ist schon 2+ Wochen her.';
+    
+    reminder.innerHTML = `
+        ${message}
+        <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="doBackupFromReminder()" style="
+                background: white; 
+                color: #f39c12; 
+                border: none; 
+                padding: 5px 10px; 
+                border-radius: 5px; 
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: bold;
+            ">Backup erstellen</button>
+            <button onclick="dismissBackupReminder()" style="
+                background: transparent; 
+                color: white; 
+                border: 1px solid white; 
+                padding: 5px 10px; 
+                border-radius: 5px; 
+                cursor: pointer;
+                font-size: 12px;
+            ">Später</button>
+        </div>
+    `;
+}
+
+function doBackupFromReminder() {
+    // Backup erstellen
+    exportData();
+    
+    // Backup-Datum speichern
+    localStorage.setItem('lastBackupDate', new Date().toISOString());
+    
+    // Reminder entfernen
+    dismissBackupReminder();
+    
+    // Kurze Bestätigung zeigen
+    showBackupConfirmation();
+}
+
+function dismissBackupReminder() {
+    const reminder = document.getElementById('backupReminder');
+    if (reminder) {
+        reminder.style.animation = 'slideOut 0.3s ease forwards';
+        setTimeout(() => reminder.remove(), 300);
+    }
+}
+
+function showBackupConfirmation() {
+    const confirmation = document.createElement('div');
+    confirmation.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #27ae60;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        z-index: 1000;
+        font-size: 14px;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    confirmation.innerHTML = '✅ <strong>Backup erfolgreich!</strong><br>Deine Daten sind sicher gespeichert.';
+    document.body.appendChild(confirmation);
+    
+    // Nach 3 Sekunden wieder entfernen
+    setTimeout(() => {
+        confirmation.style.animation = 'slideOut 0.3s ease forwards';
+        setTimeout(() => confirmation.remove(), 300);
+    }, 3000);
+}
+
+function getLastBackupInfo() {
+    try {
+        const lastBackup = localStorage.getItem('lastBackupDate');
+        if (!lastBackup) return 'Noch nie';
+        
+        const daysSince = Math.floor((new Date() - new Date(lastBackup)) / (1000 * 60 * 60 * 24));
+        if (daysSince === 0) return 'Heute';
+        if (daysSince === 1) return 'Gestern';
+        return `vor ${daysSince} Tagen`;
+    } catch (e) {
+        return 'Unbekannt';
+    }
+}
+
+// Backup-Status in der App anzeigen
+function addBackupStatusToStats() {
+    // Backup-Info zu den Statistiken hinzufügen
+    const statsContainer = document.querySelector('.stats-grid');
+    if (statsContainer) {
+        const backupCard = document.createElement('div');
+        backupCard.className = 'stat-card';
+        backupCard.innerHTML = `
+            <h3>Letztes Backup</h3>
+            <div class="stat-value" style="font-size: 16px; color: #f39c12;" id="lastBackupStatus">${getLastBackupInfo()}</div>
+            <button onclick="doBackupFromReminder()" style="
+                margin-top: 10px;
+                background: #27ae60;
+                border: none;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+            ">Backup erstellen</button>
+        `;
+        statsContainer.appendChild(backupCard);
+    }
+}
+
+// CSS für slideOut Animation hinzufügen
+const slideOutStyle = document.createElement('style');
+slideOutStyle.textContent = `
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(slideOutStyle);
+
+// INTEGRATION IN DEINE BESTEHENDE APP:
+
+// 1. In window.onload hinzufügen:
+// checkBackupReminder();
+
+// 2. In updateStatistics() hinzufügen:
+// addBackupStatusToStats();
+
+// 3. In exportData() am Ende hinzufügen:
+// localStorage.setItem('lastBackupDate', new Date().toISOString());
+
+
     </script>
 </body>
 </html>
