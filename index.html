@@ -435,6 +435,276 @@
             display: flex;
             justify-content: space-between;
         }
+  
+  /* Mini-Motivator Styles */
+.motivator-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.motivator-container h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.motivator-subtitle {
+    text-align: center;
+    color: #bbb;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.mood-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.mood-btn {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.mood-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #3a4f66 0%, #4a5f7a 100%);
+}
+
+.mood-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.mood-btn:hover::before {
+    left: 100%;
+}
+
+.mood-icon {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.mood-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f39c12;
+}
+
+.mood-desc {
+    font-size: 14px;
+    color: #bbb;
+    line-height: 1.3;
+}
+
+.unknown-btn {
+    background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%) !important;
+    border: 2px dashed rgba(255,255,255,0.3);
+}
+
+.unknown-btn:hover {
+    background: linear-gradient(135deg, #a569bd 0%, #bb8fce 100%) !important;
+}
+
+.suggestion-display {
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.suggestion-card {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.suggestion-card h3 {
+    color: #f39c12;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.suggestion-content {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #eee;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    border-left: 4px solid #f39c12;
+}
+
+.suggestion-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.try-again-btn {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.try-again-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.feedback-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.feedback-btn {
+    background: #2c3e50;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-btn.good:hover {
+    background: #27ae60;
+    border-color: #2ecc71;
+    transform: scale(1.1);
+}
+
+.feedback-btn.bad:hover {
+    background: #e74c3c;
+    border-color: #c0392b;
+    transform: scale(1.1);
+}
+
+.feedback-btn.selected {
+    transform: scale(1.1);
+}
+
+.feedback-btn.good.selected {
+    background: #27ae60;
+    border-color: #2ecc71;
+}
+
+.feedback-btn.bad.selected {
+    background: #e74c3c;
+    border-color: #c0392b;
+}
+
+.back-to-moods-btn {
+    background: transparent;
+    border: 2px solid #7f8c8d;
+    border-radius: 25px;
+    padding: 12px 25px;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.back-to-moods-btn:hover {
+    border-color: #f39c12;
+    color: #f39c12;
+    transform: translateX(-5px);
+}
+
+.favorites-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(22, 33, 62, 0.5);
+    border-radius: 15px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.favorites-section h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.favorites-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.favorite-item {
+    background: #27ae60;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.favorite-item:hover {
+    background: #2ecc71;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Anpassungen */
+@media (max-width: 600px) {
+    .mood-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .suggestion-card {
+        padding: 25px;
+    }
+    
+    .suggestion-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .feedback-buttons {
+        justify-content: center;
+    }
+}
+  
     </style>
 </head>
 <body>
@@ -444,6 +714,7 @@
         <div class="navigation hidden" id="navigation">
             <button class="nav-btn active" onclick="showPage('tracker')">Tracker</button>
             <button class="nav-btn" onclick="showPage('stats')">Statistiken</button>
+            <button class="nav-btn" onclick="showPage('motivator')">Mini-Motivator</button>
         </div>
 
         <!-- Tracker Page -->
@@ -515,6 +786,187 @@
                     <input type="file" id="importInput" class="import-input" accept=".json" onchange="importData(event)">
                 </div>
             </div>
+        </div>
+      
+      <div class="page" id="motivatorPage">
+    <div class="motivator-container">
+        <h2>🧠 Mini-Motivator</h2>
+        <p class="motivator-subtitle">Wie fühlst du dich gerade?</p>
+        
+        <!-- Gefühlszustände -->
+        <div class="mood-grid" id="moodGrid">
+            <button class="mood-btn" onclick="selectMood('überfordert', '😵')">
+                <span class="mood-icon">😵</span>
+                <span class="mood-name">Überfordert</span>
+                <span class="mood-desc">Ich weiß nicht, wo ich anfangen soll</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('lethargisch', '😩')">
+                <span class="mood-icon">😩</span>
+                <span class="mood-name">Lethargisch</span>
+                <span class="mood-desc">Ich will was tun, aber komm nicht in Gang</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('verknotet', '🌀')">
+                <span class="mood-icon">🌀</span>
+                <span class="mood-name">Verknotet</span>
+                <span class="mood-desc">3 Gedanken gleichzeitig, keine Klarheit</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('unruhig', '⚡')">
+                <span class="mood-icon">⚡</span>
+                <span class="mood-name">Unruhig</span>
+                <span class="mood-desc">Rastlos, aber kann nichts greifen</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('blockiert', '😶')">
+                <span class="mood-icon">😶</span>
+                <span class="mood-name">Blockiert</span>
+                <span class="mood-desc">Sollte was tun, kann's nicht ansteuern</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('überreizt', '🧯')">
+                <span class="mood-icon">🧯</span>
+                <span class="mood-name">Überreizt</span>
+                <span class="mood-desc">Zu viele Eindrücke, brauch Rückzug</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('prokrastinierend', '🫠')">
+                <span class="mood-icon">🫠</span>
+                <span class="mood-name">Prokrastinierend</span>
+                <span class="mood-desc">Tue alles außer dem Wichtigen</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('hyperfokussiert', '🚀')">
+                <span class="mood-icon">🚀</span>
+                <span class="mood-name">Hyperfokussiert</span>
+                <span class="mood-desc">Tief drin, vergesse alles drumrum</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('verloren', '☁️')">
+                <span class="mood-icon">☁️</span>
+                <span class="mood-name">Verloren</span>
+                <span class="mood-desc">Weiß nicht, was ich brauche</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('taub', '🧊')">
+                <span class="mood-icon">🧊</span>
+                <span class="mood-name">Taub</span>
+                <span class="mood-desc">Fühle nichts / bin eingefroren</span>
+            </button>
+            
+            <button class="mood-btn unknown-btn" onclick="selectMood('unbekannt', '🤷')">
+                <span class="mood-icon">🤷</span>
+                <span class="mood-name">Ich weiß es nicht</span>
+                <span class="mood-desc">Schlag mir einfach was vor</span>
+            </button>
+        </div>
+        
+        <!-- Suggestion Display -->
+        <div class="suggestion-display hidden" id="suggestionDisplay">
+            <div class="suggestion-card">
+                <h3>💫 Versuch doch mal:</h3>
+                <div class="suggestion-content" id="suggestionContent"></div>
+                
+                <div class="suggestion-actions">
+                    <button class="try-again-btn" onclick="getNewSuggestion()">
+                        🔄 Anderer Vorschlag
+                    </button>
+                    <div class="feedback-buttons">
+                        <button class="feedback-btn good" onclick="giveFeedback(true)" title="Hat geholfen">
+                            👍
+                        </button>
+                        <button class="feedback-btn bad" onclick="giveFeedback(false)" title="Hat nicht geholfen">
+                            👎
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="back-to-moods-btn" onclick="backToMoods()">
+                ← Zurück zu den Gefühlen
+            </button>
+        </div>
+        
+        <!-- Quick Favorites (wenn vorhanden) -->
+        <div class="favorites-section hidden" id="favoritesSection">
+            <h3>⭐ Deine Favoriten</h3>
+            <div class="favorites-list" id="favoritesList"></div>
+        </div>
+    </div>
+</div>
+<div class="page" id="motivatorPage">
+    <div class="motivator-container">
+        <h2>🧠 Mini-Motivator</h2>
+        <p class="motivator-subtitle">Wie fühlst du dich gerade?</p>
+        
+        <!-- Gefühlszustände -->
+        <div class="mood-grid" id="moodGrid">
+            <button class="mood-btn" onclick="selectMood('überfordert', '😵')">
+                <span class="mood-icon">😵</span>
+                <span class="mood-name">Überfordert</span>
+                <span class="mood-desc">Ich weiß nicht, wo ich anfangen soll</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('lethargisch', '😩')">
+                <span class="mood-icon">😩</span>
+                <span class="mood-name">Lethargisch</span>
+                <span class="mood-desc">Ich will was tun, aber komm nicht in Gang</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('verknotet', '🌀')">
+                <span class="mood-icon">🌀</span>
+                <span class="mood-name">Verknotet</span>
+                <span class="mood-desc">3 Gedanken gleichzeitig, keine Klarheit</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('unruhig', '⚡')">
+                <span class="mood-icon">⚡</span>
+                <span class="mood-name">Unruhig</span>
+                <span class="mood-desc">Rastlos, aber kann nichts greifen</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('blockiert', '😶')">
+                <span class="mood-icon">😶</span>
+                <span class="mood-name">Blockiert</span>
+                <span class="mood-desc">Sollte was tun, kann's nicht ansteuern</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('überreizt', '🧯')">
+                <span class="mood-icon">🧯</span>
+                <span class="mood-name">Überreizt</span>
+                <span class="mood-desc">Zu viele Eindrücke, brauch Rückzug</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('prokrastinierend', '🫠')">
+                <span class="mood-icon">🫠</span>
+                <span class="mood-name">Prokrastinierend</span>
+                <span class="mood-desc">Tue alles außer dem Wichtigen</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('hyperfokussiert', '🚀')">
+                <span class="mood-icon">🚀</span>
+                <span class="mood-name">Hyperfokussiert</span>
+                <span class="mood-desc">Tief drin, vergesse alles drumrum</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('verloren', '☁️')">
+                <span class="mood-icon">☁️</span>
+                <span class="mood-name">Verloren</span>
+                <span class="mood-desc">Weiß nicht, was ich brauche</span>
+            </button>
+            
+            <button class="mood-btn" onclick="selectMood('taub', '🧊')">
+                <span class="mood-icon">🧊</span>
+                <span class="mood-name">Taub</span>
+                <span class="mood-desc">Fühle nichts / bin eingefroren</span>
+            </button>
+            
+            <button class="mood-btn unknown-btn" onclick="selectMood('unbekannt', '🤷')">
+                <span class="mood-icon">🤷</span>
+                <span class="mood-name">Ich weiß es nicht</span>
+                <span class="mood-desc">Schlag mir einfach was Sanftes vor</span>
+            </button>
         </div>
     </div>
 
@@ -874,26 +1326,37 @@
             }
             saveToLocalStorage();
         }
-
-        function showPage(page) {
-            // Update navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Show correct page
-            document.querySelectorAll('.page').forEach(p => {
-                p.classList.remove('active');
-            });
-            
-            if (page === 'tracker') {
-                document.getElementById('trackerPage').classList.add('active');
-            } else if (page === 'stats') {
-                document.getElementById('statsPage').classList.add('active');
-                updateStatistics();
-            }
+  
+  // Update showPage function to handle motivator
+function showPage(page) {
+    // Update navigation
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show correct page
+    document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+    });
+    
+    if (page === 'tracker') {
+        document.getElementById('trackerPage').classList.add('active');
+        if (dayStarted) {
+            updateHistory();
         }
+    } else if (page === 'stats') {
+        document.getElementById('statsPage').classList.add('active');
+        updateStatistics();
+    } else if (page === 'motivator') {
+        document.getElementById('motivatorPage').classList.add('active');
+        loadMotivaorData();
+        updateFavoritesDisplay();
+        // Reset to mood selection if coming from other pages
+        backToMoods();
+    }
+}
+
 
         function updateStatistics() {
             addBackupStatusToStats();
@@ -1031,6 +1494,7 @@ window.onload = function() {
     // Try to load saved data
     loadFromLocalStorage();
     checkBackupReminder();
+    loadMotivaorData();
     
     // If we have a saved state, restore it
     if (dayStarted) {
@@ -1291,7 +1755,245 @@ document.head.appendChild(slideOutStyle);
 
 // 3. In exportData() am Ende hinzufügen:
 // localStorage.setItem('lastBackupDate', new Date().toISOString());
+// Mini-Motivator Data
+let currentMood = null;
+let currentSuggestion = null;
+let motivatorData = {
+    favorites: [],
+    feedback: {},
+    usageStats: {}
+};
 
+const suggestions = {
+    überfordert: [
+        { text: "Schreib 3 Dinge auf, die heute wichtig sind. Wähl dann nur 1 davon aus.", type: "mental", icon: "📝" },
+        { text: "Stell dir einen Timer auf 5 Minuten und räume nur deinen Schreibtisch auf.", type: "körperlich", icon: "⏰" },
+        { text: "Atme 4 Sekunden ein, 6 Sekunden aus. Wiederhole das 3x.", type: "sensorisch", icon: "🌬️" }
+    ],
+    lethargisch: [
+        { text: "Steh auf und mach 5 Hampelmänner oder strecke dich ausgiebig.", type: "körperlich", icon: "🤸" },
+        { text: "Spiel deinen absoluten Lieblingssong und lass dich davon mitreißen.", type: "sensorisch", icon: "🎵" },
+        { text: "Sag laut zu dir: 'Ich fange jetzt mit dem kleinsten Schritt an.'", type: "mental", icon: "💬" }
+    ],
+    verknotet: [
+        { text: "Nimm einen Stift und schreibe 2 Minuten alles auf, was dir durch den Kopf geht.", type: "mental", icon: "🧠" },
+        { text: "Leg dich 30 Sekunden flach hin und schau an die Decke. Einfach nur schauen.", type: "körperlich", icon: "🛏️" },
+        { text: "Fokussiere dich auf 1 Geräusch um dich herum. Nur das eine, 30 Sekunden lang.", type: "sensorisch", icon: "👂" }
+    ],
+    unruhig: [
+        { text: "Geh 2 Minuten durch die Wohnung oder um den Block. Einfach gehen.", type: "körperlich", icon: "🚶" },
+        { text: "Nimm einen Gegenstand in die Hand und betaste ihn bewusst 1 Minute lang.", type: "sensorisch", icon: "✋" },
+        { text: "Zähle rückwärts von 20 zu 0 und konzentriere dich nur auf die Zahlen.", type: "mental", icon: "🔢" }
+    ],
+    blockiert: [
+        { text: "Öffne nur die App/das Dokument. Du musst nichts damit machen.", type: "mental", icon: "📱" },
+        { text: "Stell dich vor die Aufgabe und sage: 'Ich schaue mir das nur mal an.'", type: "mental", icon: "👀" },
+        { text: "Mach 3 tiefe Atemzüge und erinnere dich: Du bist nicht faul.", type: "mental", icon: "💙" }
+    ],
+    überreizt: [
+        { text: "Dimme das Licht oder geh in einen ruhigeren Raum.", type: "sensorisch", icon: "💡" },
+        { text: "Leg dich mit einer Decke hin und schließe 2 Minuten die Augen.", type: "körperlich", icon: "🛋️" },
+        { text: "Setz Kopfhörer auf und spiele weißes Rauschen oder Naturgeräusche ab.", type: "sensorisch", icon: "🎧" }
+    ],
+    prokrastinierend: [
+        { text: "Stelle einen Timer auf 10 Minuten und arbeite nur so lange an der Aufgabe.", type: "mental", icon: "⏲️" },
+        { text: "Schreibe auf: 'Was ist das Schlimmste, was passieren kann?' Meist ist es nicht so wild.", type: "mental", icon: "❓" },
+        { text: "Belohne dich schon im Voraus: 'Nach 15 Minuten darf ich...'", type: "mental", icon: "🍪" }
+    ],
+    hyperfokussiert: [
+        { text: "Stell dir einen Alarm für in 30 Minuten - dann machst du eine kurze Pause.", type: "mental", icon: "⏰" },
+        { text: "Trink jetzt ein Glas Wasser und iss etwas Kleines.", type: "körperlich", icon: "💧" },
+        { text: "Notiere dir schnell, wo du gerade stehst, damit du später weiterweißt.", type: "mental", icon: "📌" }
+    ],
+    verloren: [
+        { text: "Frag dich: 'Wie fühlt sich mein Körper gerade an?' und horche 1 Minute in dich hinein.", type: "körperlich", icon: "🫀" },
+        { text: "Schreibe auf: 'Drei Dinge, die heute okay waren.' Auch ganz kleine zählen.", type: "mental", icon: "✨" },
+        { text: "Ruf jemanden an oder schreibe jemandem - auch nur 'Hi, wie geht's?'", type: "mental", icon: "📞" }
+    ],
+    taub: [
+        { text: "Halte etwas Warmes in den Händen - eine Tasse, ein Heizkissen, einen Pullover.", type: "sensorisch", icon: "☕" },
+        { text: "Spüre deine Füße auf dem Boden. Bewege die Zehen bewusst.", type: "körperlich", icon: "🦶" },
+        { text: "Sage laut: 'Es ist okay, dass ich gerade nichts fühle. Das geht vorbei.'", type: "mental", icon: "💭" }
+    ],
+    unbekannt: [
+        { text: "Geh 1 Minute ans Fenster und schaue nach draußen.", type: "sensorisch", icon: "🪟" },
+        { text: "Trinke bewusst einen Schluck Wasser und spüre, wie es deinen Körper durchläuft.", type: "körperlich", icon: "💧" },
+        { text: "Atme 3x tief durch und sage dir: 'Ich bin hier. Alles ist okay.'", type: "mental", icon: "🌸" },
+        { text: "Strecke deine Arme über den Kopf und gähne absichtlich.", type: "körperlich", icon: "🙆" },
+        { text: "Spiele 30 Sekunden lang deine Lieblingsmusik ab.", type: "sensorisch", icon: "🎶" }
+    ]
+};
+
+// Mini-Motivator Functions
+function selectMood(mood, icon) {
+    currentMood = mood;
+    
+    // Update usage stats
+    if (!motivatorData.usageStats[mood]) {
+        motivatorData.usageStats[mood] = 0;
+    }
+    motivatorData.usageStats[mood]++;
+    
+    // Show suggestion
+    getNewSuggestion();
+    showSuggestionDisplay();
+    
+    // Save data
+    saveMotivaorData();
+}
+
+function getNewSuggestion() {
+    if (!currentMood || !suggestions[currentMood]) return;
+    
+    const moodSuggestions = suggestions[currentMood];
+    let newSuggestion;
+    
+    // Try to avoid repeating the same suggestion immediately
+    do {
+        newSuggestion = moodSuggestions[Math.floor(Math.random() * moodSuggestions.length)];
+    } while (newSuggestion === currentSuggestion && moodSuggestions.length > 1);
+    
+    currentSuggestion = newSuggestion;
+    displaySuggestion();
+}
+
+function displaySuggestion() {
+    if (!currentSuggestion) return;
+    
+    const content = document.getElementById('suggestionContent');
+    content.innerHTML = `
+        <div style="font-size: 40px; margin-bottom: 15px;">${currentSuggestion.icon}</div>
+        <div>${currentSuggestion.text}</div>
+        <div style="font-size: 14px; color: #95a5a6; margin-top: 15px; opacity: 0.8;">
+            ${getTypeLabel(currentSuggestion.type)}
+        </div>
+    `;
+    
+    // Reset feedback buttons
+    document.querySelectorAll('.feedback-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+}
+
+function getTypeLabel(type) {
+    const labels = {
+        'körperlich': '🧘 Körperliche Aktivierung',
+        'sensorisch': '🌈 Sensorische Regulation', 
+        'mental': '🧠 Mentale Unterstützung'
+    };
+    return labels[type] || '';
+}
+
+function showSuggestionDisplay() {
+    document.getElementById('moodGrid').style.display = 'none';
+    document.querySelector('.motivator-subtitle').style.display = 'none';
+    document.getElementById('suggestionDisplay').classList.remove('hidden');
+}
+
+function backToMoods() {
+    document.getElementById('suggestionDisplay').classList.add('hidden');
+    document.getElementById('moodGrid').style.display = 'grid';
+    document.querySelector('.motivator-subtitle').style.display = 'block';
+    currentMood = null;
+    currentSuggestion = null;
+}
+
+function giveFeedback(isPositive) {
+    if (!currentSuggestion || !currentMood) return;
+    
+    // Visual feedback
+    document.querySelectorAll('.feedback-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    const selectedBtn = document.querySelector(`.feedback-btn.${isPositive ? 'good' : 'bad'}`);
+    selectedBtn.classList.add('selected');
+    
+    // Store feedback
+    const suggestionKey = `${currentMood}_${currentSuggestion.text.substring(0, 20)}`;
+    motivatorData.feedback[suggestionKey] = {
+        positive: isPositive,
+        timestamp: new Date().toISOString(),
+        mood: currentMood,
+        suggestion: currentSuggestion
+    };
+    
+    // Add to favorites if positive and not already there
+    if (isPositive) {
+        const favorite = {
+            text: currentSuggestion.text,
+            icon: currentSuggestion.icon,
+            type: currentSuggestion.type,
+            mood: currentMood
+        };
+        
+        const alreadyFavorite = motivatorData.favorites.some(fav => 
+            fav.text === favorite.text && fav.mood === favorite.mood
+        );
+        
+        if (!alreadyFavorite) {
+            motivatorData.favorites.push(favorite);
+            updateFavoritesDisplay();
+        }
+    }
+    
+    saveMotivaorData();
+    
+    // Show brief confirmation
+    setTimeout(() => {
+        selectedBtn.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            selectedBtn.style.transform = 'scale(1.1)';
+        }, 200);
+    }, 100);
+}
+
+function updateFavoritesDisplay() {
+    const favoritesSection = document.getElementById('favoritesSection');
+    const favoritesList = document.getElementById('favoritesList');
+    
+    if (motivatorData.favorites.length === 0) {
+        favoritesSection.classList.add('hidden');
+        return;
+    }
+    
+    favoritesSection.classList.remove('hidden');
+    favoritesList.innerHTML = motivatorData.favorites.slice(-5).map(fav => 
+        `<button class="favorite-item" onclick="useFavorite('${fav.text}', '${fav.icon}', '${fav.type}')" title="Von: ${fav.mood}">
+            ${fav.icon} ${fav.text.substring(0, 30)}${fav.text.length > 30 ? '...' : ''}
+        </button>`
+    ).join('');
+}
+
+function useFavorite(text, icon, type) {
+    currentSuggestion = { text, icon, type };
+    displaySuggestion();
+    showSuggestionDisplay();
+}
+
+
+// Save and load motivator data
+function saveMotivaorData() {
+    try {
+        localStorage.setItem('motivatorData', JSON.stringify(motivatorData));
+    } catch (e) {
+        console.log('Could not save motivator data');
+    }
+}
+
+function loadMotivaorData() {
+    try {
+        const saved = localStorage.getItem('motivatorData');
+        if (saved) {
+            motivatorData = { ...motivatorData, ...JSON.parse(saved) };
+        }
+    } catch (e) {
+        console.log('Could not load motivator data');
+    }
+}
+
+// Initialize motivator data on page load
+// Add this to your existing window.onload function
 
     </script>
 </body>
