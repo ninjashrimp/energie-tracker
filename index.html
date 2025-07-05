@@ -704,10 +704,298 @@
         justify-content: center;
     }
 }
+
+/* Anti-To-Do Tracker Styles */
+.antitodo-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.antitodo-container h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.antitodo-subtitle {
+    text-align: center;
+    color: #bbb;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.achievement-center {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.big-achievement-btn {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 30px 50px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0 auto;
+}
+
+.big-achievement-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+}
+
+.achievement-icon {
+    font-size: 32px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    to { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+.achievement-input {
+    margin-bottom: 30px;
+    animation: slideIn 0.3s ease;
+}
+
+.input-card {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.input-card h3 {
+    color: #f39c12;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#achievementText {
+    width: 100%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    color: #eee;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 20px;
+}
+
+#achievementText:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
+}
+
+.quick-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.suggestion-chip {
+    background: rgba(243, 156, 18, 0.2);
+    border: 1px solid rgba(243, 156, 18, 0.4);
+    border-radius: 20px;
+    padding: 8px 15px;
+    color: #f39c12;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.suggestion-chip:hover {
+    background: rgba(243, 156, 18, 0.3);
+    transform: scale(1.05);
+}
+
+.input-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.save-achievement {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.save-achievement:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.cancel-input {
+    background: transparent;
+    border: 2px solid #7f8c8d;
+    border-radius: 25px;
+    padding: 10px 25px;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.cancel-input:hover {
+    border-color: #bdc3c7;
+    color: #bdc3c7;
+}
+
+.todays-achievements, .courage-archive {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.todays-achievements h3, .courage-archive h3 {
+    color: #f39c12;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.achievement-item {
+    background: rgba(46, 204, 113, 0.1);
+    border-left: 4px solid #2ecc71;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: achievementPop 0.5s ease;
+}
+
+@keyframes achievementPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.achievement-text-content {
+    flex: 1;
+    color: #eee;
+    line-height: 1.4;
+}
+
+.achievement-time {
+    color: #95a5a6;
+    font-size: 12px;
+    margin-left: 15px;
+}
+
+.delete-achievement {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 5px;
+    margin-left: 10px;
+    transition: all 0.2s ease;
+}
+
+.delete-achievement:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.show-archive-btn {
+    background: rgba(243, 156, 18, 0.2);
+    border: 1px solid rgba(243, 156, 18, 0.4);
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: #f39c12;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.show-archive-btn:hover {
+    background: rgba(243, 156, 18, 0.3);
+}
+
+.archive-summary {
+    text-align: center;
+    font-size: 18px;
+    color: #2ecc71;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.antitodo-settings {
+    text-align: center;
+    padding: 20px;
+}
+
+.reminder-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #bbb;
+    cursor: pointer;
+}
+
+.reminder-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #f39c12;
+}
+
+/* Mobile Anpassungen */
+@media (max-width: 600px) {
+    .big-achievement-btn {
+        padding: 25px 35px;
+        font-size: 18px;
+    }
+    
+    .quick-suggestions {
+        flex-direction: column;
+    }
+    
+    .suggestion-chip {
+        text-align: center;
+    }
+    
+    .input-actions {
+        flex-direction: column;
+    }
+}
   
     </style>
 </head>
 <body>
+    
     <div class="container">
         <h1>🥄 ADHS Energie-Tracker</h1>
         
@@ -715,7 +1003,9 @@
             <button class="nav-btn active" onclick="showPage('tracker')">Tracker</button>
             <button class="nav-btn" onclick="showPage('stats')">Statistiken</button>
             <button class="nav-btn" onclick="showPage('motivator')">Mini-Motivator</button>
+            <button class="nav-btn" onclick="showPage('antitodo')">Anti-To-Do</button>
         </div>
+        
 
         <!-- Tracker Page -->
         <div class="page active" id="trackerPage">
@@ -743,7 +1033,8 @@
 
             <button class="reset-day hidden" id="resetBtn" onclick="resetDay()">Tag abschließen & Neuer Tag</button>
         </div>
-
+        
+        
         <!-- Statistics Page -->
         <div class="page" id="statsPage">
             <div class="stats-container">
@@ -788,186 +1079,180 @@
             </div>
         </div>
       
-      <div class="page" id="motivatorPage">
-    <div class="motivator-container">
-        <h2>🧠 Mini-Motivator</h2>
-        <p class="motivator-subtitle">Wie fühlst du dich gerade?</p>
-        
-        <!-- Gefühlszustände -->
-        <div class="mood-grid" id="moodGrid">
-            <button class="mood-btn" onclick="selectMood('überfordert', '😵')">
-                <span class="mood-icon">😵</span>
-                <span class="mood-name">Überfordert</span>
-                <span class="mood-desc">Ich weiß nicht, wo ich anfangen soll</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('lethargisch', '😩')">
-                <span class="mood-icon">😩</span>
-                <span class="mood-name">Lethargisch</span>
-                <span class="mood-desc">Ich will was tun, aber komm nicht in Gang</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('verknotet', '🌀')">
-                <span class="mood-icon">🌀</span>
-                <span class="mood-name">Verknotet</span>
-                <span class="mood-desc">3 Gedanken gleichzeitig, keine Klarheit</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('unruhig', '⚡')">
-                <span class="mood-icon">⚡</span>
-                <span class="mood-name">Unruhig</span>
-                <span class="mood-desc">Rastlos, aber kann nichts greifen</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('blockiert', '😶')">
-                <span class="mood-icon">😶</span>
-                <span class="mood-name">Blockiert</span>
-                <span class="mood-desc">Sollte was tun, kann's nicht ansteuern</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('überreizt', '🧯')">
-                <span class="mood-icon">🧯</span>
-                <span class="mood-name">Überreizt</span>
-                <span class="mood-desc">Zu viele Eindrücke, brauch Rückzug</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('prokrastinierend', '🫠')">
-                <span class="mood-icon">🫠</span>
-                <span class="mood-name">Prokrastinierend</span>
-                <span class="mood-desc">Tue alles außer dem Wichtigen</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('hyperfokussiert', '🚀')">
-                <span class="mood-icon">🚀</span>
-                <span class="mood-name">Hyperfokussiert</span>
-                <span class="mood-desc">Tief drin, vergesse alles drumrum</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('verloren', '☁️')">
-                <span class="mood-icon">☁️</span>
-                <span class="mood-name">Verloren</span>
-                <span class="mood-desc">Weiß nicht, was ich brauche</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('taub', '🧊')">
-                <span class="mood-icon">🧊</span>
-                <span class="mood-name">Taub</span>
-                <span class="mood-desc">Fühle nichts / bin eingefroren</span>
-            </button>
-            
-            <button class="mood-btn unknown-btn" onclick="selectMood('unbekannt', '🤷')">
-                <span class="mood-icon">🤷</span>
-                <span class="mood-name">Ich weiß es nicht</span>
-                <span class="mood-desc">Schlag mir einfach was vor</span>
-            </button>
-        </div>
-        
-        <!-- Suggestion Display -->
-        <div class="suggestion-display hidden" id="suggestionDisplay">
-            <div class="suggestion-card">
-                <h3>💫 Versuch doch mal:</h3>
-                <div class="suggestion-content" id="suggestionContent"></div>
+        <!-- Mini-Motivator Page -->
+        <div class="page" id="motivatorPage">
+            <div class="motivator-container">
+                <h2>🧠 Mini-Motivator</h2>
+                <p class="motivator-subtitle">Wie fühlst du dich gerade?</p>
                 
-                <div class="suggestion-actions">
-                    <button class="try-again-btn" onclick="getNewSuggestion()">
-                        🔄 Anderer Vorschlag
+                <!-- Gefühlszustände -->
+                <div class="mood-grid" id="moodGrid">
+                    <button class="mood-btn" onclick="selectMood('überfordert', '😵')">
+                        <span class="mood-icon">😵</span>
+                        <span class="mood-name">Überfordert</span>
+                        <span class="mood-desc">Ich weiß nicht, wo ich anfangen soll</span>
                     </button>
-                    <div class="feedback-buttons">
-                        <button class="feedback-btn good" onclick="giveFeedback(true)" title="Hat geholfen">
-                            👍
-                        </button>
-                        <button class="feedback-btn bad" onclick="giveFeedback(false)" title="Hat nicht geholfen">
-                            👎
-                        </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('lethargisch', '😩')">
+                        <span class="mood-icon">😩</span>
+                        <span class="mood-name">Lethargisch</span>
+                        <span class="mood-desc">Ich will was tun, aber komm nicht in Gang</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('verknotet', '🌀')">
+                        <span class="mood-icon">🌀</span>
+                        <span class="mood-name">Verknotet</span>
+                        <span class="mood-desc">3 Gedanken gleichzeitig, keine Klarheit</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('unruhig', '⚡')">
+                        <span class="mood-icon">⚡</span>
+                        <span class="mood-name">Unruhig</span>
+                        <span class="mood-desc">Rastlos, aber kann nichts greifen</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('blockiert', '😶')">
+                        <span class="mood-icon">😶</span>
+                        <span class="mood-name">Blockiert</span>
+                        <span class="mood-desc">Sollte was tun, kann's nicht ansteuern</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('überreizt', '🧯')">
+                        <span class="mood-icon">🧯</span>
+                        <span class="mood-name">Überreizt</span>
+                        <span class="mood-desc">Zu viele Eindrücke, brauch Rückzug</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('prokrastinierend', '🫠')">
+                        <span class="mood-icon">🫠</span>
+                        <span class="mood-name">Prokrastinierend</span>
+                        <span class="mood-desc">Tue alles außer dem Wichtigen</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('hyperfokussiert', '🚀')">
+                        <span class="mood-icon">🚀</span>
+                        <span class="mood-name">Hyperfokussiert</span>
+                        <span class="mood-desc">Tief drin, vergesse alles drumrum</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('verloren', '☁️')">
+                        <span class="mood-icon">☁️</span>
+                        <span class="mood-name">Verloren</span>
+                        <span class="mood-desc">Weiß nicht, was ich brauche</span>
+                    </button>
+                    
+                    <button class="mood-btn" onclick="selectMood('taub', '🧊')">
+                        <span class="mood-icon">🧊</span>
+                        <span class="mood-name">Taub</span>
+                        <span class="mood-desc">Fühle nichts / bin eingefroren</span>
+                    </button>
+                    
+                    <button class="mood-btn unknown-btn" onclick="selectMood('unbekannt', '🤷')">
+                        <span class="mood-icon">🤷</span>
+                        <span class="mood-name">Ich weiß es nicht</span>
+                        <span class="mood-desc">Schlag mir einfach was Sanftes vor</span>
+                    </button>
+                </div>
+                
+                <!-- Suggestion Display -->
+                <div class="suggestion-display hidden" id="suggestionDisplay">
+                    <div class="suggestion-card">
+                        <h3>💫 Versuch doch mal:</h3>
+                        <div class="suggestion-content" id="suggestionContent"></div>
+                        
+                        <div class="suggestion-actions">
+                            <button class="try-again-btn" onclick="getNewSuggestion()">
+                                🔄 Anderer Vorschlag
+                            </button>
+                            <div class="feedback-buttons">
+                                <button class="feedback-btn good" onclick="giveFeedback(true)" title="Hat geholfen">
+                                    👍
+                                </button>
+                                <button class="feedback-btn bad" onclick="giveFeedback(false)" title="Hat nicht geholfen">
+                                    👎
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <button class="back-to-moods-btn" onclick="backToMoods()">
+                        ← Zurück zu den Gefühlen
+                    </button>
+                </div>
+                
+                <!-- Quick Favorites (wenn vorhanden) -->
+                <div class="favorites-section hidden" id="favoritesSection">
+                    <h3>⭐ Deine Favoriten</h3>
+                    <div class="favorites-list" id="favoritesList"></div>
                 </div>
             </div>
-            
-            <button class="back-to-moods-btn" onclick="backToMoods()">
-                ← Zurück zu den Gefühlen
-            </button>
         </div>
+
+        <!-- Anti-To-Do Page -->
+        <div class="page" id="antitodoPage">
+            <div class="antitodo-container">
+                <h2>✨ Ich hab was geschafft!</h2>
+                <p class="antitodo-subtitle">Würdige deine unsichtbaren Erfolge</p>
+                
+                <!-- Haupt-Button -->
+                <div class="achievement-center">
+                    <button class="big-achievement-btn" onclick="openAchievementInput()">
+                        <span class="achievement-icon">🌟</span>
+                        <span class="achievement-text">Ich hab was geschafft!</span>
+                    </button>
+                </div>
+                
+                <!-- Input Area (versteckt) -->
+                <div class="achievement-input hidden" id="achievementInput">
+                    <div class="input-card">
+                        <h3>Was hast du geschafft? 💫</h3>
+                        <textarea id="achievementText" placeholder="Z.B. Trotz Müdigkeit Zähne geputzt..." maxlength="200"></textarea>
+                        
+                        <!-- Quick Suggestions -->
+                        <div class="quick-suggestions">
+                            <button class="suggestion-chip" onclick="useQuickSuggestion('💪 Selbstfürsorge trotz Widerstand')">💪 Selbstfürsorge</button>
+                            <button class="suggestion-chip" onclick="useQuickSuggestion('🧠 Eine schwere Entscheidung getroffen')">🧠 Mental stark</button>
+                            <button class="suggestion-chip" onclick="useQuickSuggestion('🤝 Nein gesagt und Grenze gehalten')">🤝 Grenzen</button>
+                            <button class="suggestion-chip" onclick="useQuickSuggestion('✨ ADHS-Chaos akzeptiert statt bekämpft')">✨ ADHS-real</button>
+                            <button class="suggestion-chip" onclick="useQuickSuggestion('🏠 Alltag gemeistert trotz wenig Energie')">🏠 Alltag</button>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="input-actions">
+                            <button class="save-achievement" onclick="saveAchievement()">🎉 Feiern!</button>
+                            <button class="cancel-input" onclick="cancelInput()">Abbrechen</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Heute Liste -->
+                <div class="todays-achievements" id="todaysAchievements">
+                    <h3>Heute anerkannt 🌈</h3>
+                    <div class="achievements-list" id="todaysList"></div>
+                </div>
+                
+                <!-- Mut-Archiv -->
+                <div class="courage-archive" id="courageArchive">
+                    <h3>📚 Mut-Archiv (7 Tage)</h3>
+                    <div class="archive-summary" id="archiveSummary"></div>
+                    <button class="show-archive-btn" onclick="toggleArchive()">Archiv anzeigen</button>
+                    <div class="archive-details hidden" id="archiveDetails"></div>
+                </div>
+                
+                <!-- Settings -->
+                <div class="antitodo-settings">
+                    <label class="reminder-toggle">
+                        <input type="checkbox" id="reminderToggle" onchange="toggleReminder()">
+                        <span>Sanfte tägliche Erinnerung</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- Ende container -->
         
-        <!-- Quick Favorites (wenn vorhanden) -->
-        <div class="favorites-section hidden" id="favoritesSection">
-            <h3>⭐ Deine Favoriten</h3>
-            <div class="favorites-list" id="favoritesList"></div>
-        </div>
-    </div>
-</div>
-<div class="page" id="motivatorPage">
-    <div class="motivator-container">
-        <h2>🧠 Mini-Motivator</h2>
-        <p class="motivator-subtitle">Wie fühlst du dich gerade?</p>
-        
-        <!-- Gefühlszustände -->
-        <div class="mood-grid" id="moodGrid">
-            <button class="mood-btn" onclick="selectMood('überfordert', '😵')">
-                <span class="mood-icon">😵</span>
-                <span class="mood-name">Überfordert</span>
-                <span class="mood-desc">Ich weiß nicht, wo ich anfangen soll</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('lethargisch', '😩')">
-                <span class="mood-icon">😩</span>
-                <span class="mood-name">Lethargisch</span>
-                <span class="mood-desc">Ich will was tun, aber komm nicht in Gang</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('verknotet', '🌀')">
-                <span class="mood-icon">🌀</span>
-                <span class="mood-name">Verknotet</span>
-                <span class="mood-desc">3 Gedanken gleichzeitig, keine Klarheit</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('unruhig', '⚡')">
-                <span class="mood-icon">⚡</span>
-                <span class="mood-name">Unruhig</span>
-                <span class="mood-desc">Rastlos, aber kann nichts greifen</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('blockiert', '😶')">
-                <span class="mood-icon">😶</span>
-                <span class="mood-name">Blockiert</span>
-                <span class="mood-desc">Sollte was tun, kann's nicht ansteuern</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('überreizt', '🧯')">
-                <span class="mood-icon">🧯</span>
-                <span class="mood-name">Überreizt</span>
-                <span class="mood-desc">Zu viele Eindrücke, brauch Rückzug</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('prokrastinierend', '🫠')">
-                <span class="mood-icon">🫠</span>
-                <span class="mood-name">Prokrastinierend</span>
-                <span class="mood-desc">Tue alles außer dem Wichtigen</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('hyperfokussiert', '🚀')">
-                <span class="mood-icon">🚀</span>
-                <span class="mood-name">Hyperfokussiert</span>
-                <span class="mood-desc">Tief drin, vergesse alles drumrum</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('verloren', '☁️')">
-                <span class="mood-icon">☁️</span>
-                <span class="mood-name">Verloren</span>
-                <span class="mood-desc">Weiß nicht, was ich brauche</span>
-            </button>
-            
-            <button class="mood-btn" onclick="selectMood('taub', '🧊')">
-                <span class="mood-icon">🧊</span>
-                <span class="mood-name">Taub</span>
-                <span class="mood-desc">Fühle nichts / bin eingefroren</span>
-            </button>
-            
-            <button class="mood-btn unknown-btn" onclick="selectMood('unbekannt', '🤷')">
-                <span class="mood-icon">🤷</span>
-                <span class="mood-name">Ich weiß es nicht</span>
-                <span class="mood-desc">Schlag mir einfach was Sanftes vor</span>
-            </button>
-        </div>
+
+ 
     </div>
 
     <script>
@@ -1354,7 +1639,14 @@ function showPage(page) {
         updateFavoritesDisplay();
         // Reset to mood selection if coming from other pages
         backToMoods();
-    }
+    } else if (page === 'antitodo') {
+    document.getElementById('antitodoPage').classList.add('active');
+    loadAntitodoData();
+    updateTodaysAchievements();
+    updateCourageArchive();
+    // Reset input state
+    cancelInput();
+ }
 }
 
 
@@ -1509,6 +1801,12 @@ window.onload = function() {
         renderActivities();
         updateHistory();
     }
+    
+    loadAntitodoData();
+    checkDailyReminder(); // Check for daily reminder
+    
+    // Set up daily reminder check (every hour)
+    setInterval(checkDailyReminder, 60 * 60 * 1000);
 };
 
 // Save to localStorage whenever data changes
@@ -2069,8 +2367,311 @@ function loadMotivaorData() {
     }
 }
 
-// Initialize motivator data on page load
-// Add this to your existing window.onload function
+// Anti-To-Do Tracker JavaScript
+let antitodoData = {
+    achievements: [],
+    reminderEnabled: false,
+    lastReminder: null
+};
+
+// Main functions
+function openAchievementInput() {
+    document.getElementById('achievementInput').classList.remove('hidden');
+    document.getElementById('achievementText').focus();
+}
+
+function cancelInput() {
+    document.getElementById('achievementInput').classList.add('hidden');
+    document.getElementById('achievementText').value = '';
+}
+
+function useQuickSuggestion(text) {
+    document.getElementById('achievementText').value = text;
+    document.getElementById('achievementText').focus();
+}
+
+function saveAchievement() {
+    const text = document.getElementById('achievementText').value.trim();
+    if (!text) return;
+    
+    const achievement = {
+        id: Date.now(),
+        text: text,
+        timestamp: new Date().toISOString(),
+        date: new Date().toISOString().split('T')[0]
+    };
+    
+    antitodoData.achievements.unshift(achievement);
+    
+    // Show celebration
+    showCelebration();
+    
+    // Update displays
+    updateTodaysAchievements();
+    updateCourageArchive();
+    
+    // Reset input
+    cancelInput();
+    
+    // Save data
+    saveAntitodoData();
+}
+
+function showCelebration() {
+    // Create celebration overlay
+    const celebration = document.createElement('div');
+    celebration.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        z-index: 2000;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        animation: celebrationPop 0.6s ease;
+    `;
+    
+    const messages = [
+        '🎉 Toll gemacht!',
+        '✨ Das verdient Anerkennung!',
+        '🌟 Du bist stark!',
+        '💫 Das zählt wirklich!',
+        '🎊 Feiern wir das!'
+    ];
+    
+    celebration.innerHTML = messages[Math.floor(Math.random() * messages.length)];
+    document.body.appendChild(celebration);
+    
+    // Add celebration animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes celebrationPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Remove after 2 seconds
+    setTimeout(() => {
+        celebration.style.animation = 'fadeOut 0.5s ease forwards';
+        setTimeout(() => celebration.remove(), 500);
+    }, 2000);
+}
+
+function updateTodaysAchievements() {
+    const today = new Date().toISOString().split('T')[0];
+    const todaysAchievements = antitodoData.achievements.filter(a => a.date === today);
+    
+    const container = document.getElementById('todaysList');
+    
+    if (todaysAchievements.length === 0) {
+        container.innerHTML = '<p style="color: #95a5a6; text-align: center; font-style: italic;">Noch keine Erfolge heute anerkannt</p>';
+        return;
+    }
+    
+    container.innerHTML = todaysAchievements.map(achievement => `
+        <div class="achievement-item">
+            <div class="achievement-text-content">${achievement.text}</div>
+            <div class="achievement-time">${new Date(achievement.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
+            <button class="delete-achievement" onclick="deleteAchievement(${achievement.id})" title="Löschen">❌</button>
+        </div>
+    `).join('');
+}
+
+function updateCourageArchive() {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    const weekAchievements = antitodoData.achievements.filter(a => 
+        new Date(a.timestamp) >= sevenDaysAgo
+    );
+    
+    const summary = document.getElementById('archiveSummary');
+    summary.textContent = `${weekAchievements.length} Erfolge in den letzten 7 Tagen anerkannt! 🌈`;
+    
+    // Group by date for archive details
+    const groupedByDate = {};
+    weekAchievements.forEach(achievement => {
+        const date = achievement.date;
+        if (!groupedByDate[date]) {
+            groupedByDate[date] = [];
+        }
+        groupedByDate[date].push(achievement);
+    });
+    
+    const archiveDetails = document.getElementById('archiveDetails');
+    const sortedDates = Object.keys(groupedByDate).sort().reverse();
+    
+    archiveDetails.innerHTML = sortedDates.map(date => {
+        const dateObj = new Date(date);
+        const dayName = dateObj.toLocaleDateString('de-DE', { weekday: 'long' });
+        const dateStr = dateObj.toLocaleDateString('de-DE');
+        
+        return `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #f39c12; margin-bottom: 10px;">${dayName}, ${dateStr}</h4>
+                ${groupedByDate[date].map(achievement => `
+                    <div class="achievement-item">
+                        <div class="achievement-text-content">${achievement.text}</div>
+                        <div class="achievement-time">${new Date(achievement.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
+                        <button class="delete-achievement" onclick="deleteAchievement(${achievement.id})" title="Löschen">❌</button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }).join('');
+}
+
+function toggleArchive() {
+    const details = document.getElementById('archiveDetails');
+    const button = document.querySelector('.show-archive-btn');
+    
+    if (details.classList.contains('hidden')) {
+        details.classList.remove('hidden');
+        button.textContent = 'Archiv verbergen';
+    } else {
+        details.classList.add('hidden');
+        button.textContent = 'Archiv anzeigen';
+    }
+}
+
+function deleteAchievement(id) {
+    if (!confirm('Diesen Erfolg wirklich löschen?')) return;
+    
+    antitodoData.achievements = antitodoData.achievements.filter(a => a.id !== id);
+    updateTodaysAchievements();
+    updateCourageArchive();
+    saveAntitodoData();
+}
+
+function toggleReminder() {
+    const checkbox = document.getElementById('reminderToggle');
+    antitodoData.reminderEnabled = checkbox.checked;
+    saveAntitodoData();
+}
+
+function checkDailyReminder() {
+    if (!antitodoData.reminderEnabled) return;
+    
+    const today = new Date().toISOString().split('T')[0];
+    const todaysAchievements = antitodoData.achievements.filter(a => a.date === today);
+    
+    // Only remind if no achievements today and not reminded today
+    if (todaysAchievements.length === 0 && antitodoData.lastReminder !== today) {
+        const now = new Date();
+        const hour = now.getHours();
+        
+        // Show reminder between 17:00 and 22:00
+        if (hour >= 17 && hour <= 22) {
+            showDailyReminder();
+            antitodoData.lastReminder = today;
+            saveAntitodoData();
+        }
+    }
+}
+
+function showDailyReminder() {
+    const reminder = document.createElement('div');
+    reminder.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        z-index: 1000;
+        max-width: 320px;
+        font-size: 16px;
+        animation: slideIn 0.5s ease;
+    `;
+    
+    reminder.innerHTML = `
+        <div style="margin-bottom: 15px;">
+            <strong>✨ Sanfte Erinnerung</strong><br>
+            Heute schon anerkannt, was du nicht sichtbar geschafft hast?
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="openAntitodoFromReminder()" style="
+                background: white;
+                color: #f39c12;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 14px;
+            ">Ja, jetzt!</button>
+            <button onclick="dismissReminder()" style="
+                background: transparent;
+                color: white;
+                border: 1px solid white;
+                padding: 8px 15px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+            ">Später</button>
+        </div>
+    `;
+    
+    reminder.id = 'dailyReminder';
+    document.body.appendChild(reminder);
+    
+    // Auto-dismiss after 10 seconds
+    setTimeout(() => {
+        const reminderEl = document.getElementById('dailyReminder');
+        if (reminderEl) dismissReminder();
+    }, 10000);
+}
+
+function openAntitodoFromReminder() {
+    dismissReminder();
+    // Switch to antitodo page
+    showPage('antitodo');
+    // Open input immediately
+    setTimeout(() => openAchievementInput(), 500);
+}
+
+function dismissReminder() {
+    const reminder = document.getElementById('dailyReminder');
+    if (reminder) {
+        reminder.style.animation = 'slideOut 0.3s ease forwards';
+        setTimeout(() => reminder.remove(), 300);
+    }
+}
+
+// Data persistence
+function saveAntitodoData() {
+    try {
+        localStorage.setItem('antitodoData', JSON.stringify(antitodoData));
+    } catch (e) {
+        console.log('Could not save antitodo data');
+    }
+}
+
+function loadAntitodoData() {
+    try {
+        const saved = localStorage.getItem('antitodoData');
+        if (saved) {
+            antitodoData = { ...antitodoData, ...JSON.parse(saved) };
+        }
+        
+        // Update reminder checkbox
+        document.getElementById('reminderToggle').checked = antitodoData.reminderEnabled;
+        
+    } catch (e) {
+        console.log('Could not load antitodo data');
+    }
+}
 
     </script>
 </body>
