@@ -1418,34 +1418,158 @@
         }
 
         function renderActivities() {
-            const grid = document.getElementById('activitiesGrid');
-            grid.innerHTML = '';
-            
-            activities.forEach(activity => {
-                const btn = document.createElement('button');
-                btn.className = 'activity-btn';
-                
-                // Color coding based on energy cost
-                if (activity.cost > 0) {
-                    btn.classList.add('energy-gain');
-                } else if (activity.cost >= -2) {
-                    btn.classList.add('energy-drain-low');
-                } else if (activity.cost >= -4) {
-                    btn.classList.add('energy-drain-medium');
-                } else {
-                    btn.classList.add('energy-drain-high');
-                }
-                
-                btn.innerHTML = `
-                    <span style="font-size: 30px">${activity.icon}</span>
-                    <span>${activity.name}</span>
-                    <span class="energy-cost">${activity.cost > 0 ? '+' : ''}${activity.cost} 🥄</span>
-                `;
-                
-                btn.onclick = () => doActivity(activity);
-                grid.appendChild(btn);
-            });
+    const grid = document.getElementById('activitiesGrid');
+    grid.innerHTML = '';
+    
+    // NEUE ADHS-OPTIMIERUNG: Nur passende Aktivitäten zeigen
+    const relevantActivities = getRelevantActivities();
+    
+    relevantActivities.forEach(activity => {
+        const btn = document.createElement('button');
+        btn.className = 'activity-btn';
+        
+        // Color coding based on energy cost
+        if (activity.cost > 0) {
+            btn.classList.add('energy-gain');
+        } else if (activity.cost >= -2) {
+            btn.classList.add('energy-drain-low');
+        } else if (activity.cost >= -4) {
+            btn.classList.add('energy-drain-medium');
+        } else {
+            btn.classList.add('energy-drain-high');
         }
+        
+        btn.innerHTML = `
+            <span style="font-size: 30px">${activity.icon}</span>
+            <span>${activity.name}</span>
+            <span class="energy-cost">${activity.cost > 0 ? '+' : ''}${activity.cost} 🥄</span>
+        `;
+        
+        btn.onclick = () => doActivity(activity);
+        grid.appendChild(btn);
+    });
+    
+    // Button um alle Aktivitäten zu zeigen
+    const showAllBtn = document.createElement('button');
+    showAllBtn.className = 'activity-btn';
+    showAllBtn.style.cssText = 'background: #7f8c8d; opacity: 0.8;';
+    showAllBtn.innerHTML = `
+        <span style="font-size: 20px">📋</span>
+        <span>Alle anzeigen</span>
+        <span style="font-size: 12px">${activities.length} Aktivitäten</span>
+    `;
+    showAllBtn.onclick = () => showAllActivities();
+    grid.appendChild(showAllBtn);
+}
+
+// NEUE FUNKTION: Relevante Aktivitäten auswählen
+function getRelevantActivities() {
+    const currentHour = new Date().getHours();
+    let filtered = [];
+    
+    // Bei sehr wenig Energie: Nur Notfall-Aktivitäten
+    if (currentEnergy <= 2) {
+        filtered = activities.filter(a => 
+            a.cost > 0 || // Energie-gewinnend
+            a.name.includes('Pause') ||
+            a.name.includes('atmen') ||
+            a.name.includes('Entspannung') ||
+            a.name.includes('Wasser') ||
+            a.name.includes('Power-Nap')
+        ).slice(0, 4);
+        
+        // Notfall-Option hinzufügen
+        filtered.push({ 
+            name: 'Einfach nichts tun', 
+            cost: 0, 
+            icon: '🤍' 
+        });
+        
+        return filtered;
+    }
+    
+    // Morgens (6-12): Energie-aufbauende Aktivitäten
+    if (currentHour >= 6 && currentHour < 12) {
+        filtered = activities.filter(a => 
+            a.cost > 0 || // Positive Energie
+            a.cost >= -1 || // Leichte Aktivitäten
+            a.name.includes('Musik') ||
+            a.name.includes('Spaziergang') ||
+            a.name.includes('Sport (leicht)')
+        ).slice(0, 6);
+    }
+    // Mittags (12-17): Produktive aber machbare Sachen
+    else if (currentHour >= 12 && currentHour < 17) {
+        filtered = activities.filter(a => 
+            a.cost >= -3 && // Nicht zu anstrengend
+            !a.name.includes('Socializing (Arbeit)') // Keine schweren sozialen Sachen
+        ).slice(0, 6);
+    }
+    // Abends (17-22): Entspannung und Abschalten
+    else if (currentHour >= 17 && currentHour < 22) {
+        filtered = activities.filter(a => 
+            a.cost > 0 || // Energie-aufbauend
+            a.name.includes('Entspannung') ||
+            a.name.includes('Musik') ||
+            a.name.includes('Zweisamkeit') ||
+            a.name.includes('Tiere')
+        ).slice(0, 6);
+    }
+    // Nachts: Nur Ruhe-Aktivitäten
+    else {
+        filtered = activities.filter(a => 
+            a.cost > 0 ||
+            a.name.includes('Entspannung') ||
+            a.name.includes('Power-Nap') ||
+            a.name.includes('atmen')
+        ).slice(0, 4);
+    }
+    
+    return filtered.length > 0 ? filtered : activities.slice(0, 6);
+}
+
+// NEUE FUNKTION: Alle Aktivitäten anzeigen
+function showAllActivities() {
+    const grid = document.getElementById('activitiesGrid');
+    grid.innerHTML = '';
+    
+    // Zurück-Button
+    const backBtn = document.createElement('button');
+    backBtn.className = 'activity-btn';
+    backBtn.style.cssText = 'background: #3498db;';
+    backBtn.innerHTML = `
+        <span style="font-size: 20px">←</span>
+        <span>Zurück zu Empfehlungen</span>
+    `;
+    backBtn.onclick = () => renderActivities();
+    grid.appendChild(backBtn);
+    
+    // Alle Aktivitäten anzeigen (original Code)
+    activities.forEach(activity => {
+        const btn = document.createElement('button');
+        btn.className = 'activity-btn';
+        
+        if (activity.cost > 0) {
+            btn.classList.add('energy-gain');
+        } else if (activity.cost >= -2) {
+            btn.classList.add('energy-drain-low');
+        } else if (activity.cost >= -4) {
+            btn.classList.add('energy-drain-medium');
+        } else {
+            btn.classList.add('energy-drain-high');
+        }
+        
+        btn.innerHTML = `
+            <span style="font-size: 30px">${activity.icon}</span>
+            <span>${activity.name}</span>
+            <span class="energy-cost">${activity.cost > 0 ? '+' : ''}${activity.cost} 🥄</span>
+        `;
+        
+        btn.onclick = () => doActivity(activity);
+        grid.appendChild(btn);
+    });
+}
+
 
         function doActivity(activity) {
             const previousEnergy = currentEnergy;
