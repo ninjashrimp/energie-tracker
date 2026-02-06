@@ -47,19 +47,19 @@
 
         @media (max-width: 480px) {
             .navigation {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                display: flex;
+                overflow-x: auto;
                 gap: 6px;
                 padding: 8px 10px;
-                margin-left: -10px;
-                margin-right: -10px;
                 margin-bottom: 20px;
+                -webkit-overflow-scrolling: touch;
             }
             .navigation::-webkit-scrollbar { display: none; }
             .nav-btn {
                 font-size: 11px;
-                padding: 8px 4px;
+                padding: 8px 10px;
                 text-align: center;
+                flex-shrink: 0;
             }
         }
 
@@ -1230,6 +1230,183 @@
     }
 }
 
+/* Dashboard Styles */
+.dashboard-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-container h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 5px;
+}
+
+.dashboard-date {
+    text-align: center;
+    color: #95a5a6;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.dashboard-card {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(243, 156, 18, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    border-color: rgba(243, 156, 18, 0.4);
+    transform: translateY(-2px);
+}
+
+.dashboard-card-label {
+    font-size: 12px;
+    color: #95a5a6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.dashboard-card-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #eee;
+    margin-bottom: 4px;
+}
+
+.dashboard-card-sub {
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
+.dashboard-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.dashboard-card-value.energy-ok { color: #27ae60; }
+.dashboard-card-value.energy-warn { color: #f1c40f; }
+.dashboard-card-value.energy-low { color: #e67e22; }
+.dashboard-card-value.energy-crit { color: #e74c3c; }
+
+/* Weekly overview */
+.dashboard-week {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(243, 156, 18, 0.15);
+    margin-bottom: 25px;
+}
+
+.dashboard-week h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.week-day {
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+}
+
+.week-day-name {
+    font-size: 11px;
+    color: #7f8c8d;
+    margin-bottom: 6px;
+}
+
+.week-day-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 auto 4px;
+    background: #2c3e50;
+}
+
+.week-day-dot.dot-green { background: #27ae60; }
+.week-day-dot.dot-yellow { background: #f1c40f; }
+.week-day-dot.dot-orange { background: #e67e22; }
+.week-day-dot.dot-red { background: #e74c3c; }
+
+.week-day-value {
+    font-size: 11px;
+    color: #bbb;
+}
+
+.week-day.today {
+    background: rgba(243, 156, 18, 0.15);
+    border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+/* Cross-module insights */
+.dashboard-insights {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(243, 156, 18, 0.15);
+}
+
+.dashboard-insights h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.dashboard-insight-item {
+    background: rgba(243, 156, 18, 0.08);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #ddd;
+    line-height: 1.4;
+}
+
+.dashboard-no-data {
+    color: #7f8c8d;
+    font-style: italic;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .dashboard-card {
+        padding: 15px;
+    }
+    .dashboard-card-value {
+        font-size: 22px;
+    }
+    .week-grid {
+        gap: 3px;
+    }
+}
+
 /* Masking-Tracker Styles */
 .masking-container {
     max-width: 800px;
@@ -1830,6 +2007,7 @@
         
         <div class="navigation hidden" id="navigation">
             <button class="nav-btn active" onclick="showPage('tracker')">Tracker</button>
+            <button class="nav-btn" onclick="showPage('dashboard')">Dashboard</button>
             <button class="nav-btn" onclick="showPage('stats')">Statistiken</button>
             <button class="nav-btn" onclick="showPage('motivator')">Mini-Motivator</button>
             <button class="nav-btn" onclick="showPage('sensorik')">Sensorik</button>
@@ -1873,6 +2051,49 @@
             <button class="reset-day hidden" id="resetBtn" onclick="resetDay()">Tag abschließen & Neuer Tag</button>
         </div>
         
+        <!-- Dashboard Page -->
+        <div class="page" id="dashboardPage">
+            <div class="dashboard-container">
+                <h2>📋 Dashboard</h2>
+                <div class="dashboard-date" id="dashboardDate"></div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card" onclick="showPage('tracker'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Tracker')b.classList.add('active')});">
+                        <div class="dashboard-card-label">🥄 Energie</div>
+                        <div class="dashboard-card-value" id="dashEnergyValue">–</div>
+                        <div class="dashboard-card-sub" id="dashEnergySub">Tag nicht gestartet</div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showPage('overload'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Overload')b.classList.add('active')});">
+                        <div class="dashboard-card-label">⚡ Overload-Risiko</div>
+                        <div class="dashboard-card-value" id="dashOverloadValue">–</div>
+                        <div class="dashboard-card-sub" id="dashOverloadSub">Keine Warnsignale</div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showPage('sensorik'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Sensorik')b.classList.add('active')});">
+                        <div class="dashboard-card-label">👁️ Sensorik</div>
+                        <div class="dashboard-card-value" id="dashSensorikValue">–</div>
+                        <div class="dashboard-card-sub" id="dashSensorikSub">Kein Check heute</div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showPage('masking'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Masking')b.classList.add('active')});">
+                        <div class="dashboard-card-label">🎭 Kompensation</div>
+                        <div class="dashboard-card-value" id="dashMaskingValue">–</div>
+                        <div class="dashboard-card-sub" id="dashMaskingSub">Heute keine Einträge</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-week">
+                    <h3>📅 Letzte 7 Tage – Gesamtbelastung</h3>
+                    <div class="week-grid" id="dashWeekGrid"></div>
+                </div>
+
+                <div class="dashboard-insights">
+                    <h3>🔍 Zusammenhänge</h3>
+                    <div id="dashInsightsList"></div>
+                </div>
+            </div>
+        </div>
         
         <!-- Statistics Page -->
         <div class="page" id="statsPage">
@@ -2714,6 +2935,9 @@ function showPage(page) {
     } else if (page === 'stats') {
         document.getElementById('statsPage').classList.add('active');
         updateStatistics();
+    } else if (page === 'dashboard') {
+        document.getElementById('dashboardPage').classList.add('active');
+        updateDashboard();
     } else if (page === 'motivator') {
         document.getElementById('motivatorPage').classList.add('active');
         loadMotivaorData();
@@ -4351,6 +4575,243 @@ function loadOverloadData() {
         }
     } catch (e) {
         console.log('Could not load overload data');
+    }
+}
+
+// ==========================================
+// Dashboard
+// ==========================================
+
+function updateDashboard() {
+    const today = new Date().toISOString().split('T')[0];
+    const now = new Date();
+
+    // Date header
+    document.getElementById('dashboardDate').textContent = now.toLocaleDateString('de-DE', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    // === Energie-Karte ===
+    const energyVal = document.getElementById('dashEnergyValue');
+    const energySub = document.getElementById('dashEnergySub');
+    if (dayStarted) {
+        energyVal.textContent = currentEnergy + '/' + maxEnergy;
+        const ratio = currentEnergy / maxEnergy;
+        energyVal.className = 'dashboard-card-value ' +
+            (ratio > 0.6 ? 'energy-ok' : ratio > 0.4 ? 'energy-warn' : ratio > 0.2 ? 'energy-low' : 'energy-crit');
+        const used = maxEnergy - currentEnergy;
+        energySub.textContent = used + ' verbraucht, ' + currentEnergy + ' übrig';
+    } else {
+        energyVal.textContent = '–';
+        energyVal.className = 'dashboard-card-value';
+        energySub.textContent = 'Tag noch nicht gestartet';
+    }
+
+    // === Overload-Karte ===
+    const overloadVal = document.getElementById('dashOverloadValue');
+    const overloadSub = document.getElementById('dashOverloadSub');
+    const risk = calculateOverloadRisk();
+    const riskInfo = getRiskLevel(risk);
+    overloadVal.textContent = riskInfo.emoji + ' ' + riskInfo.label;
+    overloadVal.style.color = riskInfo.color;
+    const warnCount = overloadData.activeWarnings.length;
+    overloadSub.textContent = warnCount > 0 ? warnCount + ' Warnsignal' + (warnCount > 1 ? 'e' : '') + ' aktiv' : 'Keine Warnsignale';
+
+    // === Sensorik-Karte ===
+    const sensorikVal = document.getElementById('dashSensorikValue');
+    const sensorikSub = document.getElementById('dashSensorikSub');
+    const todayChecks = sensorikData.checks.filter(c => c.timestamp.startsWith(today));
+    if (todayChecks.length > 0) {
+        const latest = todayChecks[0];
+        const score = latest.score;
+        if (score <= 15) { sensorikVal.textContent = '🟢'; sensorikSub.textContent = 'Ausgeglichen'; }
+        else if (score <= 35) { sensorikVal.textContent = '🟡'; sensorikSub.textContent = 'Leicht erhöht'; }
+        else if (score <= 60) { sensorikVal.textContent = '🟠'; sensorikSub.textContent = 'Deutliche Belastung'; }
+        else { sensorikVal.textContent = '🔴'; sensorikSub.textContent = 'Überlastung'; }
+        const checkTime = new Date(latest.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        sensorikSub.textContent += ' (um ' + checkTime + ')';
+    } else {
+        sensorikVal.textContent = '–';
+        sensorikSub.textContent = 'Kein Check heute';
+    }
+
+    // === Kompensation-Karte ===
+    const maskingVal = document.getElementById('dashMaskingValue');
+    const maskingSub = document.getElementById('dashMaskingSub');
+    const todayMasking = maskingData.entries.filter(e => e.timestamp.startsWith(today));
+    if (todayMasking.length > 0) {
+        const avgLevel = todayMasking.reduce((s, e) => s + e.level, 0) / todayMasking.length;
+        const levelEmojis = { 1: '🟢', 2: '🟡', 3: '🟠', 4: '🔴' };
+        const rounded = Math.round(avgLevel);
+        maskingVal.textContent = levelEmojis[rounded] || '🟡';
+        const levelWords = { 1: 'Niedrig', 2: 'Spürbar', 3: 'Hoch', 4: 'Extrem' };
+        maskingSub.textContent = todayMasking.length + ' Eintrag' + (todayMasking.length > 1 ? 'e' : '') + ', Ø ' + levelWords[rounded];
+    } else {
+        maskingVal.textContent = '–';
+        maskingSub.textContent = 'Heute keine Einträge';
+    }
+
+    // === Wochenüberblick ===
+    updateDashboardWeek(today);
+
+    // === Cross-Module Insights ===
+    updateDashboardInsights(today, todayChecks, todayMasking);
+}
+
+function updateDashboardWeek(today) {
+    const weekGrid = document.getElementById('dashWeekGrid');
+    const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    const days = [];
+
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        const dayOfWeek = d.getDay();
+        const isToday = dateStr === today;
+
+        // Tagesbelastung aus allen Quellen
+        let score = 0;
+        let hasData = false;
+
+        // Energie
+        const dayRecord = allDays.find(day => day.date === dateStr);
+        if (dayRecord) {
+            const drain = dayRecord.startEnergy - dayRecord.endEnergy;
+            const drainRatio = dayRecord.startEnergy > 0 ? drain / dayRecord.startEnergy : 0;
+            score += drainRatio * 30;
+            hasData = true;
+        }
+        // Heutiger Tag (noch kein allDays-Eintrag)
+        if (isToday && dayStarted) {
+            const drain = maxEnergy - currentEnergy;
+            const drainRatio = maxEnergy > 0 ? drain / maxEnergy : 0;
+            score += drainRatio * 30;
+            hasData = true;
+        }
+
+        // Masking
+        const dayMasking = maskingData.entries.filter(e => e.timestamp.startsWith(dateStr));
+        if (dayMasking.length > 0) {
+            const avgM = dayMasking.reduce((s, e) => s + e.level, 0) / dayMasking.length;
+            score += avgM * 10;
+            hasData = true;
+        }
+
+        // Overload events
+        const dayOverloads = overloadData.events.filter(e => e.timestamp.startsWith(dateStr));
+        if (dayOverloads.length > 0) {
+            score += dayOverloads.length * 20;
+            hasData = true;
+        }
+
+        // Sensorik
+        const dayChecks = sensorikData.checks.filter(c => c.timestamp.startsWith(dateStr));
+        if (dayChecks.length > 0) {
+            const maxSensorik = Math.max(...dayChecks.map(c => c.score));
+            score += maxSensorik * 0.3;
+            hasData = true;
+        }
+
+        let dotClass = '';
+        if (hasData) {
+            if (score < 20) dotClass = 'dot-green';
+            else if (score < 40) dotClass = 'dot-yellow';
+            else if (score < 60) dotClass = 'dot-orange';
+            else dotClass = 'dot-red';
+        }
+
+        days.push({
+            name: dayNames[dayOfWeek],
+            date: d.getDate() + '.',
+            dotClass,
+            isToday,
+            hasData
+        });
+    }
+
+    weekGrid.innerHTML = days.map(d => `
+        <div class="week-day${d.isToday ? ' today' : ''}">
+            <div class="week-day-name">${d.name}</div>
+            <div class="week-day-dot ${d.dotClass}"></div>
+            <div class="week-day-value">${d.date}</div>
+        </div>
+    `).join('');
+}
+
+function updateDashboardInsights(today, todayChecks, todayMasking) {
+    const insightsList = document.getElementById('dashInsightsList');
+    const insights = [];
+
+    // Heutige Situation
+    if (dayStarted) {
+        const ratio = currentEnergy / maxEnergy;
+        const todayOverloads = overloadData.events.filter(e => e.timestamp.startsWith(today));
+
+        // Warnung: niedrige Energie + hohe Sensorik
+        if (ratio <= 0.4 && todayChecks.length > 0 && todayChecks[0].score > 35) {
+            insights.push('⚠️ Niedrige Energie und belastete Sensorik – guter Zeitpunkt für Rückzug');
+        }
+
+        // Warnung: hohe Kompensation bei wenig Energie
+        if (ratio <= 0.3 && todayMasking.length > 0) {
+            const avgM = todayMasking.reduce((s, e) => s + e.level, 0) / todayMasking.length;
+            if (avgM >= 2.5) {
+                insights.push('🔋 Du kompensierst viel bei wenig Energie – das ist teuer');
+            }
+        }
+
+        // Overload heute
+        if (todayOverloads.length > 0) {
+            insights.push('🌋 ' + todayOverloads.length + ' Overload-Event' + (todayOverloads.length > 1 ? 's' : '') + ' heute – erlaube dir Erholung');
+        }
+    }
+
+    // Gestrige Belastung → heutiger Start
+    if (dayStarted && allDays.length >= 1) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+        const yesterdayMasking = maskingData.entries.filter(e => e.timestamp.startsWith(yesterdayStr));
+        const yesterdayOverloads = overloadData.events.filter(e => e.timestamp.startsWith(yesterdayStr));
+
+        if (yesterdayMasking.length > 0) {
+            const avgYesterday = yesterdayMasking.reduce((s, e) => s + e.level, 0) / yesterdayMasking.length;
+            if (avgYesterday >= 3 && currentEnergy <= maxEnergy * 0.6) {
+                insights.push('📉 Gestern hohe Kompensation → heute mit weniger Energie gestartet');
+            }
+        }
+
+        if (yesterdayOverloads.length > 0 && currentEnergy <= maxEnergy * 0.5) {
+            insights.push('⚡ Gestern Overload → Energiedefizit heute spürbar');
+        }
+    }
+
+    // Muster der letzten Woche
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - 7);
+    const weekStartStr = weekStart.toISOString().split('T')[0];
+
+    const weekMasking = maskingData.entries.filter(e => e.timestamp >= weekStartStr);
+    const weekOverloads = overloadData.events.filter(e => e.timestamp >= weekStartStr);
+
+    if (weekMasking.length >= 3) {
+        const avgWeek = weekMasking.reduce((s, e) => s + e.level, 0) / weekMasking.length;
+        if (avgWeek >= 3) {
+            insights.push('📊 Durchschnittliche Kompensation diese Woche: hoch (Ø ' + avgWeek.toFixed(1) + '/4) – Pass auf dich auf');
+        }
+    }
+
+    if (weekOverloads.length >= 2) {
+        insights.push('🔴 ' + weekOverloads.length + ' Overload-Events diese Woche – dein System braucht Erholung');
+    }
+
+    // Keine Insights
+    if (insights.length === 0) {
+        insightsList.innerHTML = '<div class="dashboard-no-data">Nutze die Module, um hier Zusammenhänge zu sehen. Je mehr Daten, desto besser die Erkenntnisse.</div>';
+    } else {
+        insightsList.innerHTML = insights.map(i => `<div class="dashboard-insight-item">${i}</div>`).join('');
     }
 }
 
