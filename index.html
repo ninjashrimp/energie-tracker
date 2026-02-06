@@ -33,8 +33,34 @@
         .navigation {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 0 10px 5px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #1a1a2e;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .navigation {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+                padding: 8px 10px;
+                margin-left: -10px;
+                margin-right: -10px;
+                margin-bottom: 20px;
+            }
+            .navigation::-webkit-scrollbar { display: none; }
+            .nav-btn {
+                font-size: 11px;
+                padding: 8px 4px;
+                text-align: center;
+            }
         }
 
         .nav-btn {
@@ -46,6 +72,8 @@
             cursor: pointer;
             font-size: 13px;
             transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .nav-btn.active {
@@ -705,6 +733,503 @@
     }
 }
 
+/* Overload-Tracker Styles */
+.overload-mini {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(243, 156, 18, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.overload-mini:hover {
+    border-color: rgba(243, 156, 18, 0.4);
+}
+
+.overload-mini-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.overload-mini-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background 0.5s ease;
+}
+
+.overload-mini-dot.risk-low { background: #27ae60; }
+.overload-mini-dot.risk-medium { background: #f1c40f; animation: pulse 2s infinite; }
+.overload-mini-dot.risk-high { background: #e67e22; animation: pulse 1.5s infinite; }
+.overload-mini-dot.risk-critical { background: #e74c3c; animation: pulse 1s infinite; }
+
+.overload-mini-label {
+    font-size: 14px;
+    color: #bbb;
+}
+
+.overload-mini-label strong {
+    color: #eee;
+}
+
+.overload-mini-arrow {
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+.overload-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.overload-container h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.overload-subtitle {
+    text-align: center;
+    color: #bbb;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* Ampel */
+.overload-ampel {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.ampel-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.ampel-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #2c3e50;
+    transition: all 0.5s ease;
+    opacity: 0.3;
+}
+
+.ampel-dot.active-green { background: #27ae60; opacity: 1; box-shadow: 0 0 15px rgba(39, 174, 96, 0.5); }
+.ampel-dot.active-yellow { background: #f1c40f; opacity: 1; box-shadow: 0 0 15px rgba(241, 196, 15, 0.5); }
+.ampel-dot.active-orange { background: #e67e22; opacity: 1; box-shadow: 0 0 15px rgba(230, 126, 34, 0.5); animation: pulse 1.5s infinite; }
+.ampel-dot.active-red { background: #e74c3c; opacity: 1; box-shadow: 0 0 20px rgba(231, 76, 60, 0.6); animation: pulse 1s infinite; }
+
+.ampel-label {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.ampel-label.level-low { color: #27ae60; }
+.ampel-label.level-medium { color: #f1c40f; }
+.ampel-label.level-high { color: #e67e22; }
+.ampel-label.level-critical { color: #e74c3c; }
+
+.ampel-detail {
+    font-size: 14px;
+    color: #95a5a6;
+}
+
+/* Warnsignale */
+.warning-section {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.warning-section h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.warning-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.warning-btn {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px 15px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.warning-btn:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.warning-btn.active {
+    background: rgba(231, 76, 60, 0.2);
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.warning-btn-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+/* Gegenmaßnahmen */
+.countermeasures {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    display: none;
+}
+
+.countermeasures.visible { display: block; animation: fadeIn 0.5s ease; }
+
+.countermeasures h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.countermeasure-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-left: 3px solid #27ae60;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ddd;
+}
+
+.emergency-mode {
+    background: linear-gradient(135deg, #4a1a1a 0%, #2d1111 100%) !important;
+    border-color: rgba(231, 76, 60, 0.5) !important;
+}
+
+.emergency-mode h3 {
+    color: #e74c3c !important;
+}
+
+.emergency-mode .countermeasure-item {
+    border-left-color: #e74c3c;
+}
+
+/* Event-Dokumentation */
+.event-doc {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.event-doc h3 {
+    color: #f39c12;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.event-doc-subtitle {
+    color: #7f8c8d;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.event-type-select {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.event-type-btn {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 15px;
+    color: #bbb;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s ease;
+}
+
+.event-type-btn:hover { background: rgba(255,255,255,0.08); }
+
+.event-type-btn.selected {
+    border-color: #f39c12;
+    color: #f39c12;
+    background: rgba(243, 156, 18, 0.1);
+}
+
+.event-type-btn .type-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+.event-type-btn .type-name { font-size: 15px; font-weight: bold; display: block; }
+.event-type-btn .type-desc { font-size: 12px; color: #7f8c8d; display: block; margin-top: 4px; }
+
+.event-form {
+    display: none;
+}
+
+.event-form.visible { display: block; animation: fadeIn 0.3s ease; }
+
+.event-form-label {
+    color: #f39c12;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 18px;
+    display: block;
+}
+
+.event-trigger-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.event-trigger-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.event-trigger-chip:hover { background: rgba(255,255,255,0.12); }
+
+.event-trigger-chip.selected {
+    background: rgba(243, 156, 18, 0.2);
+    border-color: #f39c12;
+    color: #f39c12;
+}
+
+.event-freetext {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    border-radius: 10px;
+    padding: 12px;
+    color: #eee;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 50px;
+    margin-top: 8px;
+}
+
+.event-freetext:focus {
+    outline: none;
+    border-color: #f39c12;
+}
+
+.event-duration-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.event-duration-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.event-duration-chip:hover { background: rgba(255,255,255,0.12); }
+
+.event-duration-chip.selected {
+    background: rgba(243, 156, 18, 0.2);
+    border-color: #f39c12;
+    color: #f39c12;
+}
+
+.event-save-btn {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin: 20px auto 0;
+    transition: all 0.3s ease;
+}
+
+.event-save-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+/* Event-Historie */
+.event-history {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.event-history h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.event-history-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-left: 4px solid #e74c3c;
+}
+
+.event-history-item.type-shutdown { border-left-color: #3498db; }
+.event-history-item.type-freeze { border-left-color: #9b59b6; }
+.event-history-item.type-overload { border-left-color: #e67e22; }
+
+.event-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.event-history-type {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.event-history-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.event-history-time {
+    color: #95a5a6;
+    font-size: 13px;
+}
+
+.event-history-body {
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.4;
+}
+
+.event-history-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.event-history-tag {
+    background: rgba(243, 156, 18, 0.15);
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: #f39c12;
+}
+
+.event-history-delete {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.event-history-delete:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.overload-pattern-section {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.overload-pattern-section h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.pattern-insight {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #ddd;
+    line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+    .warning-grid {
+        grid-template-columns: 1fr;
+    }
+    .event-type-select {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .event-type-btn {
+        min-width: unset;
+    }
+    .ampel-dot {
+        width: 30px;
+        height: 30px;
+    }
+}
+
 /* Sensorischer Umgebungs-Check Styles */
 .sensorik-container {
     max-width: 800px;
@@ -1015,293 +1540,6 @@
         font-size: 18px;
     }
 }
-
-/* Anti-To-Do Tracker Styles */
-.antitodo-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.antitodo-container h2 {
-    text-align: center;
-    color: #f39c12;
-    margin-bottom: 10px;
-}
-
-.antitodo-subtitle {
-    text-align: center;
-    color: #bbb;
-    font-size: 16px;
-    margin-bottom: 40px;
-}
-
-.achievement-center {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.big-achievement-btn {
-    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    border: none;
-    border-radius: 25px;
-    padding: 30px 50px;
-    color: white;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 0 auto;
-}
-
-.big-achievement-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(243, 156, 18, 0.4);
-    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-}
-
-.achievement-icon {
-    font-size: 32px;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-10px); }
-    60% { transform: translateY(-5px); }
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    to { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-}
-
-.achievement-input {
-    margin-bottom: 30px;
-    animation: slideIn 0.3s ease;
-}
-
-.input-card {
-    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
-    border-radius: 20px;
-    padding: 30px;
-    border: 1px solid rgba(243, 156, 18, 0.2);
-}
-
-.input-card h3 {
-    color: #f39c12;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-#achievementText {
-    width: 100%;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(243, 156, 18, 0.3);
-    border-radius: 10px;
-    padding: 15px;
-    color: #eee;
-    font-size: 16px;
-    resize: vertical;
-    min-height: 80px;
-    margin-bottom: 20px;
-}
-
-#achievementText:focus {
-    outline: none;
-    border-color: #f39c12;
-    box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
-}
-
-.quick-suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.suggestion-chip {
-    background: rgba(243, 156, 18, 0.2);
-    border: 1px solid rgba(243, 156, 18, 0.4);
-    border-radius: 20px;
-    padding: 8px 15px;
-    color: #f39c12;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.suggestion-chip:hover {
-    background: rgba(243, 156, 18, 0.3);
-    transform: scale(1.05);
-}
-
-.input-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.save-achievement {
-    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-    border: none;
-    border-radius: 25px;
-    padding: 12px 30px;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.save-achievement:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-}
-
-.cancel-input {
-    background: transparent;
-    border: 2px solid #7f8c8d;
-    border-radius: 25px;
-    padding: 10px 25px;
-    color: #7f8c8d;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-.cancel-input:hover {
-    border-color: #bdc3c7;
-    color: #bdc3c7;
-}
-
-.todays-achievements, .courage-archive {
-    background: rgba(22, 33, 62, 0.6);
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 25px;
-    border: 1px solid rgba(243, 156, 18, 0.2);
-}
-
-.todays-achievements h3, .courage-archive h3 {
-    color: #f39c12;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.achievement-item {
-    background: rgba(46, 204, 113, 0.1);
-    border-left: 4px solid #2ecc71;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: achievementPop 0.5s ease;
-}
-
-@keyframes achievementPop {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.achievement-text-content {
-    flex: 1;
-    color: #eee;
-    line-height: 1.4;
-}
-
-.achievement-time {
-    color: #95a5a6;
-    font-size: 12px;
-    margin-left: 15px;
-}
-
-.delete-achievement {
-    background: transparent;
-    border: none;
-    color: #e74c3c;
-    cursor: pointer;
-    font-size: 16px;
-    opacity: 0.7;
-    padding: 5px;
-    margin-left: 10px;
-    transition: all 0.2s ease;
-}
-
-.delete-achievement:hover {
-    opacity: 1;
-    transform: scale(1.2);
-}
-
-.show-archive-btn {
-    background: rgba(243, 156, 18, 0.2);
-    border: 1px solid rgba(243, 156, 18, 0.4);
-    border-radius: 10px;
-    padding: 10px 20px;
-    color: #f39c12;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 15px;
-    transition: all 0.3s ease;
-}
-
-.show-archive-btn:hover {
-    background: rgba(243, 156, 18, 0.3);
-}
-
-.archive-summary {
-    text-align: center;
-    font-size: 18px;
-    color: #2ecc71;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-.antitodo-settings {
-    text-align: center;
-    padding: 20px;
-}
-
-.reminder-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: #bbb;
-    cursor: pointer;
-}
-
-.reminder-toggle input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #f39c12;
-}
-
-/* Mobile Anpassungen */
-@media (max-width: 600px) {
-    .big-achievement-btn {
-        padding: 25px 35px;
-        font-size: 18px;
-    }
-    
-    .quick-suggestions {
-        flex-direction: column;
-    }
-    
-    .suggestion-chip {
-        text-align: center;
-    }
-    
-    .input-actions {
-        flex-direction: column;
-    }
-}
   
     </style>
 </head>
@@ -1314,8 +1552,8 @@
             <button class="nav-btn active" onclick="showPage('tracker')">Tracker</button>
             <button class="nav-btn" onclick="showPage('stats')">Statistiken</button>
             <button class="nav-btn" onclick="showPage('motivator')">Mini-Motivator</button>
-            <button class="nav-btn" onclick="showPage('antitodo')">Anti-To-Do</button>
             <button class="nav-btn" onclick="showPage('sensorik')">Sensorik</button>
+            <button class="nav-btn" onclick="showPage('overload')">Overload</button>
         </div>
         
 
@@ -1326,6 +1564,14 @@
                 <input type="range" min="1" max="10" value="8" class="slider" id="morningSlider">
                 <div class="slider-value" id="sliderValue">8 Löffel</div>
                 <button class="start-day-btn" onclick="startDay()">Tag starten</button>
+            </div>
+
+            <div class="overload-mini hidden" id="overloadMini" onclick="showPage('overload'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Overload')b.classList.add('active')});">
+                <div class="overload-mini-left">
+                    <div class="overload-mini-dot risk-low" id="overloadMiniDot"></div>
+                    <div class="overload-mini-label" id="overloadMiniLabel"><strong>Overload-Risiko:</strong> Stabil</div>
+                </div>
+                <span class="overload-mini-arrow">→ Details</span>
             </div>
 
             <div class="energy-display hidden" id="mainDisplay">
@@ -1500,64 +1746,94 @@
             </div>
         </div>
 
-        <!-- Anti-To-Do Page -->
-        <div class="page" id="antitodoPage">
-
-            <div class="antitodo-container">
-                <h2>✨ Ich hab was geschafft!</h2>
-                <p class="antitodo-subtitle">Würdige deine unsichtbaren Erfolge</p>
+        <!-- Overload-Tracker Page -->
+        <div class="page" id="overloadPage">
+            <div class="overload-container">
+                <h2>⚡ Overload-Tracker</h2>
+                <p class="overload-subtitle">Frühwarnung & Dokumentation</p>
                 
-                <!-- Haupt-Button -->
-                <div class="achievement-center">
-                    <button class="big-achievement-btn" onclick="openAchievementInput()">
-                        <span class="achievement-icon">🌟</span>
-                        <span class="achievement-text">Ich hab was geschafft!</span>
-                    </button>
+                <!-- Ampel -->
+                <div class="overload-ampel">
+                    <div class="ampel-visual">
+                        <div class="ampel-dot" id="ampelGreen"></div>
+                        <div class="ampel-dot" id="ampelYellow"></div>
+                        <div class="ampel-dot" id="ampelOrange"></div>
+                        <div class="ampel-dot" id="ampelRed"></div>
+                    </div>
+                    <div class="ampel-label level-low" id="ampelLabel">Stabil</div>
+                    <div class="ampel-detail" id="ampelDetail">Keine akuten Warnsignale</div>
                 </div>
                 
-                <!-- Input Area (versteckt) -->
-                <div class="achievement-input hidden" id="achievementInput">
-                    <div class="input-card">
-                        <h3>Was hast du geschafft? 💫</h3>
-                        <textarea id="achievementText" placeholder="Z.B. Trotz Müdigkeit Zähne geputzt..." maxlength="200"></textarea>
+                <!-- Warnsignale -->
+                <div class="warning-section">
+                    <h3>🚨 Warnsignale – was merkst du gerade?</h3>
+                    <div class="warning-grid" id="warningGrid"></div>
+                </div>
+                
+                <!-- Gegenmaßnahmen -->
+                <div class="countermeasures" id="countermeasures">
+                    <h3 id="countermeasuresTitle">💡 Was du jetzt tun kannst</h3>
+                    <div id="countermeasuresList"></div>
+                </div>
+                
+                <!-- Event-Dokumentation -->
+                <div class="event-doc">
+                    <h3>📝 Overload dokumentieren</h3>
+                    <p class="event-doc-subtitle">Wenn es passiert ist – festhalten, was war</p>
+                    
+                    <div class="event-type-select" id="eventTypeSelect">
+                        <button class="event-type-btn" onclick="selectEventType('overload')">
+                            <span class="type-icon">⚡</span>
+                            <span class="type-name">Overload</span>
+                            <span class="type-desc">Zu viel, System am Limit</span>
+                        </button>
+                        <button class="event-type-btn" onclick="selectEventType('meltdown')">
+                            <span class="type-icon">🌋</span>
+                            <span class="type-name">Meltdown</span>
+                            <span class="type-desc">Reize explodieren nach außen</span>
+                        </button>
+                        <button class="event-type-btn" onclick="selectEventType('shutdown')">
+                            <span class="type-icon">🧊</span>
+                            <span class="type-name">Shutdown</span>
+                            <span class="type-desc">System fährt runter, Stille</span>
+                        </button>
+                        <button class="event-type-btn" onclick="selectEventType('freeze')">
+                            <span class="type-icon">🫥</span>
+                            <span class="type-name">Freeze</span>
+                            <span class="type-desc">Eingefroren, kann nicht handeln</span>
+                        </button>
+                    </div>
+                    
+                    <div class="event-form" id="eventForm">
+                        <span class="event-form-label">Was war vorher? (Trigger)</span>
+                        <div class="event-trigger-grid" id="eventTriggerGrid"></div>
                         
-                        <!-- Quick Suggestions -->
-                        <div class="quick-suggestions">
-                            <button class="suggestion-chip" onclick="useQuickSuggestion('💪 Selbstfürsorge trotz Widerstand')">💪 Selbstfürsorge</button>
-                            <button class="suggestion-chip" onclick="useQuickSuggestion('🧠 Eine schwere Entscheidung getroffen')">🧠 Mental stark</button>
-                            <button class="suggestion-chip" onclick="useQuickSuggestion('🤝 Nein gesagt und Grenze gehalten')">🤝 Grenzen</button>
-                            <button class="suggestion-chip" onclick="useQuickSuggestion('✨ ADHS-Chaos akzeptiert statt bekämpft')">✨ ADHS-real</button>
-                            <button class="suggestion-chip" onclick="useQuickSuggestion('🏠 Alltag gemeistert trotz wenig Energie')">🏠 Alltag</button>
-                        </div>
+                        <span class="event-form-label">Welche Warnsignale hast du im Nachhinein erkannt?</span>
+                        <div class="event-trigger-grid" id="eventWarningGrid"></div>
                         
-                        <!-- Action Buttons -->
-                        <div class="input-actions">
-                            <button class="save-achievement" onclick="saveAchievement()">🎉 Feiern!</button>
-                            <button class="cancel-input" onclick="cancelInput()">Abbrechen</button>
-                        </div>
+                        <span class="event-form-label">Was hat geholfen?</span>
+                        <div class="event-trigger-grid" id="eventHelpedGrid"></div>
+                        
+                        <span class="event-form-label">Erholungsdauer</span>
+                        <div class="event-duration-select" id="eventDurationSelect"></div>
+                        
+                        <span class="event-form-label">Notizen (optional)</span>
+                        <textarea class="event-freetext" id="eventFreetext" placeholder="Was möchtest du dir merken?" maxlength="300"></textarea>
+                        
+                        <button class="event-save-btn" onclick="saveOverloadEvent()">💾 Speichern</button>
                     </div>
                 </div>
                 
-                <!-- Heute Liste -->
-                <div class="todays-achievements" id="todaysAchievements">
-                    <h3>Heute anerkannt 🌈</h3>
-                    <div class="achievements-list" id="todaysList"></div>
+                <!-- Event-Historie -->
+                <div class="event-history" id="eventHistory">
+                    <h3>📊 Vergangene Overloads</h3>
+                    <div id="eventHistoryList"></div>
                 </div>
                 
-                <!-- Mut-Archiv -->
-                <div class="courage-archive" id="courageArchive">
-                    <h3>📚 Mut-Archiv (7 Tage)</h3>
-                    <div class="archive-summary" id="archiveSummary"></div>
-                    <button class="show-archive-btn" onclick="toggleArchive()">Archiv anzeigen</button>
-                    <div class="archive-details hidden" id="archiveDetails"></div>
-                </div>
-                
-                <!-- Settings -->
-                <div class="antitodo-settings">
-                    <label class="reminder-toggle">
-                        <input type="checkbox" id="reminderToggle" onchange="toggleReminder()">
-                        <span>Sanfte tägliche Erinnerung</span>
-                    </label>
+                <!-- Muster -->
+                <div class="overload-pattern-section" id="overloadPatterns">
+                    <h3>🔍 Muster & Erkenntnisse</h3>
+                    <div id="overloadPatternList"></div>
                 </div>
             </div>
         </div>
@@ -1727,6 +2003,7 @@ const activities = [
             document.getElementById('history').classList.remove('hidden');
             document.getElementById('resetBtn').classList.remove('hidden');
             document.getElementById('navigation').classList.remove('hidden');
+            document.getElementById('overloadMini').classList.remove('hidden');
             
             updateDisplay();
             renderActivities();
@@ -1771,6 +2048,11 @@ const activities = [
             // Update current day end energy
             if (currentDay) {
                 currentDay.endEnergy = currentEnergy;
+            }
+            
+            // Update overload mini-ampel
+            if (typeof updateOverloadMini === 'function') {
+                updateOverloadMini();
             }
         }
 
@@ -1967,13 +2249,7 @@ function showAllActivities() {
             // Alert if energy is critical
             if (currentEnergy <= 2 && activity.cost < 0) {
                 setTimeout(() => {
-                    if (confirm('⚠️ Deine Energie ist kritisch niedrig! Zeit für eine Pause?')) {
-                        // Auto-suggest energy-giving activities
-                        const restActivities = activities.filter(a => a.cost > 0);
-                        if (restActivities.length > 0) {
-                            alert(`Probier doch: ${restActivities.map(a => a.name).join(', ')}`);
-                        }
-                    }
+                    alert('⚠️ Deine Energie ist kritisch niedrig.\n\nDu musst jetzt nichts mehr schaffen.\nWas auch immer noch offen ist – es kann warten.');
                 }, 100);
             }
         }
@@ -2120,18 +2396,19 @@ function showPage(page) {
         updateFavoritesDisplay();
         // Reset to mood selection if coming from other pages
         backToMoods();
-    } else if (page === 'antitodo') {
-    document.getElementById('antitodoPage').classList.add('active');
-    loadAntitodoData();
-    updateTodaysAchievements();
-    updateCourageArchive();
-    // Reset input state
-    cancelInput();
  } else if (page === 'sensorik') {
     document.getElementById('sensorikPage').classList.add('active');
-    loadSensorikData();
     renderSensorikGrid();
+    updateSensorikResult();
     updateSensorikHistory();
+ } else if (page === 'overload') {
+    document.getElementById('overloadPage').classList.add('active');
+    loadOverloadData();
+    renderWarningGrid();
+    renderEventForm();
+    updateOverloadAmpel();
+    updateEventHistory();
+    analyzeOverloadPatterns();
  }
 }
 
@@ -2282,18 +2559,16 @@ window.onload = function() {
         document.getElementById('history').classList.remove('hidden');
         document.getElementById('resetBtn').classList.remove('hidden');
         document.getElementById('navigation').classList.remove('hidden');
+        document.getElementById('overloadMini').classList.remove('hidden');
         
         updateDisplay();
         renderActivities();
         updateHistory();
+        updateOverloadMini();
     }
     
-    loadAntitodoData();
-    checkDailyReminder(); // Check for daily reminder
     loadSensorikData(); // Load sensorik data
-    
-    // Set up daily reminder check (every hour)
-    setInterval(checkDailyReminder, 60 * 60 * 1000);
+    loadOverloadData(); // Load overload data
 };
 
 // Save to localStorage whenever data changes
@@ -2630,7 +2905,6 @@ const suggestions = {
         { text: "Erzähl dir selbst in 3 Sätzen, warum du das eigentlich machen willst.", type: "mental", icon: "🎯" },
         { text: "Ruf dein Zukunfts-Ich an: 'Hey, was würdest du tun?'", type: "mental", icon: "📲" },
         { text: "Setz dich auf den Boden – das ändert den Fokus.", type: "körperlich", icon: "🪑" },
-        { text: "Starte mit einer 'Anti-To-Do': Schreib, was du **nicht** tun musst.", type: "mental", icon: "🚫" },
         { text: "Mach die Aufgabe absichtlich absurd: Erfind eine alberne Version davon.", type: "mental", icon: "🎭" },
         { text: "Mach ein 'falsches Anfangen': Tu so, als ob du’s tust – 10 Sekunden.", type: "körperlich", icon: "🎬" }
     ],
@@ -2854,312 +3128,6 @@ function loadMotivaorData() {
     }
 }
 
-// Anti-To-Do Tracker JavaScript
-let antitodoData = {
-    achievements: [],
-    reminderEnabled: false,
-    lastReminder: null
-};
-
-// Main functions
-function openAchievementInput() {
-    document.getElementById('achievementInput').classList.remove('hidden');
-    document.getElementById('achievementText').focus();
-}
-
-function cancelInput() {
-    document.getElementById('achievementInput').classList.add('hidden');
-    document.getElementById('achievementText').value = '';
-}
-
-function useQuickSuggestion(text) {
-    document.getElementById('achievementText').value = text;
-    document.getElementById('achievementText').focus();
-}
-
-function saveAchievement() {
-    const text = document.getElementById('achievementText').value.trim();
-    if (!text) return;
-    
-    const achievement = {
-        id: Date.now(),
-        text: text,
-        timestamp: new Date().toISOString(),
-        date: new Date().toISOString().split('T')[0]
-    };
-    
-    antitodoData.achievements.unshift(achievement);
-    
-    // Show celebration
-    showCelebration();
-    
-    // Update displays
-    updateTodaysAchievements();
-    updateCourageArchive();
-    
-    // Reset input
-    cancelInput();
-    
-    // Save data
-    saveAntitodoData();
-}
-
-function showCelebration() {
-    // Create celebration overlay
-    const celebration = document.createElement('div');
-    celebration.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-        color: white;
-        padding: 30px;
-        border-radius: 20px;
-        font-size: 24px;
-        font-weight: bold;
-        z-index: 2000;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        animation: celebrationPop 0.6s ease;
-    `;
-    
-    const messages = [
-        '🎉 Toll gemacht!',
-        '✨ Das verdient Anerkennung!',
-        '🌟 Du bist stark!',
-        '💫 Das zählt wirklich!',
-        '🎊 Feiern wir das!'
-    ];
-    
-    celebration.innerHTML = messages[Math.floor(Math.random() * messages.length)];
-    document.body.appendChild(celebration);
-    
-    // Add celebration animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes celebrationPop {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Remove after 2 seconds
-    setTimeout(() => {
-        celebration.style.animation = 'fadeOut 0.5s ease forwards';
-        setTimeout(() => celebration.remove(), 500);
-    }, 2000);
-}
-
-function updateTodaysAchievements() {
-    const today = new Date().toISOString().split('T')[0];
-    const todaysAchievements = antitodoData.achievements.filter(a => a.date === today);
-    
-    const container = document.getElementById('todaysList');
-    
-    if (todaysAchievements.length === 0) {
-        container.innerHTML = '<p style="color: #95a5a6; text-align: center; font-style: italic;">Noch keine Erfolge heute anerkannt</p>';
-        return;
-    }
-    
-    container.innerHTML = todaysAchievements.map(achievement => `
-        <div class="achievement-item">
-            <div class="achievement-text-content">${achievement.text}</div>
-            <div class="achievement-time">${new Date(achievement.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
-            <button class="delete-achievement" onclick="deleteAchievement(${achievement.id})" title="Löschen">❌</button>
-        </div>
-    `).join('');
-}
-
-function updateCourageArchive() {
-    const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    
-    const weekAchievements = antitodoData.achievements.filter(a => 
-        new Date(a.timestamp) >= sevenDaysAgo
-    );
-    
-    const summary = document.getElementById('archiveSummary');
-    summary.textContent = `${weekAchievements.length} Erfolge in den letzten 7 Tagen anerkannt! 🌈`;
-    
-    // Group by date for archive details
-    const groupedByDate = {};
-    weekAchievements.forEach(achievement => {
-        const date = achievement.date;
-        if (!groupedByDate[date]) {
-            groupedByDate[date] = [];
-        }
-        groupedByDate[date].push(achievement);
-    });
-    
-    const archiveDetails = document.getElementById('archiveDetails');
-    const sortedDates = Object.keys(groupedByDate).sort().reverse();
-    
-    archiveDetails.innerHTML = sortedDates.map(date => {
-        const dateObj = new Date(date);
-        const dayName = dateObj.toLocaleDateString('de-DE', { weekday: 'long' });
-        const dateStr = dateObj.toLocaleDateString('de-DE');
-        
-        return `
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #f39c12; margin-bottom: 10px;">${dayName}, ${dateStr}</h4>
-                ${groupedByDate[date].map(achievement => `
-                    <div class="achievement-item">
-                        <div class="achievement-text-content">${achievement.text}</div>
-                        <div class="achievement-time">${new Date(achievement.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
-                        <button class="delete-achievement" onclick="deleteAchievement(${achievement.id})" title="Löschen">❌</button>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }).join('');
-}
-
-function toggleArchive() {
-    const details = document.getElementById('archiveDetails');
-    const button = document.querySelector('.show-archive-btn');
-    
-    if (details.classList.contains('hidden')) {
-        details.classList.remove('hidden');
-        button.textContent = 'Archiv verbergen';
-    } else {
-        details.classList.add('hidden');
-        button.textContent = 'Archiv anzeigen';
-    }
-}
-
-function deleteAchievement(id) {
-    if (!confirm('Diesen Erfolg wirklich löschen?')) return;
-    
-    antitodoData.achievements = antitodoData.achievements.filter(a => a.id !== id);
-    updateTodaysAchievements();
-    updateCourageArchive();
-    saveAntitodoData();
-}
-
-function toggleReminder() {
-    const checkbox = document.getElementById('reminderToggle');
-    antitodoData.reminderEnabled = checkbox.checked;
-    saveAntitodoData();
-}
-
-function checkDailyReminder() {
-    if (!antitodoData.reminderEnabled) return;
-    
-    const today = new Date().toISOString().split('T')[0];
-    const todaysAchievements = antitodoData.achievements.filter(a => a.date === today);
-    
-    // Only remind if no achievements today and not reminded today
-    if (todaysAchievements.length === 0 && antitodoData.lastReminder !== today) {
-        const now = new Date();
-        const hour = now.getHours();
-        
-        // Show reminder between 17:00 and 22:00
-        if (hour >= 17 && hour <= 22) {
-            showDailyReminder();
-            antitodoData.lastReminder = today;
-            saveAntitodoData();
-        }
-    }
-}
-
-function showDailyReminder() {
-    const reminder = document.createElement('div');
-    reminder.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        z-index: 1000;
-        max-width: 320px;
-        font-size: 16px;
-        animation: slideIn 0.5s ease;
-    `;
-    
-    reminder.innerHTML = `
-        <div style="margin-bottom: 15px;">
-            <strong>✨ Sanfte Erinnerung</strong><br>
-            Heute schon anerkannt, was du nicht sichtbar geschafft hast?
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button onclick="openAntitodoFromReminder()" style="
-                background: white;
-                color: #f39c12;
-                border: none;
-                padding: 8px 15px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 14px;
-            ">Ja, jetzt!</button>
-            <button onclick="dismissReminder()" style="
-                background: transparent;
-                color: white;
-                border: 1px solid white;
-                padding: 8px 15px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 14px;
-            ">Später</button>
-        </div>
-    `;
-    
-    reminder.id = 'dailyReminder';
-    document.body.appendChild(reminder);
-    
-    // Auto-dismiss after 10 seconds
-    setTimeout(() => {
-        const reminderEl = document.getElementById('dailyReminder');
-        if (reminderEl) dismissReminder();
-    }, 10000);
-}
-
-function openAntitodoFromReminder() {
-    dismissReminder();
-    // Switch to antitodo page
-    showPage('antitodo');
-    // Open input immediately
-    setTimeout(() => openAchievementInput(), 500);
-}
-
-function dismissReminder() {
-    const reminder = document.getElementById('dailyReminder');
-    if (reminder) {
-        reminder.style.animation = 'slideOut 0.3s ease forwards';
-        setTimeout(() => reminder.remove(), 300);
-    }
-}
-
-// Data persistence
-function saveAntitodoData() {
-    try {
-        localStorage.setItem('antitodoData', JSON.stringify(antitodoData));
-    } catch (e) {
-        console.log('Could not save antitodo data');
-    }
-}
-
-function loadAntitodoData() {
-    try {
-        const saved = localStorage.getItem('antitodoData');
-        if (saved) {
-            antitodoData = { ...antitodoData, ...JSON.parse(saved) };
-        }
-        
-        // Update reminder checkbox
-        document.getElementById('reminderToggle').checked = antitodoData.reminderEnabled;
-        
-    } catch (e) {
-        console.log('Could not load antitodo data');
-    }
-}
-
 // ==========================================
 // Sensorischer Umgebungs-Check
 // ==========================================
@@ -3327,19 +3295,32 @@ function updateSensorikResult() {
         return;
     }
     
-    // Calculate score
-    const totalDimensions = sensorikDimensions.length;
-    const maxScore = totalDimensions * 2;
+    // Calculate score based ONLY on checked dimensions
+    const checkedCount = checked.length;
+    const maxScore = checkedCount * 2; // max per checked dimension
     let currentScore = 0;
+    let zuVielCount = 0;
+    let belastendCount = 0;
     
     sensorikDimensions.forEach(dim => {
         const val = sensorikData.currentCheck[dim.id];
         if (val !== undefined) {
             currentScore += val;
+            if (val === 2) zuVielCount++;
+            if (val === 1) belastendCount++;
         }
     });
     
-    const percentage = (currentScore / maxScore) * 100;
+    let percentage = maxScore > 0 ? (currentScore / maxScore) * 100 : 0;
+    
+    // Floor levels: "zu viel" in any dimension raises minimum
+    // 1x zu viel → mindestens 40% (deutliche Belastung)
+    // 2x zu viel → mindestens 65% (Überlastung)
+    if (zuVielCount >= 2) {
+        percentage = Math.max(percentage, 65);
+    } else if (zuVielCount >= 1) {
+        percentage = Math.max(percentage, 40);
+    }
     
     // Determine level
     let emoji, label, cssClass, barColor;
@@ -3387,8 +3368,8 @@ function updateSensorikResult() {
     // Show result and actions
     document.getElementById('sensorikResult').classList.add('visible');
     
-    // Show save button when at least 3 dimensions are checked
-    if (checked.length >= 3) {
+    // Show save button when at least 1 dimension is checked
+    if (checked.length >= 1) {
         document.getElementById('sensorikActions').style.display = 'flex';
     }
 }
@@ -3423,13 +3404,25 @@ function saveSensorikCheck() {
 }
 
 function calculateSensorikScore() {
-    const maxScore = sensorikDimensions.length * 2;
+    const checked = Object.keys(sensorikData.currentCheck).filter(k => sensorikData.currentCheck[k] !== undefined);
+    const maxScore = checked.length * 2;
     let currentScore = 0;
+    let zuVielCount = 0;
+    
     sensorikDimensions.forEach(dim => {
         const val = sensorikData.currentCheck[dim.id];
-        if (val !== undefined) currentScore += val;
+        if (val !== undefined) {
+            currentScore += val;
+            if (val === 2) zuVielCount++;
+        }
     });
-    return Math.round((currentScore / maxScore) * 100);
+    
+    let percentage = maxScore > 0 ? Math.round((currentScore / maxScore) * 100) : 0;
+    
+    if (zuVielCount >= 2) percentage = Math.max(percentage, 65);
+    else if (zuVielCount >= 1) percentage = Math.max(percentage, 40);
+    
+    return percentage;
 }
 
 function resetSensorikCheck() {
@@ -3557,6 +3550,476 @@ function loadSensorikData() {
         }
     } catch (e) {
         console.log('Could not load sensorik data');
+    }
+}
+
+// ==========================================
+// Overload-Tracker
+// ==========================================
+
+let overloadData = {
+    activeWarnings: [],
+    events: []
+};
+
+let selectedEventType = null;
+let selectedTriggers = [];
+let selectedEventWarnings = [];
+let selectedHelped = [];
+let selectedDuration = null;
+
+const warningSignals = [
+    { id: 'gedanken', name: 'Gedanken rasen', icon: '🌀', desc: 'Kann nicht mehr sortieren' },
+    { id: 'einsilbig', name: 'Werde einsilbig', icon: '🤐', desc: 'Ziehe mich zurück' },
+    { id: 'reizbar', name: 'Alles nervt', icon: '😤', desc: 'Reizbarkeit steigt' },
+    { id: 'anspannung', name: 'Körperliche Anspannung', icon: '💪', desc: 'Unruhe, Verspannung' },
+    { id: 'flucht', name: 'Will nur noch weg', icon: '🚪', desc: 'Fluchtimpuls' },
+    { id: 'leer', name: 'Kopf leer', icon: '🫥', desc: 'Kann nicht mehr denken' },
+    { id: 'traenen', name: 'Den Tränen nahe', icon: '😢', desc: 'Emotionaler Druck' }
+];
+
+const eventTriggers = [
+    'Sensorische Überlastung', 'Soziale Situation', 'Unerwartete Änderung',
+    'Zu viele Aufgaben', 'Konfliktsituation', 'Masking zu lange',
+    'Schlafmangel', 'Zeitdruck', 'Kritik/Ablehnung', 'Reizüberflutung Büro',
+    'Kein Rückzug möglich', 'Mehrere Kleinigkeiten'
+];
+
+const helpedOptions = [
+    'Allein sein', 'Stille', 'Dunkelheit', 'Gewichtsdecke', 'Weinen',
+    'Stimming', 'Musik', 'Partner*in', 'Frische Luft', 'Schlaf',
+    'Kaltes Wasser', 'Nichts tun', 'Lieblingsessen', 'Bewegung'
+];
+
+const durationOptions = [
+    '< 30 Min', '30-60 Min', '1-2 Stunden', '2-4 Stunden',
+    'Halber Tag', 'Ganzer Tag', 'Mehrere Tage'
+];
+
+const countermeasuresByLevel = {
+    medium: [
+        '🧘 Kurze Pause einlegen – auch 2 Minuten zählen',
+        '🎧 Kopfhörer rein, eine Geräuschquelle weniger',
+        '🚶 Kurz den Raum wechseln, Perspektive ändern',
+        '💧 Etwas trinken, kurz den Körper spüren'
+    ],
+    high: [
+        '🚪 Rückzug ist jetzt Selbstschutz, nicht Schwäche',
+        '🔇 Alle nicht-essentiellen Reize sofort reduzieren',
+        '📱 Nachrichten können warten – du nicht',
+        '🤝 Wenn möglich: jemandem sagen, dass du Pause brauchst',
+        '⏰ Timer auf 15 Min – dann neu bewerten'
+    ],
+    critical: [
+        '🆘 STOPP – Alles andere ist jetzt unwichtig',
+        '🏠 Sicheren Ort aufsuchen – jetzt',
+        '🧣 Reize minimieren: Licht aus, Tür zu, Decke drüber',
+        '🫂 Du bist nicht kaputt. Dein System schützt sich.',
+        '⏳ Nimm dir so viel Zeit wie du brauchst. Es gibt keine Deadline für Erholung.'
+    ]
+};
+
+function renderWarningGrid() {
+    const grid = document.getElementById('warningGrid');
+    grid.innerHTML = '';
+    
+    warningSignals.forEach(signal => {
+        const isActive = overloadData.activeWarnings.includes(signal.id);
+        const btn = document.createElement('button');
+        btn.className = 'warning-btn' + (isActive ? ' active' : '');
+        btn.innerHTML = `
+            <span class="warning-btn-icon">${signal.icon}</span>
+            <div>
+                <div style="font-weight:bold;">${signal.name}</div>
+                <div style="font-size:12px; opacity:0.7;">${signal.desc}</div>
+            </div>
+        `;
+        btn.onclick = () => toggleWarning(signal.id);
+        grid.appendChild(btn);
+    });
+}
+
+function toggleWarning(id) {
+    const idx = overloadData.activeWarnings.indexOf(id);
+    if (idx >= 0) {
+        overloadData.activeWarnings.splice(idx, 1);
+    } else {
+        overloadData.activeWarnings.push(id);
+    }
+    renderWarningGrid();
+    updateOverloadAmpel();
+    updateOverloadMini();
+    saveOverloadData();
+}
+
+function calculateOverloadRisk() {
+    let risk = 0;
+    
+    // Factor 1: Active warnings (0-7 signals, each worth up to 12 points)
+    risk += overloadData.activeWarnings.length * 12;
+    
+    // Factor 2: Energy level (low energy = higher risk)
+    if (dayStarted && maxEnergy > 0) {
+        const energyRatio = currentEnergy / maxEnergy;
+        if (energyRatio <= 0.2) risk += 25;
+        else if (energyRatio <= 0.4) risk += 15;
+        else if (energyRatio <= 0.6) risk += 5;
+    }
+    
+    // Factor 3: Last sensorik check
+    if (sensorikData.checks.length > 0) {
+        const lastCheck = sensorikData.checks[0];
+        const checkAge = (Date.now() - new Date(lastCheck.timestamp).getTime()) / (1000 * 60 * 60);
+        // Only count if check is less than 4 hours old
+        if (checkAge < 4) {
+            if (lastCheck.score > 60) risk += 20;
+            else if (lastCheck.score > 35) risk += 10;
+            else if (lastCheck.score > 15) risk += 5;
+        }
+    }
+    
+    return Math.min(100, risk);
+}
+
+function getRiskLevel(risk) {
+    if (risk < 20) return { level: 'low', label: 'Stabil', color: '#27ae60', emoji: '🟢' };
+    if (risk < 45) return { level: 'medium', label: 'Aufpassen', color: '#f1c40f', emoji: '🟡' };
+    if (risk < 70) return { level: 'high', label: 'Vorwarnung', color: '#e67e22', emoji: '🟠' };
+    return { level: 'critical', label: 'Akut!', color: '#e74c3c', emoji: '🔴' };
+}
+
+function updateOverloadAmpel() {
+    const risk = calculateOverloadRisk();
+    const riskInfo = getRiskLevel(risk);
+    
+    // Reset all dots
+    ['ampelGreen', 'ampelYellow', 'ampelOrange', 'ampelRed'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.className = 'ampel-dot';
+    });
+    
+    // Activate correct dot
+    if (riskInfo.level === 'low') document.getElementById('ampelGreen').classList.add('active-green');
+    else if (riskInfo.level === 'medium') document.getElementById('ampelYellow').classList.add('active-yellow');
+    else if (riskInfo.level === 'high') document.getElementById('ampelOrange').classList.add('active-orange');
+    else document.getElementById('ampelRed').classList.add('active-red');
+    
+    // Update label
+    const label = document.getElementById('ampelLabel');
+    label.textContent = riskInfo.emoji + ' ' + riskInfo.label;
+    label.className = 'ampel-label level-' + riskInfo.level;
+    
+    // Detail text
+    const detail = document.getElementById('ampelDetail');
+    const parts = [];
+    if (overloadData.activeWarnings.length > 0) {
+        parts.push(overloadData.activeWarnings.length + ' Warnsignal' + (overloadData.activeWarnings.length > 1 ? 'e' : '') + ' aktiv');
+    }
+    if (dayStarted && currentEnergy <= Math.floor(maxEnergy * 0.3)) {
+        parts.push('Energie niedrig');
+    }
+    if (sensorikData.checks.length > 0) {
+        const lastCheck = sensorikData.checks[0];
+        const checkAge = (Date.now() - new Date(lastCheck.timestamp).getTime()) / (1000 * 60 * 60);
+        if (checkAge < 4 && lastCheck.score > 35) {
+            parts.push('Sensorik belastet');
+        }
+    }
+    detail.textContent = parts.length > 0 ? parts.join(' · ') : 'Keine akuten Warnsignale';
+    
+    // Show countermeasures
+    updateCountermeasures(riskInfo.level);
+}
+
+function updateOverloadMini() {
+    const risk = calculateOverloadRisk();
+    const riskInfo = getRiskLevel(risk);
+    
+    const dot = document.getElementById('overloadMiniDot');
+    const label = document.getElementById('overloadMiniLabel');
+    
+    if (!dot || !label) return;
+    
+    dot.className = 'overload-mini-dot';
+    dot.classList.add('risk-' + riskInfo.level);
+    label.innerHTML = '<strong>Overload-Risiko:</strong> ' + riskInfo.label;
+}
+
+function updateCountermeasures(level) {
+    const container = document.getElementById('countermeasures');
+    const list = document.getElementById('countermeasuresList');
+    const title = document.getElementById('countermeasuresTitle');
+    
+    if (level === 'low') {
+        container.classList.remove('visible');
+        container.classList.remove('emergency-mode');
+        return;
+    }
+    
+    container.classList.add('visible');
+    
+    if (level === 'critical') {
+        container.classList.add('emergency-mode');
+        title.textContent = '🆘 Notfall-Modus';
+    } else {
+        container.classList.remove('emergency-mode');
+        title.textContent = '💡 Was du jetzt tun kannst';
+    }
+    
+    const measures = countermeasuresByLevel[level] || countermeasuresByLevel.medium;
+    list.innerHTML = measures.map(m => `<div class="countermeasure-item">${m}</div>`).join('');
+}
+
+// Event Documentation
+function renderEventForm() {
+    // Triggers
+    const triggerGrid = document.getElementById('eventTriggerGrid');
+    triggerGrid.innerHTML = eventTriggers.map(t => 
+        `<button class="event-trigger-chip${selectedTriggers.includes(t) ? ' selected' : ''}" onclick="toggleEventChip('trigger', '${t}')">${t}</button>`
+    ).join('');
+    
+    // Retrospective warnings
+    const warningGrid = document.getElementById('eventWarningGrid');
+    warningGrid.innerHTML = warningSignals.map(w => 
+        `<button class="event-trigger-chip${selectedEventWarnings.includes(w.id) ? ' selected' : ''}" onclick="toggleEventChip('warning', '${w.id}')">${w.icon} ${w.name}</button>`
+    ).join('');
+    
+    // What helped
+    const helpedGrid = document.getElementById('eventHelpedGrid');
+    helpedGrid.innerHTML = helpedOptions.map(h => 
+        `<button class="event-trigger-chip${selectedHelped.includes(h) ? ' selected' : ''}" onclick="toggleEventChip('helped', '${h}')">${h}</button>`
+    ).join('');
+    
+    // Duration
+    const durationSelect = document.getElementById('eventDurationSelect');
+    durationSelect.innerHTML = durationOptions.map(d => 
+        `<button class="event-duration-chip${selectedDuration === d ? ' selected' : ''}" onclick="selectEventDuration('${d}')">${d}</button>`
+    ).join('');
+}
+
+function selectEventType(type) {
+    selectedEventType = type;
+    selectedTriggers = [];
+    selectedEventWarnings = [];
+    selectedHelped = [];
+    selectedDuration = null;
+    document.getElementById('eventFreetext').value = '';
+    
+    // Update button states
+    document.querySelectorAll('.event-type-btn').forEach(btn => btn.classList.remove('selected'));
+    event.target.closest('.event-type-btn').classList.add('selected');
+    
+    // Show form
+    document.getElementById('eventForm').classList.add('visible');
+    renderEventForm();
+}
+
+function toggleEventChip(type, value) {
+    let arr;
+    if (type === 'trigger') arr = selectedTriggers;
+    else if (type === 'warning') arr = selectedEventWarnings;
+    else arr = selectedHelped;
+    
+    const idx = arr.indexOf(value);
+    if (idx >= 0) arr.splice(idx, 1);
+    else arr.push(value);
+    
+    renderEventForm();
+}
+
+function selectEventDuration(d) {
+    selectedDuration = selectedDuration === d ? null : d;
+    renderEventForm();
+}
+
+function saveOverloadEvent() {
+    if (!selectedEventType) return;
+    
+    const evt = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        type: selectedEventType,
+        triggers: [...selectedTriggers],
+        retrospectiveWarnings: [...selectedEventWarnings],
+        helped: [...selectedHelped],
+        duration: selectedDuration,
+        notes: document.getElementById('eventFreetext').value.trim(),
+        energyAtTime: dayStarted ? currentEnergy : null,
+        sensorikAtTime: sensorikData.checks.length > 0 ? sensorikData.checks[0].score : null
+    };
+    
+    overloadData.events.unshift(evt);
+    
+    // Keep last 100 events
+    if (overloadData.events.length > 100) {
+        overloadData.events = overloadData.events.slice(0, 100);
+    }
+    
+    saveOverloadData();
+    
+    // Reset form
+    selectedEventType = null;
+    selectedTriggers = [];
+    selectedEventWarnings = [];
+    selectedHelped = [];
+    selectedDuration = null;
+    document.getElementById('eventFreetext').value = '';
+    document.querySelectorAll('.event-type-btn').forEach(btn => btn.classList.remove('selected'));
+    document.getElementById('eventForm').classList.remove('visible');
+    
+    updateEventHistory();
+    analyzeOverloadPatterns();
+    
+    // Confirmation
+    const btn = document.querySelector('.event-save-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✅ Gespeichert';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+}
+
+function updateEventHistory() {
+    const list = document.getElementById('eventHistoryList');
+    
+    if (overloadData.events.length === 0) {
+        list.innerHTML = '<p style="color: #95a5a6; text-align: center; font-style: italic;">Noch keine Overloads dokumentiert</p>';
+        return;
+    }
+    
+    const typeLabels = { overload: '⚡ Overload', meltdown: '🌋 Meltdown', shutdown: '🧊 Shutdown', freeze: '🫥 Freeze' };
+    const typeColors = { overload: '#e67e22', meltdown: '#e74c3c', shutdown: '#3498db', freeze: '#9b59b6' };
+    
+    list.innerHTML = overloadData.events.slice(0, 15).map(evt => {
+        const date = new Date(evt.timestamp);
+        const timeStr = date.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' })
+            + ', ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        
+        const tags = [
+            ...evt.triggers.map(t => `<span class="event-history-tag">${t}</span>`),
+        ].join('');
+        
+        const bodyParts = [];
+        if (evt.duration) bodyParts.push('Dauer: ' + evt.duration);
+        if (evt.helped.length > 0) bodyParts.push('Geholfen: ' + evt.helped.join(', '));
+        if (evt.notes) bodyParts.push(evt.notes);
+        
+        return `
+            <div class="event-history-item type-${evt.type}">
+                <div class="event-history-header">
+                    <span class="event-history-type" style="color:${typeColors[evt.type]}">${typeLabels[evt.type]}</span>
+                    <div class="event-history-meta">
+                        <span class="event-history-time">${timeStr}</span>
+                        <button class="event-history-delete" onclick="deleteOverloadEvent(${evt.id})" title="Löschen">❌</button>
+                    </div>
+                </div>
+                ${tags ? `<div class="event-history-tags">${tags}</div>` : ''}
+                ${bodyParts.length > 0 ? `<div class="event-history-body">${bodyParts.join('<br>')}</div>` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function deleteOverloadEvent(id) {
+    if (!confirm('Diesen Eintrag wirklich löschen?')) return;
+    overloadData.events = overloadData.events.filter(e => e.id !== id);
+    saveOverloadData();
+    updateEventHistory();
+    analyzeOverloadPatterns();
+}
+
+function analyzeOverloadPatterns() {
+    const patternList = document.getElementById('overloadPatternList');
+    
+    if (overloadData.events.length < 2) {
+        patternList.innerHTML = '<div class="pattern-insight">Noch zu wenig Daten für Muster. Dokumentiere Overloads, um mit der Zeit Zusammenhänge zu erkennen.</div>';
+        return;
+    }
+    
+    const insights = [];
+    const events = overloadData.events;
+    
+    // Type distribution
+    const typeCounts = {};
+    events.forEach(e => { typeCounts[e.type] = (typeCounts[e.type] || 0) + 1; });
+    const typeLabels = { overload: 'Overloads', meltdown: 'Meltdowns', shutdown: 'Shutdowns', freeze: 'Freezes' };
+    const typeBreakdown = Object.entries(typeCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([type, count]) => `${count}x ${typeLabels[type]}`)
+        .join(', ');
+    insights.push(`📊 Gesamt: ${events.length} Overloads (${typeBreakdown})`);
+    
+    // Most common triggers
+    const triggerCounts = {};
+    events.forEach(e => {
+        e.triggers.forEach(t => { triggerCounts[t] = (triggerCounts[t] || 0) + 1; });
+    });
+    const topTriggers = Object.entries(triggerCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3);
+    if (topTriggers.length > 0) {
+        insights.push('🎯 Häufigste Trigger: ' + topTriggers.map(([t, c]) => `${t} (${c}x)`).join(', '));
+    }
+    
+    // What helps most
+    const helpedCounts = {};
+    events.forEach(e => {
+        e.helped.forEach(h => { helpedCounts[h] = (helpedCounts[h] || 0) + 1; });
+    });
+    const topHelped = Object.entries(helpedCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3);
+    if (topHelped.length > 0) {
+        insights.push('✅ Was am meisten hilft: ' + topHelped.map(([h, c]) => `${h} (${c}x)`).join(', '));
+    }
+    
+    // Day of week analysis
+    const dayCounts = {};
+    const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    events.forEach(e => {
+        const day = new Date(e.timestamp).getDay();
+        dayCounts[day] = (dayCounts[day] || 0) + 1;
+    });
+    const peakDay = Object.entries(dayCounts).sort((a, b) => b[1] - a[1])[0];
+    if (peakDay && events.length >= 5) {
+        insights.push(`📅 Häufigster Tag: ${dayNames[peakDay[0]]} (${peakDay[1]}x) – gibt es da ein Muster?`);
+    }
+    
+    // Missed warning signs
+    const missedWarnings = {};
+    events.forEach(e => {
+        e.retrospectiveWarnings.forEach(w => {
+            missedWarnings[w] = (missedWarnings[w] || 0) + 1;
+        });
+    });
+    const topMissed = Object.entries(missedWarnings).sort((a, b) => b[1] - a[1])[0];
+    if (topMissed) {
+        const signal = warningSignals.find(s => s.id === topMissed[0]);
+        if (signal) {
+            insights.push(`👁️ Häufigstes übersehenes Signal: "${signal.name}" (${topMissed[1]}x) – darauf besonders achten`);
+        }
+    }
+    
+    patternList.innerHTML = insights.map(i => `<div class="pattern-insight">${i}</div>`).join('');
+}
+
+// Persistence
+function saveOverloadData() {
+    try {
+        localStorage.setItem('overloadData', JSON.stringify(overloadData));
+    } catch (e) {
+        console.log('Could not save overload data');
+    }
+}
+
+function loadOverloadData() {
+    try {
+        const saved = localStorage.getItem('overloadData');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            overloadData.events = parsed.events || [];
+            overloadData.activeWarnings = parsed.activeWarnings || [];
+        }
+    } catch (e) {
+        console.log('Could not load overload data');
     }
 }
 
