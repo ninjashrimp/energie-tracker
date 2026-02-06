@@ -705,6 +705,317 @@
     }
 }
 
+/* Sensorischer Umgebungs-Check Styles */
+.sensorik-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sensorik-container h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.sensorik-subtitle {
+    text-align: center;
+    color: #bbb;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.sensorik-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.sensorik-card {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 15px;
+    padding: 18px 20px;
+    border: 1px solid rgba(243, 156, 18, 0.15);
+    transition: all 0.3s ease;
+}
+
+.sensorik-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.sensorik-card-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.sensorik-card-info {
+    flex: 1;
+}
+
+.sensorik-card-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #eee;
+}
+
+.sensorik-card-hint {
+    font-size: 13px;
+    color: #7f8c8d;
+    margin-top: 2px;
+}
+
+.sensorik-levels {
+    display: flex;
+    gap: 8px;
+}
+
+.sensorik-level-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    color: #bbb;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.sensorik-level-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.sensorik-level-btn .level-emoji {
+    font-size: 20px;
+}
+
+.sensorik-level-btn .level-label {
+    font-size: 12px;
+}
+
+.sensorik-level-btn.selected-ok {
+    background: rgba(39, 174, 96, 0.25);
+    border-color: #27ae60;
+    color: #2ecc71;
+}
+
+.sensorik-level-btn.selected-belastend {
+    background: rgba(243, 156, 18, 0.25);
+    border-color: #f39c12;
+    color: #f1c40f;
+}
+
+.sensorik-level-btn.selected-zuviel {
+    background: rgba(231, 76, 60, 0.25);
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.sensorik-result {
+    background: linear-gradient(135deg, #16213e 0%, #1a2b4a 100%);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    text-align: center;
+    display: none;
+}
+
+.sensorik-result.visible {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.sensorik-score {
+    font-size: 48px;
+    margin-bottom: 5px;
+}
+
+.sensorik-score-label {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.sensorik-score-label.score-ok { color: #27ae60; }
+.sensorik-score-label.score-erhoeht { color: #f39c12; }
+.sensorik-score-label.score-hoch { color: #e67e22; }
+.sensorik-score-label.score-kritisch { color: #e74c3c; }
+
+.sensorik-bar {
+    width: 100%;
+    height: 12px;
+    background: #2c3e50;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.sensorik-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease, background 0.5s ease;
+}
+
+.sensorik-suggestions {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.sensorik-suggestion-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-left: 3px solid #f39c12;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ddd;
+}
+
+.sensorik-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.sensorik-save-btn {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.sensorik-save-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.sensorik-reset-btn {
+    background: transparent;
+    border: 2px solid #7f8c8d;
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: #7f8c8d;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.sensorik-reset-btn:hover {
+    border-color: #bdc3c7;
+    color: #bdc3c7;
+}
+
+.sensorik-history {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.sensorik-history h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.sensorik-history-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.sensorik-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.sensorik-history-time {
+    color: #95a5a6;
+    font-size: 13px;
+}
+
+.sensorik-history-score {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sensorik-history-dims {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sensorik-history-dim {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+}
+
+.sensorik-history-dim.dim-ok { color: #27ae60; }
+.sensorik-history-dim.dim-belastend { color: #f39c12; }
+.sensorik-history-dim.dim-zuviel { color: #e74c3c; }
+
+.sensorik-history-delete {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.sensorik-history-delete:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.sensorik-pattern-hint {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #f39c12;
+}
+
+@media (max-width: 600px) {
+    .sensorik-levels {
+        gap: 6px;
+    }
+    .sensorik-level-btn {
+        padding: 8px 4px;
+        font-size: 12px;
+    }
+    .sensorik-level-btn .level-emoji {
+        font-size: 18px;
+    }
+}
+
 /* Anti-To-Do Tracker Styles */
 .antitodo-container {
     max-width: 800px;
@@ -1004,6 +1315,7 @@
             <button class="nav-btn" onclick="showPage('stats')">Statistiken</button>
             <button class="nav-btn" onclick="showPage('motivator')">Mini-Motivator</button>
             <button class="nav-btn" onclick="showPage('antitodo')">Anti-To-Do</button>
+            <button class="nav-btn" onclick="showPage('sensorik')">Sensorik</button>
         </div>
         
 
@@ -1190,6 +1502,7 @@
 
         <!-- Anti-To-Do Page -->
         <div class="page" id="antitodoPage">
+
             <div class="antitodo-container">
                 <h2>✨ Ich hab was geschafft!</h2>
                 <p class="antitodo-subtitle">Würdige deine unsichtbaren Erfolge</p>
@@ -1245,6 +1558,41 @@
                         <input type="checkbox" id="reminderToggle" onchange="toggleReminder()">
                         <span>Sanfte tägliche Erinnerung</span>
                     </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sensorischer Umgebungs-Check Page -->
+        <div class="page" id="sensorikPage">
+            <div class="sensorik-container">
+                <h2>🌡️ Sensorischer Umgebungs-Check</h2>
+                <p class="sensorik-subtitle">Wie fühlt sich deine Umgebung gerade an?</p>
+                
+                <div class="sensorik-grid" id="sensorikGrid"></div>
+                
+                <!-- Ergebnis -->
+                <div class="sensorik-result" id="sensorikResult">
+                    <div class="sensorik-score" id="sensorikScore"></div>
+                    <div class="sensorik-score-label" id="sensorikScoreLabel"></div>
+                    <div class="sensorik-bar">
+                        <div class="sensorik-bar-fill" id="sensorikBarFill"></div>
+                    </div>
+                    <div class="sensorik-suggestions" id="sensorikSuggestions"></div>
+                </div>
+                
+                <!-- Aktionen -->
+                <div class="sensorik-actions" id="sensorikActions" style="display:none;">
+                    <button class="sensorik-save-btn" onclick="saveSensorikCheck()">💾 Check speichern</button>
+                    <button class="sensorik-reset-btn" onclick="resetSensorikCheck()">Zurücksetzen</button>
+                </div>
+                
+                <!-- Verlauf -->
+                <div class="sensorik-history" id="sensorikHistory">
+                    <h3>📊 Letzte Checks</h3>
+                    <div id="sensorikHistoryList">
+                        <p style="color: #95a5a6; text-align: center; font-style: italic;">Noch keine Checks gespeichert</p>
+                    </div>
+                    <div id="sensorikPatternHint"></div>
                 </div>
             </div>
         </div>
@@ -1779,6 +2127,11 @@ function showPage(page) {
     updateCourageArchive();
     // Reset input state
     cancelInput();
+ } else if (page === 'sensorik') {
+    document.getElementById('sensorikPage').classList.add('active');
+    loadSensorikData();
+    renderSensorikGrid();
+    updateSensorikHistory();
  }
 }
 
@@ -1937,6 +2290,7 @@ window.onload = function() {
     
     loadAntitodoData();
     checkDailyReminder(); // Check for daily reminder
+    loadSensorikData(); // Load sensorik data
     
     // Set up daily reminder check (every hour)
     setInterval(checkDailyReminder, 60 * 60 * 1000);
@@ -2803,6 +3157,406 @@ function loadAntitodoData() {
         
     } catch (e) {
         console.log('Could not load antitodo data');
+    }
+}
+
+// ==========================================
+// Sensorischer Umgebungs-Check
+// ==========================================
+
+let sensorikData = {
+    checks: [],
+    currentCheck: {}
+};
+
+const sensorikDimensions = [
+    {
+        id: 'licht',
+        name: 'Licht',
+        icon: '💡',
+        hint: 'Reflexe, Flackern, Helligkeit, elektrisches Licht',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Belastend' },
+            { value: 2, emoji: '🔴', label: 'Zu viel' }
+        ],
+        suggestions: {
+            1: 'Elektrisches Licht dimmen oder auf indirektes Licht wechseln. Bildschirmhelligkeit runter, Blaulichtfilter an. Tageslicht bevorzugen wenn möglich.',
+            2: 'Lichtquellen aus, die flackern oder reflektieren. Raum abdunkeln, Sonnenbrille oder Kappe aufsetzen. Nur eine sanfte, indirekte Lichtquelle lassen.'
+        }
+    },
+    {
+        id: 'geraeusche',
+        name: 'Geräusche',
+        icon: '🔊',
+        hint: 'Überlagerung, Geräuschwirrwarr, nicht filtern können',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Unruhig' },
+            { value: 2, emoji: '🔴', label: 'Wirrwarr' }
+        ],
+        suggestions: {
+            1: 'Geräuschquellen reduzieren: eine Sache stumm schalten, Tür zu, oder Kopfhörer mit einem einzigen Sound drüber.',
+            2: 'Raus aus dem Wirrwarr. Einen ruhigen Ort suchen oder Noise-Cancelling rein – nicht um Stille zu haben, sondern um die Überlagerung zu stoppen.'
+        }
+    },
+    {
+        id: 'gerueche',
+        name: 'Gerüche',
+        icon: '👃',
+        hint: 'Intensität, unangenehme Gerüche',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Unangenehm' },
+            { value: 2, emoji: '🔴', label: 'Intensiv' }
+        ],
+        suggestions: {
+            1: 'Fenster öffnen oder Raum wechseln. Eigenen Lieblingsduft griffbereit haben hilft.',
+            2: 'Raus aus der Situation. Frische Luft, Schal/Tuch vor die Nase, Mund atmen als Notlösung.'
+        }
+    },
+    {
+        id: 'temperatur',
+        name: 'Temperatur',
+        icon: '🌡️',
+        hint: 'Zu warm, zu kalt, stickig',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Unangenehm' },
+            { value: 2, emoji: '🔴', label: 'Extrem' }
+        ],
+        suggestions: {
+            1: 'Schicht an- oder ausziehen. Fenster auf/zu. Warmes/kaltes Getränk holen.',
+            2: 'Körpertemperatur aktiv regulieren: Handgelenke kühlen/wärmen, Ort wechseln, Decke/Ventilator.'
+        }
+    },
+    {
+        id: 'koerper',
+        name: 'Körpergefühl',
+        icon: '👕',
+        hint: 'Kleidung, Etiketten, Texturen, Enge',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Störend' },
+            { value: 2, emoji: '🔴', label: 'Unerträglich' }
+        ],
+        suggestions: {
+            1: 'Was genau stört? Etikett, Naht, Enge? Wenn möglich: umziehen oder lockern.',
+            2: 'Sofort wechseln was geht. Bequeme Notfall-Kleidung griffbereit halten (Hoodie, weiche Hose).'
+        }
+    },
+    {
+        id: 'sozial',
+        name: 'Soziale Dichte',
+        icon: '👥',
+        hint: 'Menschen, Nähe, Erwartungsdruck',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Viel' },
+            { value: 2, emoji: '🔴', label: 'Zu viel' }
+        ],
+        suggestions: {
+            1: 'Kurz Abstand nehmen: Toilette, kurzer Gang, Kopfhörer als Signal. Du darfst Pausen nehmen.',
+            2: 'Rückzug ist jetzt Selbstschutz. Raum verlassen, allein sein, Reize runterfahren. Kein schlechtes Gewissen.'
+        }
+    },
+    {
+        id: 'visuell',
+        name: 'Visuelle Unruhe',
+        icon: '📱',
+        hint: 'Bewegung, Bildschirme, Chaos, Unordnung',
+        levels: [
+            { value: 0, emoji: '✅', label: 'Okay' },
+            { value: 1, emoji: '⚠️', label: 'Unruhig' },
+            { value: 2, emoji: '🔴', label: 'Chaotisch' }
+        ],
+        suggestions: {
+            1: 'Blickfeld aufräumen: Tabs schließen, Schreibtisch freiräumen, Blick auf einen ruhigen Punkt richten.',
+            2: 'Augen schließen oder Blick auf einen einzigen Punkt fixieren. Weniger Bildschirme. Aufräumen kann warten – erstmal Ruhe.'
+        }
+    }
+];
+
+function renderSensorikGrid() {
+    const grid = document.getElementById('sensorikGrid');
+    grid.innerHTML = '';
+    
+    sensorikDimensions.forEach(dim => {
+        const currentValue = sensorikData.currentCheck[dim.id];
+        
+        const card = document.createElement('div');
+        card.className = 'sensorik-card';
+        card.innerHTML = `
+            <div class="sensorik-card-header">
+                <span class="sensorik-card-icon">${dim.icon}</span>
+                <div class="sensorik-card-info">
+                    <div class="sensorik-card-name">${dim.name}</div>
+                    <div class="sensorik-card-hint">${dim.hint}</div>
+                </div>
+            </div>
+            <div class="sensorik-levels">
+                ${dim.levels.map(level => {
+                    const selectedClass = currentValue === level.value 
+                        ? (level.value === 0 ? 'selected-ok' : level.value === 1 ? 'selected-belastend' : 'selected-zuviel')
+                        : '';
+                    return `
+                        <button class="sensorik-level-btn ${selectedClass}" 
+                                onclick="setSensorikLevel('${dim.id}', ${level.value})">
+                            <span class="level-emoji">${level.emoji}</span>
+                            <span class="level-label">${level.label}</span>
+                        </button>
+                    `;
+                }).join('')}
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function setSensorikLevel(dimensionId, value) {
+    sensorikData.currentCheck[dimensionId] = value;
+    renderSensorikGrid();
+    updateSensorikResult();
+}
+
+function updateSensorikResult() {
+    const checked = Object.keys(sensorikData.currentCheck);
+    if (checked.length === 0) {
+        document.getElementById('sensorikResult').classList.remove('visible');
+        document.getElementById('sensorikActions').style.display = 'none';
+        return;
+    }
+    
+    // Calculate score
+    const totalDimensions = sensorikDimensions.length;
+    const maxScore = totalDimensions * 2;
+    let currentScore = 0;
+    
+    sensorikDimensions.forEach(dim => {
+        const val = sensorikData.currentCheck[dim.id];
+        if (val !== undefined) {
+            currentScore += val;
+        }
+    });
+    
+    const percentage = (currentScore / maxScore) * 100;
+    
+    // Determine level
+    let emoji, label, cssClass, barColor;
+    if (percentage <= 15) {
+        emoji = '🟢'; label = 'Sensorisch ausgeglichen'; cssClass = 'score-ok'; barColor = '#27ae60';
+    } else if (percentage <= 35) {
+        emoji = '🟡'; label = 'Leicht erhöhte Belastung'; cssClass = 'score-erhoeht'; barColor = '#f1c40f';
+    } else if (percentage <= 60) {
+        emoji = '🟠'; label = 'Deutliche Belastung'; cssClass = 'score-hoch'; barColor = '#e67e22';
+    } else {
+        emoji = '🔴'; label = 'Sensorische Überlastung!'; cssClass = 'score-kritisch'; barColor = '#e74c3c';
+    }
+    
+    document.getElementById('sensorikScore').textContent = emoji;
+    
+    const scoreLabel = document.getElementById('sensorikScoreLabel');
+    scoreLabel.textContent = label;
+    scoreLabel.className = 'sensorik-score-label ' + cssClass;
+    
+    const barFill = document.getElementById('sensorikBarFill');
+    barFill.style.width = percentage + '%';
+    barFill.style.background = barColor;
+    
+    // Generate suggestions for belastend/zuviel dimensions
+    const suggestionsDiv = document.getElementById('sensorikSuggestions');
+    let suggestionsHTML = '';
+    
+    sensorikDimensions.forEach(dim => {
+        const val = sensorikData.currentCheck[dim.id];
+        if (val && val > 0 && dim.suggestions[val]) {
+            suggestionsHTML += `
+                <div class="sensorik-suggestion-item">
+                    <strong>${dim.icon} ${dim.name}:</strong> ${dim.suggestions[val]}
+                </div>
+            `;
+        }
+    });
+    
+    if (suggestionsHTML) {
+        suggestionsDiv.innerHTML = '<h4 style="color: #f39c12; margin-bottom: 10px;">💡 Was du tun kannst:</h4>' + suggestionsHTML;
+    } else {
+        suggestionsDiv.innerHTML = '<p style="color: #27ae60;">Alles im grünen Bereich – gut so! 🌿</p>';
+    }
+    
+    // Show result and actions
+    document.getElementById('sensorikResult').classList.add('visible');
+    
+    // Show save button when at least 3 dimensions are checked
+    if (checked.length >= 3) {
+        document.getElementById('sensorikActions').style.display = 'flex';
+    }
+}
+
+function saveSensorikCheck() {
+    const check = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        dimensions: { ...sensorikData.currentCheck },
+        score: calculateSensorikScore()
+    };
+    
+    sensorikData.checks.unshift(check);
+    
+    // Keep only last 50 checks
+    if (sensorikData.checks.length > 50) {
+        sensorikData.checks = sensorikData.checks.slice(0, 50);
+    }
+    
+    saveSensorikDataToStorage();
+    updateSensorikHistory();
+    
+    // Brief confirmation
+    const btn = document.querySelector('.sensorik-save-btn');
+    const originalText = btn.textContent;
+    btn.textContent = '✅ Gespeichert!';
+    btn.style.background = '#27ae60';
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = '';
+    }, 2000);
+}
+
+function calculateSensorikScore() {
+    const maxScore = sensorikDimensions.length * 2;
+    let currentScore = 0;
+    sensorikDimensions.forEach(dim => {
+        const val = sensorikData.currentCheck[dim.id];
+        if (val !== undefined) currentScore += val;
+    });
+    return Math.round((currentScore / maxScore) * 100);
+}
+
+function resetSensorikCheck() {
+    sensorikData.currentCheck = {};
+    renderSensorikGrid();
+    document.getElementById('sensorikResult').classList.remove('visible');
+    document.getElementById('sensorikActions').style.display = 'none';
+}
+
+function updateSensorikHistory() {
+    const list = document.getElementById('sensorikHistoryList');
+    
+    if (sensorikData.checks.length === 0) {
+        list.innerHTML = '<p style="color: #95a5a6; text-align: center; font-style: italic;">Noch keine Checks gespeichert</p>';
+        document.getElementById('sensorikPatternHint').innerHTML = '';
+        return;
+    }
+    
+    // Show last 10 checks
+    list.innerHTML = sensorikData.checks.slice(0, 10).map(check => {
+        const date = new Date(check.timestamp);
+        const timeStr = date.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }) 
+            + ', ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        
+        let scoreColor, scoreEmoji;
+        if (check.score <= 15) { scoreColor = '#27ae60'; scoreEmoji = '🟢'; }
+        else if (check.score <= 35) { scoreColor = '#f1c40f'; scoreEmoji = '🟡'; }
+        else if (check.score <= 60) { scoreColor = '#e67e22'; scoreEmoji = '🟠'; }
+        else { scoreColor = '#e74c3c'; scoreEmoji = '🔴'; }
+        
+        const dimTags = sensorikDimensions
+            .filter(dim => check.dimensions[dim.id] !== undefined && check.dimensions[dim.id] > 0)
+            .map(dim => {
+                const val = check.dimensions[dim.id];
+                const dimClass = val === 1 ? 'dim-belastend' : 'dim-zuviel';
+                return `<span class="sensorik-history-dim ${dimClass}">${dim.icon} ${dim.name}</span>`;
+            }).join('');
+        
+        return `
+            <div class="sensorik-history-item">
+                <div class="sensorik-history-header">
+                    <span class="sensorik-history-time">${timeStr}</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="sensorik-history-score" style="color:${scoreColor}">
+                            ${scoreEmoji} ${check.score}%
+                        </span>
+                        <button class="sensorik-history-delete" onclick="deleteSensorikCheck(${check.id})" title="Löschen">❌</button>
+                    </div>
+                </div>
+                ${dimTags ? `<div class="sensorik-history-dims">${dimTags}</div>` : '<span style="color:#27ae60; font-size:13px;">Alles ok</span>'}
+            </div>
+        `;
+    }).join('');
+    
+    // Pattern analysis
+    analyzeSensorikPatterns();
+}
+
+function deleteSensorikCheck(id) {
+    if (!confirm('Diesen Check wirklich löschen?')) return;
+    sensorikData.checks = sensorikData.checks.filter(c => c.id !== id);
+    saveSensorikDataToStorage();
+    updateSensorikHistory();
+}
+
+function analyzeSensorikPatterns() {
+    const hintDiv = document.getElementById('sensorikPatternHint');
+    
+    if (sensorikData.checks.length < 3) {
+        hintDiv.innerHTML = '';
+        return;
+    }
+    
+    // Find most frequently problematic dimensions
+    const dimCounts = {};
+    const recentChecks = sensorikData.checks.slice(0, 20);
+    
+    recentChecks.forEach(check => {
+        sensorikDimensions.forEach(dim => {
+            if (check.dimensions[dim.id] && check.dimensions[dim.id] > 0) {
+                if (!dimCounts[dim.id]) dimCounts[dim.id] = { name: dim.name, icon: dim.icon, count: 0, severe: 0 };
+                dimCounts[dim.id].count++;
+                if (check.dimensions[dim.id] === 2) dimCounts[dim.id].severe++;
+            }
+        });
+    });
+    
+    const sorted = Object.values(dimCounts).sort((a, b) => b.count - a.count);
+    
+    if (sorted.length === 0) {
+        hintDiv.innerHTML = '<div class="sensorik-pattern-hint">🌿 Deine sensorische Umgebung scheint meistens in Ordnung zu sein!</div>';
+        return;
+    }
+    
+    const top = sorted[0];
+    const totalChecks = recentChecks.length;
+    const pct = Math.round((top.count / totalChecks) * 100);
+    
+    let hint = `${top.icon} <strong>${top.name}</strong> ist in ${pct}% deiner Checks belastend`;
+    if (top.severe > 0) {
+        hint += ` (davon ${top.severe}x kritisch)`;
+    }
+    hint += '. Lohnt es sich, hier dauerhaft etwas zu verändern?';
+    
+    hintDiv.innerHTML = `<div class="sensorik-pattern-hint">${hint}</div>`;
+}
+
+// Persistence
+function saveSensorikDataToStorage() {
+    try {
+        localStorage.setItem('sensorikData', JSON.stringify(sensorikData));
+    } catch (e) {
+        console.log('Could not save sensorik data');
+    }
+}
+
+function loadSensorikData() {
+    try {
+        const saved = localStorage.getItem('sensorikData');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            sensorikData.checks = parsed.checks || [];
+            // Don't restore currentCheck – start fresh each time
+            sensorikData.currentCheck = {};
+        }
+    } catch (e) {
+        console.log('Could not load sensorik data');
     }
 }
 
