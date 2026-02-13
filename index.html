@@ -1688,6 +1688,20 @@
 }
 
 /* Nachträgliche Erfassung */
+.retro-day-banner {
+    background: rgba(243, 156, 18, 0.2);
+    border: 1px solid #f39c12;
+    border-radius: 10px;
+    padding: 10px 15px;
+    text-align: center;
+    color: #f39c12;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.retro-day-banner.hidden { display: none; }
+
 .retro-datetime {
     display: flex;
     align-items: center;
@@ -2073,7 +2087,10 @@
                 <input type="range" min="1" max="10" value="8" class="slider" id="morningSlider">
                 <div class="slider-value" id="sliderValue">8 Löffel</div>
                 <button class="start-day-btn" onclick="startDay()">Tag starten</button>
+                <button class="retro-datetime-toggle" id="yesterdayCatchupBtn" onclick="startYesterdayCatchup()" style="margin-top:12px; display:inline-block;">📅 Gestrigen Tag nachtragen</button>
             </div>
+
+            <div class="retro-day-banner hidden" id="retroDayBanner">📅 Nachtrag</div>
 
             <div class="overload-mini hidden" id="overloadMini" onclick="showPage('overload'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Overload')b.classList.add('active')});">
                 <div class="overload-mini-left">
@@ -2372,6 +2389,11 @@
                         <span class="event-form-label">Notizen (optional)</span>
                         <textarea class="event-freetext" id="eventFreetext" placeholder="Was möchtest du dir merken?" maxlength="300"></textarea>
                         
+                        <div class="retro-datetime" style="justify-content:center; margin-bottom:10px;">
+                            <button class="retro-datetime-toggle" id="overloadRetroToggle" onclick="toggleRetroDatetime('overload')">🕐 Jetzt</button>
+                            <input type="datetime-local" class="retro-datetime-input" id="overloadRetroInput">
+                        </div>
+
                         <button class="event-save-btn" onclick="saveOverloadEvent()">💾 Speichern</button>
                     </div>
                 </div>
@@ -2487,6 +2509,7 @@
         let currentEnergy = 8;
         let maxEnergy = 10;
         let dayStarted = false;
+        let retroDayMode = false;
         let history = [];
         let currentDay = null;
         let allDays = [];
@@ -2590,6 +2613,7 @@ const activities = [
             maxEnergy = parseInt(slider.value);
             currentEnergy = maxEnergy;
             dayStarted = true;
+            retroDayMode = false;
             history = [];
             
             // Create new day record
@@ -2608,6 +2632,51 @@ const activities = [
             document.getElementById('resetBtn').classList.remove('hidden');
             document.getElementById('navigation').classList.remove('hidden');
             document.getElementById('overloadMini').classList.remove('hidden');
+            document.getElementById('retroDayBanner').classList.add('hidden');
+            
+            updateDisplay();
+            renderActivities();
+            saveToLocalStorage();
+        }
+
+        function startYesterdayCatchup() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().split('T')[0];
+            
+            // Check if yesterday already exists
+            if (allDays.some(d => d.date === yesterdayStr)) {
+                alert('Für gestern gibt es bereits einen Eintrag.');
+                return;
+            }
+            
+            maxEnergy = parseInt(slider.value);
+            currentEnergy = maxEnergy;
+            dayStarted = true;
+            retroDayMode = true;
+            history = [];
+            
+            currentDay = {
+                date: yesterdayStr,
+                dayOfWeek: yesterday.getDay(),
+                startEnergy: maxEnergy,
+                endEnergy: currentEnergy,
+                activities: []
+            };
+            
+            document.getElementById('morningCheckin').classList.add('hidden');
+            document.getElementById('mainDisplay').classList.remove('hidden');
+            document.getElementById('activitiesGrid').classList.remove('hidden');
+            document.getElementById('history').classList.remove('hidden');
+            document.getElementById('resetBtn').classList.remove('hidden');
+            document.getElementById('navigation').classList.remove('hidden');
+            document.getElementById('overloadMini').classList.remove('hidden');
+            
+            // Show retro banner
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            const banner = document.getElementById('retroDayBanner');
+            banner.textContent = '📅 Nachtrag: ' + dayNames[yesterday.getDay()] + ', ' + yesterday.toLocaleDateString('de-DE');
+            banner.classList.remove('hidden');
             
             updateDisplay();
             renderActivities();
@@ -2952,7 +3021,8 @@ function showAllActivities() {
         }
 
         function resetDay() {
-            if (confirm('Möchtest du den Tag abschließen und einen neuen starten?')) {
+            const msg = retroDayMode ? 'Nachtrag abschließen?' : 'Möchtest du den Tag abschließen und einen neuen starten?';
+            if (confirm(msg)) {
                 // Save current day
                 if (currentDay && currentDay.activities.length > 0) {
                     allDays.push(currentDay);
@@ -2962,6 +3032,7 @@ function showAllActivities() {
                 // Reset for new day
                 currentDay = null;
                 dayStarted = false;
+                retroDayMode = false;
                 history = [];
                 updateHistory();
                 document.getElementById('morningCheckin').classList.remove('hidden');
@@ -2969,6 +3040,7 @@ function showAllActivities() {
                 document.getElementById('activitiesGrid').classList.add('hidden');
                 document.getElementById('history').classList.add('hidden');
                 document.getElementById('resetBtn').classList.add('hidden');
+                document.getElementById('retroDayBanner').classList.add('hidden');
             }
             saveToLocalStorage();
         }
@@ -3178,6 +3250,15 @@ window.onload = function() {
         renderActivities();
         updateHistory();
         updateOverloadMini();
+        
+        // Restore retro day banner if active
+        if (retroDayMode && currentDay) {
+            const dayDate = new Date(currentDay.date + 'T12:00:00');
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            const banner = document.getElementById('retroDayBanner');
+            banner.textContent = '📅 Nachtrag: ' + dayNames[dayDate.getDay()] + ', ' + dayDate.toLocaleDateString('de-DE');
+            banner.classList.remove('hidden');
+        }
     }
     
     loadSensorikData(); // Load sensorik data
@@ -3192,6 +3273,7 @@ function saveToLocalStorage() {
             currentEnergy: currentEnergy,
             maxEnergy: maxEnergy,
             dayStarted: dayStarted,
+            retroDayMode: retroDayMode,
             history: history,
             currentDay: currentDay,
             allDays: allDays,
@@ -3213,6 +3295,7 @@ function loadFromLocalStorage() {
             currentEnergy = data.currentEnergy || 8;
             maxEnergy = data.maxEnergy || 10;
             dayStarted = data.dayStarted || false;
+            retroDayMode = data.retroDayMode || false;
             history = data.history || [];
             currentDay = data.currentDay || null;
             allDays = data.allDays || [];
@@ -4493,9 +4576,14 @@ function selectEventDuration(d) {
 function saveOverloadEvent() {
     if (!selectedEventType) return;
     
+    const retroInput = document.getElementById('overloadRetroInput');
+    const retroToggle = document.getElementById('overloadRetroToggle');
+    const isRetro = retroToggle.classList.contains('active') && retroInput.value;
+    const timestamp = isRetro ? new Date(retroInput.value).toISOString() : new Date().toISOString();
+    
     const evt = {
         id: Date.now(),
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp,
         type: selectedEventType,
         triggers: [...selectedTriggers],
         retrospectiveWarnings: [...selectedEventWarnings],
@@ -4507,6 +4595,7 @@ function saveOverloadEvent() {
     };
     
     overloadData.events.unshift(evt);
+    overloadData.events.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     
     // Keep last 100 events
     if (overloadData.events.length > 100) {
@@ -4524,6 +4613,7 @@ function saveOverloadEvent() {
     document.getElementById('eventFreetext').value = '';
     document.querySelectorAll('.event-type-btn').forEach(btn => btn.classList.remove('selected'));
     document.getElementById('eventForm').classList.remove('visible');
+    resetRetroDatetime('overload');
     
     updateEventHistory();
     analyzeOverloadPatterns();
