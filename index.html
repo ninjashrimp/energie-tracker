@@ -2873,7 +2873,7 @@
                 <div class="erholung-section">
                     <h3>📝 Erholung erfassen</h3>
 
-                    <p class="erholung-step-label">Schritt 1 – Was hast du gemacht?</p>
+                    <p class="erholung-step-label">Schritt 1 – Was hast du gemacht? (max. 3)</p>
                     <div id="erholungActivityList"></div>
 
                     <div class="erholung-stress-section" id="erholungStressSection">
@@ -6147,7 +6147,7 @@ function loadSwitchesData() {
 let erholungData = { entries: [] };
 
 let erholungState = {
-    activity: null,
+    activities: [],
     stressType: null,
     effect: null
 };
@@ -6230,15 +6230,17 @@ function renderErholungForm() {
     // Activities (grouped)
     const actList = document.getElementById('erholungActivityList');
     actList.innerHTML = erholungActivities.map(cat => {
-        const chips = cat.items.map(item =>
-            `<button class="erholung-activity-chip${erholungState.activity === item.id ? ' selected' : ''}" onclick="selectErholungActivity('${item.id}')">${item.name}</button>`
-        ).join('');
+        const chips = cat.items.map(item => {
+            const isSelected = erholungState.activities.includes(item.id);
+            const isDisabled = !isSelected && erholungState.activities.length >= 3;
+            return `<button class="erholung-activity-chip${isSelected ? ' selected' : ''}${isDisabled ? ' disabled' : ''}" onclick="toggleErholungActivity('${item.id}')" ${isDisabled ? 'style="opacity:0.4;cursor:default;"' : ''}>${item.name}</button>`;
+        }).join('');
         return `<div class="erholung-category-label">${cat.category}</div><div class="erholung-activity-grid">${chips}</div>`;
     }).join('');
 
     // Stress type
     const stressSection = document.getElementById('erholungStressSection');
-    stressSection.classList.toggle('visible', erholungState.activity !== null);
+    stressSection.classList.toggle('visible', erholungState.activities.length > 0);
     const stressGrid = document.getElementById('erholungStressGrid');
     stressGrid.innerHTML = erholungStressTypes.map(st =>
         `<button class="erholung-stress-btn${erholungState.stressType === st.id ? ' selected' : ''}" onclick="selectErholungStress('${st.id}')">
@@ -6258,12 +6260,17 @@ function renderErholungForm() {
     const retroSection = document.getElementById('erholungRetroSection');
     retroSection.style.display = erholungState.stressType !== null ? 'flex' : 'none';
     const saveBtn = document.getElementById('erholungSaveBtn');
-    saveBtn.classList.toggle('visible', erholungState.activity !== null && erholungState.stressType !== null && erholungState.effect !== null);
+    saveBtn.classList.toggle('visible', erholungState.activities.length > 0 && erholungState.stressType !== null && erholungState.effect !== null);
 }
 
-function selectErholungActivity(id) {
-    erholungState.activity = erholungState.activity === id ? null : id;
-    if (!erholungState.activity) { erholungState.stressType = null; erholungState.effect = null; }
+function toggleErholungActivity(id) {
+    const idx = erholungState.activities.indexOf(id);
+    if (idx >= 0) {
+        erholungState.activities.splice(idx, 1);
+    } else if (erholungState.activities.length < 3) {
+        erholungState.activities.push(id);
+    }
+    if (erholungState.activities.length === 0) { erholungState.stressType = null; erholungState.effect = null; }
     renderErholungForm();
 }
 
@@ -6287,7 +6294,7 @@ function getActivityLabel(id) {
 }
 
 function saveErholungEntry() {
-    if (!erholungState.activity || !erholungState.stressType || !erholungState.effect) return;
+    if (erholungState.activities.length === 0 || !erholungState.stressType || !erholungState.effect) return;
 
     const retroInput = document.getElementById('erholungRetroInput');
     const retroToggle = document.getElementById('erholungRetroToggle');
@@ -6297,8 +6304,10 @@ function saveErholungEntry() {
     const entry = {
         id: Date.now(),
         timestamp: timestamp,
-        activityId: erholungState.activity,
-        activityLabel: getActivityLabel(erholungState.activity),
+        activities: erholungState.activities.map(aid => ({
+            id: aid,
+            label: getActivityLabel(aid)
+        })),
         stressType: erholungState.stressType,
         stressLabel: erholungStressTypes.find(s => s.id === erholungState.stressType)?.name,
         effect: erholungState.effect,
@@ -6311,7 +6320,7 @@ function saveErholungEntry() {
 
     saveErholungData();
 
-    erholungState = { activity: null, stressType: null, effect: null };
+    erholungState = { activities: [], stressType: null, effect: null };
     resetRetroDatetime('erholung');
     renderErholungForm();
     updateErholungHistory();
@@ -6338,10 +6347,15 @@ function updateErholungHistory() {
         const timeStr = date.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' })
             + ', ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 
+        // Backward compat
+        const actLabel = entry.activities
+            ? entry.activities.map(a => a.label).join(', ')
+            : entry.activityLabel || '?';
+
         return `
             <div class="erholung-history-item helped-${entry.effect}">
                 <div class="erholung-history-header">
-                    <span class="erholung-history-activity">${entry.activityLabel}</span>
+                    <span class="erholung-history-activity">${actLabel}</span>
                     <div class="erholung-history-meta">
                         <span class="erholung-history-time">${timeStr}</span>
                         <button class="erholung-history-delete" onclick="deleteErholungEntry(${entry.id})" title="Löschen">❌</button>
@@ -6373,6 +6387,13 @@ function analyzeErholungPatterns() {
         return;
     }
 
+    // Helper: get activity labels from entry (backward compat)
+    function getEntryActivities(e) {
+        if (e.activities && e.activities.length > 0) return e.activities.map(a => a.label);
+        if (e.activityLabel) return [e.activityLabel];
+        return [];
+    }
+
     const insights = [];
 
     // Overall effectiveness
@@ -6382,12 +6403,14 @@ function analyzeErholungPatterns() {
     const rate = ((helped + partial * 0.5) / entries.length * 100).toFixed(0);
     insights.push(`📊 ${entries.length} Einträge, Erfolgsquote: ${rate}% (${helped}x ja, ${partial}x teilweise, ${notHelped}x nein)`);
 
-    // Best activities overall
+    // Best activities overall (each activity counted individually)
     const actStats = {};
     entries.forEach(e => {
-        if (!actStats[e.activityLabel]) actStats[e.activityLabel] = { yes: 0, partial: 0, no: 0, total: 0 };
-        actStats[e.activityLabel][e.effect]++;
-        actStats[e.activityLabel].total++;
+        getEntryActivities(e).forEach(label => {
+            if (!actStats[label]) actStats[label] = { yes: 0, partial: 0, no: 0, total: 0 };
+            actStats[label][e.effect]++;
+            actStats[label].total++;
+        });
     });
 
     const bestActivities = Object.entries(actStats)
@@ -6405,9 +6428,11 @@ function analyzeErholungPatterns() {
     entries.forEach(e => {
         const key = e.stressType;
         if (!stressCombos[key]) stressCombos[key] = {};
-        if (!stressCombos[key][e.activityLabel]) stressCombos[key][e.activityLabel] = { yes: 0, partial: 0, no: 0, total: 0 };
-        stressCombos[key][e.activityLabel][e.effect]++;
-        stressCombos[key][e.activityLabel].total++;
+        getEntryActivities(e).forEach(label => {
+            if (!stressCombos[key][label]) stressCombos[key][label] = { yes: 0, partial: 0, no: 0, total: 0 };
+            stressCombos[key][label][e.effect]++;
+            stressCombos[key][label].total++;
+        });
     });
 
     const stressLabels = { sozial: 'Sozial', kognitiv: 'Kognitiv', sensorisch: 'Sensorisch', emotional: 'Emotional', gemischt: 'Gemischt' };
