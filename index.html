@@ -1687,6 +1687,54 @@
     }
 }
 
+/* Nachträgliche Erfassung */
+.retro-datetime {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+}
+
+.retro-datetime-toggle {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: #95a5a6;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.retro-datetime-toggle:hover { background: rgba(255,255,255,0.08); }
+
+.retro-datetime-toggle.active {
+    background: rgba(243, 156, 18, 0.15);
+    border-color: #f39c12;
+    color: #f39c12;
+}
+
+.sensorik-actions .retro-datetime {
+    width: 100%;
+    justify-content: center;
+}
+
+.retro-datetime-input {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #eee;
+    font-size: 14px;
+    display: none;
+    color-scheme: dark;
+}
+
+.retro-datetime-input:focus { outline: none; border-color: #f39c12; }
+.retro-datetime-input.visible { display: inline-block; animation: fadeIn 0.3s ease; }
+
 /* Sensorischer Umgebungs-Check Styles */
 .sensorik-container {
     max-width: 800px;
@@ -1868,6 +1916,8 @@
     display: flex;
     gap: 10px;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     margin-bottom: 25px;
 }
 
@@ -2366,6 +2416,11 @@
 
                     <textarea class="masking-freetext" id="maskingFreetext" placeholder="Notizen (optional)" maxlength="300" style="display:none;"></textarea>
 
+                    <div class="retro-datetime" id="maskingRetroSection" style="display:none;">
+                        <button class="retro-datetime-toggle" id="maskingRetroToggle" onclick="toggleRetroDatetime('masking')">🕐 Jetzt</button>
+                        <input type="datetime-local" class="retro-datetime-input" id="maskingRetroInput">
+                    </div>
+
                     <button class="masking-save-btn" id="maskingSaveBtn" onclick="saveMaskingEntry()">💾 Speichern</button>
                 </div>
 
@@ -2403,6 +2458,10 @@
                 
                 <!-- Aktionen -->
                 <div class="sensorik-actions" id="sensorikActions" style="display:none;">
+                    <div class="retro-datetime">
+                        <button class="retro-datetime-toggle" id="sensorikRetroToggle" onclick="toggleRetroDatetime('sensorik')">🕐 Jetzt</button>
+                        <input type="datetime-local" class="retro-datetime-input" id="sensorikRetroInput">
+                    </div>
                     <button class="sensorik-save-btn" onclick="saveSensorikCheck()">💾 Check speichern</button>
                     <button class="sensorik-reset-btn" onclick="resetSensorikCheck()">Zurücksetzen</button>
                 </div>
@@ -3684,6 +3743,42 @@ function loadMotivaorData() {
 }
 
 // ==========================================
+// Nachträgliche Erfassung (shared)
+// ==========================================
+
+function toggleRetroDatetime(module) {
+    const toggle = document.getElementById(module + 'RetroToggle');
+    const input = document.getElementById(module + 'RetroInput');
+    const isActive = toggle.classList.toggle('active');
+    
+    if (isActive) {
+        toggle.textContent = '📅 Andere Zeit';
+        input.classList.add('visible');
+        // Default: gestern gleiche Uhrzeit
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        input.value = yesterday.toISOString().slice(0, 16);
+    } else {
+        toggle.textContent = '🕐 Jetzt';
+        input.classList.remove('visible');
+        input.value = '';
+    }
+}
+
+function resetRetroDatetime(module) {
+    const toggle = document.getElementById(module + 'RetroToggle');
+    const input = document.getElementById(module + 'RetroInput');
+    if (toggle) {
+        toggle.classList.remove('active');
+        toggle.textContent = '🕐 Jetzt';
+    }
+    if (input) {
+        input.classList.remove('visible');
+        input.value = '';
+    }
+}
+
+// ==========================================
 // Sensorischer Umgebungs-Check
 // ==========================================
 
@@ -3930,14 +4025,20 @@ function updateSensorikResult() {
 }
 
 function saveSensorikCheck() {
+    const retroInput = document.getElementById('sensorikRetroInput');
+    const retroToggle = document.getElementById('sensorikRetroToggle');
+    const isRetro = retroToggle.classList.contains('active') && retroInput.value;
+    const timestamp = isRetro ? new Date(retroInput.value).toISOString() : new Date().toISOString();
+    
     const check = {
         id: Date.now(),
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp,
         dimensions: { ...sensorikData.currentCheck },
         score: calculateSensorikScore()
     };
     
     sensorikData.checks.unshift(check);
+    sensorikData.checks.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     
     // Keep only last 50 checks
     if (sensorikData.checks.length > 50) {
@@ -3946,6 +4047,7 @@ function saveSensorikCheck() {
     
     saveSensorikDataToStorage();
     updateSensorikHistory();
+    resetRetroDatetime('sensorik');
     
     // Brief confirmation
     const btn = document.querySelector('.sensorik-save-btn');
@@ -3985,6 +4087,7 @@ function resetSensorikCheck() {
     renderSensorikGrid();
     document.getElementById('sensorikResult').classList.remove('visible');
     document.getElementById('sensorikActions').style.display = 'none';
+    resetRetroDatetime('sensorik');
 }
 
 function updateSensorikHistory() {
@@ -4898,9 +5001,11 @@ function renderMaskingForm() {
         return `<button class="masking-reason-chip${isSelected ? ' selected' : ''}${isDisabled ? ' disabled' : ''}" onclick="toggleMaskingReason('${r.id}')" ${isDisabled ? 'style="opacity:0.4;cursor:default;"' : ''}>${r.name}</button>`;
     }).join('');
 
-    // Freetext & save
+    // Freetext & save & retro-datetime
     const freetext = document.getElementById('maskingFreetext');
     freetext.style.display = maskingState.level !== null ? 'block' : 'none';
+    const retroSection = document.getElementById('maskingRetroSection');
+    retroSection.style.display = maskingState.level !== null ? 'flex' : 'none';
     const saveBtn = document.getElementById('maskingSaveBtn');
     saveBtn.classList.toggle('visible', maskingState.context !== null && maskingState.level !== null);
 }
@@ -4941,9 +5046,14 @@ function saveMaskingEntry() {
         if (ft) contextLabel = ft;
     }
 
+    const retroInput = document.getElementById('maskingRetroInput');
+    const retroToggle = document.getElementById('maskingRetroToggle');
+    const isRetro = retroToggle.classList.contains('active') && retroInput.value;
+    const timestamp = isRetro ? new Date(retroInput.value).toISOString() : new Date().toISOString();
+
     const entry = {
         id: Date.now(),
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp,
         contextId: maskingState.context,
         contextLabel: contextLabel,
         level: maskingState.level,
@@ -4956,6 +5066,7 @@ function saveMaskingEntry() {
     };
 
     maskingData.entries.unshift(entry);
+    maskingData.entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     if (maskingData.entries.length > 100) {
         maskingData.entries = maskingData.entries.slice(0, 100);
     }
@@ -4966,6 +5077,7 @@ function saveMaskingEntry() {
     maskingState = { context: null, contextFreetext: '', level: null, reasons: [] };
     document.getElementById('maskingFreetext').value = '';
     document.getElementById('maskingContextFreetext').value = '';
+    resetRetroDatetime('masking');
     renderMaskingForm();
     updateMaskingHistory();
     analyzeMaskingPatterns();
