@@ -6193,7 +6193,7 @@ function renderErholungForm() {
 
     // Retro + Save
     const retroSection = document.getElementById('erholungRetroSection');
-    retroSection.style.display = erholungState.effect !== null ? 'flex' : 'none';
+    retroSection.style.display = erholungState.stressType !== null ? 'flex' : 'none';
     const saveBtn = document.getElementById('erholungSaveBtn');
     saveBtn.classList.toggle('visible', erholungState.activity !== null && erholungState.stressType !== null && erholungState.effect !== null);
 }
