@@ -3642,16 +3642,28 @@ function showPage(page) {
 
         function exportData() {
             const exportObj = {
-                version: '1.0',
+                version: '2.0',
                 exportDate: new Date().toISOString(),
+                // Energie-Tracker
                 allDays: allDays,
-                currentDay: currentDay
+                currentDay: currentDay,
+                // Sensorik
+                sensorikChecks: sensorikData.checks,
+                // Overload
+                overloadEvents: overloadData.events,
+                overloadActiveWarnings: overloadData.activeWarnings,
+                // Masking
+                maskingEntries: maskingData.entries,
+                // Task-Switching
+                switchesDays: switchesData.days,
+                // Erholung
+                erholungEntries: erholungData.entries
             };
             
             const dataStr = JSON.stringify(exportObj, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
             
-            const exportFileDefaultName = `energie-tracker-${new Date().toISOString().split('T')[0]}.json`;
+            const exportFileDefaultName = `neurodivergenz-toolkit-${new Date().toISOString().split('T')[0]}.json`;
             
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
@@ -3669,15 +3681,65 @@ function showPage(page) {
                 try {
                     const importObj = JSON.parse(e.target.result);
                     
-                    if (importObj.version !== '1.0') {
+                    if (importObj.version !== '1.0' && importObj.version !== '2.0') {
                         alert('Inkompatible Dateiversion');
                         return;
                     }
                     
-                    if (confirm('Möchtest du die importierten Daten zu deinen bestehenden Daten hinzufügen?')) {
-                        allDays = allDays.concat(importObj.allDays || []);
-                        updateStatistics();
+                    if (confirm('Möchtest du die importierten Daten zu deinen bestehenden Daten hinzufügen? Bestehende Daten bleiben erhalten.')) {
+                        // Energie-Tracker
+                        if (importObj.allDays) {
+                            const existingDates = new Set(allDays.map(d => d.date));
+                            const newDays = importObj.allDays.filter(d => !existingDates.has(d.date));
+                            allDays = allDays.concat(newDays);
+                        }
                         saveToLocalStorage();
+
+                        // Sensorik
+                        if (importObj.sensorikChecks) {
+                            const existingIds = new Set(sensorikData.checks.map(c => c.id));
+                            const newChecks = importObj.sensorikChecks.filter(c => !existingIds.has(c.id));
+                            sensorikData.checks = sensorikData.checks.concat(newChecks);
+                            sensorikData.checks.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                            saveSensorikDataToStorage();
+                        }
+
+                        // Overload
+                        if (importObj.overloadEvents) {
+                            const existingIds = new Set(overloadData.events.map(e => e.id));
+                            const newEvents = importObj.overloadEvents.filter(e => !existingIds.has(e.id));
+                            overloadData.events = overloadData.events.concat(newEvents);
+                            overloadData.events.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                            saveOverloadData();
+                        }
+
+                        // Masking
+                        if (importObj.maskingEntries) {
+                            const existingIds = new Set(maskingData.entries.map(e => e.id));
+                            const newEntries = importObj.maskingEntries.filter(e => !existingIds.has(e.id));
+                            maskingData.entries = maskingData.entries.concat(newEntries);
+                            maskingData.entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                            saveMaskingData();
+                        }
+
+                        // Task-Switching
+                        if (importObj.switchesDays) {
+                            Object.entries(importObj.switchesDays).forEach(([date, count]) => {
+                                if (!switchesData.days[date]) switchesData.days[date] = count;
+                            });
+                            saveSwitchesData();
+                        }
+
+                        // Erholung
+                        if (importObj.erholungEntries) {
+                            const existingIds = new Set(erholungData.entries.map(e => e.id));
+                            const newEntries = importObj.erholungEntries.filter(e => !existingIds.has(e.id));
+                            erholungData.entries = erholungData.entries.concat(newEntries);
+                            erholungData.entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                            saveErholungData();
+                        }
+
+                        updateStatistics();
                         alert('Daten erfolgreich importiert!');
                     }
                 } catch (error) {
