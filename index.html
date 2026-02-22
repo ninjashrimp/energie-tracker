@@ -1311,35 +1311,52 @@
 
 .dashboard-week h3 {
     color: #f39c12;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-align: center;
     font-size: 14px;
+}
+
+.week-grid-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 4px;
+}
+
+.week-grid-header-cell {
+    text-align: center;
+    font-size: 11px;
+    color: #7f8c8d;
+    padding: 4px 0;
 }
 
 .week-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
+    gap: 3px;
 }
 
 .week-day {
     text-align: center;
-    padding: 8px 4px;
-    border-radius: 10px;
+    padding: 5px 2px;
+    border-radius: 8px;
     background: rgba(255,255,255,0.03);
+    min-height: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.week-day-name {
-    font-size: 11px;
-    color: #7f8c8d;
-    margin-bottom: 6px;
+.week-day.empty {
+    background: transparent;
 }
 
 .week-day-dot {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    margin: 0 auto 4px;
+    margin: 0 auto 2px;
     background: #2c3e50;
 }
 
@@ -1349,8 +1366,8 @@
 .week-day-dot.dot-red { background: #e74c3c; }
 
 .week-day-value {
-    font-size: 11px;
-    color: #bbb;
+    font-size: 10px;
+    color: #95a5a6;
 }
 
 .week-day.today {
@@ -2528,7 +2545,16 @@
                 </div>
 
                 <div class="dashboard-week">
-                    <h3>📅 Letzte 7 Tage – Gesamtbelastung</h3>
+                    <h3>📅 Letzte 30 Tage – Gesamtbelastung</h3>
+                    <div class="week-grid-header">
+                        <div class="week-grid-header-cell">Mo</div>
+                        <div class="week-grid-header-cell">Di</div>
+                        <div class="week-grid-header-cell">Mi</div>
+                        <div class="week-grid-header-cell">Do</div>
+                        <div class="week-grid-header-cell">Fr</div>
+                        <div class="week-grid-header-cell">Sa</div>
+                        <div class="week-grid-header-cell">So</div>
+                    </div>
                     <div class="week-grid" id="dashWeekGrid"></div>
                 </div>
 
@@ -5399,17 +5425,14 @@ function updateDashboard() {
 
 function updateDashboardWeek(today) {
     const weekGrid = document.getElementById('dashWeekGrid');
-    const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-    const days = [];
-
-    for (let i = 6; i >= 0; i--) {
+    
+    // Build 30 days of data
+    const dayData = {};
+    for (let i = 29; i >= 0; i--) {
         const d = new Date();
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().split('T')[0];
-        const dayOfWeek = d.getDay();
-        const isToday = dateStr === today;
-
-        // Tagesbelastung aus allen Quellen
+        
         let score = 0;
         let hasData = false;
 
@@ -5421,8 +5444,7 @@ function updateDashboardWeek(today) {
             score += drainRatio * 30;
             hasData = true;
         }
-        // Heutiger Tag (noch kein allDays-Eintrag)
-        if (isToday && dayStarted) {
+        if (dateStr === today && dayStarted) {
             const drain = maxEnergy - currentEnergy;
             const drainRatio = maxEnergy > 0 ? drain / maxEnergy : 0;
             score += drainRatio * 30;
@@ -5437,7 +5459,7 @@ function updateDashboardWeek(today) {
             hasData = true;
         }
 
-        // Overload events
+        // Overload
         const dayOverloads = overloadData.events.filter(e => e.timestamp.startsWith(dateStr));
         if (dayOverloads.length > 0) {
             score += dayOverloads.length * 20;
@@ -5452,6 +5474,13 @@ function updateDashboardWeek(today) {
             hasData = true;
         }
 
+        // Switches
+        const daySwitches = switchesData.days[dateStr];
+        if (daySwitches !== undefined && daySwitches > 0) {
+            score += Math.min(daySwitches, 12) * 1.5;
+            hasData = true;
+        }
+
         let dotClass = '';
         if (hasData) {
             if (score < 20) dotClass = 'dot-green';
@@ -5460,22 +5489,39 @@ function updateDashboardWeek(today) {
             else dotClass = 'dot-red';
         }
 
-        days.push({
-            name: dayNames[dayOfWeek],
-            date: d.getDate() + '.',
-            dotClass,
-            isToday,
-            hasData
-        });
+        dayData[dateStr] = { dotClass, hasData, isToday: dateStr === today };
     }
 
-    weekGrid.innerHTML = days.map(d => `
-        <div class="week-day${d.isToday ? ' today' : ''}">
-            <div class="week-day-name">${d.name}</div>
-            <div class="week-day-dot ${d.dotClass}"></div>
-            <div class="week-day-value">${d.date}</div>
-        </div>
-    `).join('');
+    // Build calendar grid: find first day, pad to Monday start
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 29);
+    
+    // getDay: 0=So, we want Mo=0. Convert: (getDay()+6)%7
+    const startDow = (startDate.getDay() + 6) % 7; // 0=Mo ... 6=So
+    
+    let html = '';
+    
+    // Empty cells for padding before first day
+    for (let i = 0; i < startDow; i++) {
+        html += '<div class="week-day empty"></div>';
+    }
+    
+    // 30 days
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        const data = dayData[dateStr];
+        const dayNum = d.getDate();
+        
+        html += `
+            <div class="week-day${data.isToday ? ' today' : ''}">
+                <div class="week-day-dot ${data.dotClass}"></div>
+                <div class="week-day-value">${dayNum}.</div>
+            </div>`;
+    }
+    
+    weekGrid.innerHTML = html;
 }
 
 function updateDashboardInsights(today, todayChecks, todayMasking) {
