@@ -3249,22 +3249,18 @@
                 <p class="feierabend-subtitle">Offene Loops ablegen, Kopf freimachen</p>
 
                 <div class="feierabend-section" id="feierabendCheckinSection">
-                    <h3>📝 Check-in</h3>
 
-                    <p class="feierabend-step-label">Hast du noch offene Loops?</p>
-                    <p style="color:#95a5a6; font-size:13px; text-align:center; margin-bottom:15px;">Ungelöste Probleme, Arbeitsthemen, Entscheidungen – ein Satz reicht zum Ablegen</p>
+                    <h3>📌 Offene Loops</h3>
+                    <p style="color:#95a5a6; font-size:13px; text-align:center; margin-bottom:15px;">Ein Satz reicht – Gedanke sichern, damit der Kopf loslassen kann</p>
 
                     <div class="feierabend-loops" id="feierabendLoops"></div>
+                    <button class="feierabend-add-loop" onclick="addFeierabendLoop()">+ Loop ablegen</button>
 
-                    <button class="feierabend-add-loop" onclick="addFeierabendLoop()">+ Offenen Loop ablegen</button>
-                    <button class="feierabend-no-loops-btn" id="feierabendNoLoopsBtn" onclick="feierabendNoLoops()">✅ Keine offenen Loops</button>
+                    <h3 style="margin-top:25px;">🌃 Abend-Aktivitäten</h3>
+                    <p style="color:#95a5a6; font-size:13px; text-align:center; margin-bottom:15px;">Kannst du jederzeit anpassen</p>
+                    <div class="feierabend-activity-grid" id="feierabendActivityGrid"></div>
 
-                    <div id="feierabendStep2" style="display:none;">
-                        <p class="feierabend-step-label" style="margin-top:25px;">Was machst du heute Abend?</p>
-                        <div class="feierabend-activity-grid" id="feierabendActivityGrid"></div>
-
-                        <button class="feierabend-save-btn" id="feierabendSaveBtn" onclick="saveFeierabendEntry()">🌙 Feierabend für den Kopf</button>
-                    </div>
+                    <button class="feierabend-save-btn" id="feierabendSaveBtn" onclick="saveFeierabendEntry()">🌙 Feierabend abschließen</button>
                 </div>
 
                 <div class="feierabend-done-section" id="feierabendDoneSection">
@@ -3273,6 +3269,7 @@
                         <div class="feierabend-done-title">Feierabend für den Kopf</div>
                         <div class="feierabend-done-sub">Loops sind abgelegt. Guten Abend.</div>
                         <div class="feierabend-done-loops" id="feierabendDoneLoops" style="display:none;"></div>
+                        <button class="feierabend-add-loop" style="margin-top:15px;" onclick="reopenFeierabendSession()">🔓 Nochmal öffnen</button>
                     </div>
                 </div>
 
@@ -6899,7 +6896,7 @@ let feierabendData = { entries: [] };
 let feierabendState = {
     loops: [],
     activities: [],
-    loopsHandled: false
+    sessionDate: null
 };
 
 const feierabendActivities = [
@@ -6916,14 +6913,35 @@ const feierabendActivities = [
     { id: 'sonstiges', name: '💤 Sonstiges', hasLoops: false }
 ];
 
+function saveFeierabendSession() {
+    try { localStorage.setItem('feierabendSession', JSON.stringify(feierabendState)); } catch(e) {}
+}
+
+function loadFeierabendSession() {
+    try {
+        const saved = localStorage.getItem('feierabendSession');
+        if (saved) {
+            const s = JSON.parse(saved);
+            // Only restore if session is from today
+            const today = new Date().toISOString().split('T')[0];
+            if (s.sessionDate === today) {
+                feierabendState = s;
+            } else {
+                feierabendState = { loops: [], activities: [], sessionDate: null };
+            }
+        }
+    } catch(e) {}
+}
+
 function renderFeierabendCheckin() {
+    loadFeierabendSession();
     const today = new Date().toISOString().split('T')[0];
     const todayEntry = feierabendData.entries.find(e => e.timestamp.startsWith(today));
     const checkinSection = document.getElementById('feierabendCheckinSection');
     const doneSection = document.getElementById('feierabendDoneSection');
 
-    // Already checked in today?
-    if (todayEntry) {
+    // Already finalized today?
+    if (todayEntry && feierabendState.sessionDate !== today) {
         checkinSection.style.display = 'none';
         doneSection.classList.add('visible');
         const doneLoops = document.getElementById('feierabendDoneLoops');
@@ -6940,6 +6958,11 @@ function renderFeierabendCheckin() {
     checkinSection.style.display = 'block';
     doneSection.classList.remove('visible');
 
+    // Auto-start session
+    if (!feierabendState.sessionDate) {
+        feierabendState.sessionDate = today;
+    }
+
     // Render loops
     const loopsContainer = document.getElementById('feierabendLoops');
     loopsContainer.innerHTML = feierabendState.loops.map((loop, idx) => `
@@ -6950,14 +6973,6 @@ function renderFeierabendCheckin() {
         </div>
     `).join('');
 
-    // Update no-loops button text based on state
-    const noLoopsBtn = document.getElementById('feierabendNoLoopsBtn');
-    noLoopsBtn.textContent = feierabendState.loops.length > 0 ? '✅ Alle Loops abgelegt' : '✅ Keine offenen Loops';
-
-    // Show step 2 if loops handled
-    const step2 = document.getElementById('feierabendStep2');
-    step2.style.display = feierabendState.loopsHandled ? 'block' : 'none';
-
     // Render activities
     const actGrid = document.getElementById('feierabendActivityGrid');
     actGrid.innerHTML = feierabendActivities.map(act => {
@@ -6965,48 +6980,75 @@ function renderFeierabendCheckin() {
         return `<button class="feierabend-activity-chip${isSelected ? ' selected' : ''}" onclick="toggleFeierabendActivity('${act.id}')">${act.name}</button>`;
     }).join('');
 
-    // Save button
+    // Save button visible when at least one activity selected
     const saveBtn = document.getElementById('feierabendSaveBtn');
-    saveBtn.classList.toggle('visible', feierabendState.loopsHandled && feierabendState.activities.length > 0);
+    saveBtn.classList.toggle('visible', feierabendState.activities.length > 0);
 }
 
 function addFeierabendLoop() {
+    const today = new Date().toISOString().split('T')[0];
+    feierabendState.sessionDate = today;
     feierabendState.loops.push('');
+    saveFeierabendSession();
     renderFeierabendCheckin();
-    // Focus the new input
     const inputs = document.querySelectorAll('.feierabend-loop-input');
     if (inputs.length > 0) inputs[inputs.length - 1].focus();
 }
 
 function updateFeierabendLoop(idx, value) {
     feierabendState.loops[idx] = value;
+    saveFeierabendSession();
 }
 
 function removeFeierabendLoop(idx) {
     feierabendState.loops.splice(idx, 1);
-    renderFeierabendCheckin();
-}
-
-function feierabendNoLoops() {
-    feierabendState.loopsHandled = true;
+    saveFeierabendSession();
     renderFeierabendCheckin();
 }
 
 function toggleFeierabendActivity(id) {
+    const today = new Date().toISOString().split('T')[0];
+    feierabendState.sessionDate = today;
     const idx = feierabendState.activities.indexOf(id);
     if (idx >= 0) {
         feierabendState.activities.splice(idx, 1);
     } else {
         feierabendState.activities.push(id);
     }
+    saveFeierabendSession();
+    renderFeierabendCheckin();
+}
+
+function reopenFeierabendSession() {
+    const today = new Date().toISOString().split('T')[0];
+    const todayEntry = feierabendData.entries.find(e => e.timestamp.startsWith(today));
+
+    // Restore from saved entry
+    if (todayEntry) {
+        feierabendState = {
+            loops: [...(todayEntry.loops || [])],
+            activities: todayEntry.activities.map(a => a.id),
+            sessionDate: today
+        };
+        // Remove old entry so it can be re-saved
+        feierabendData.entries = feierabendData.entries.filter(e => e.id !== todayEntry.id);
+        saveFeierabendData();
+    } else {
+        feierabendState.sessionDate = today;
+    }
+
+    saveFeierabendSession();
     renderFeierabendCheckin();
 }
 
 function saveFeierabendEntry() {
-    if (!feierabendState.loopsHandled || feierabendState.activities.length === 0) return;
+    if (feierabendState.activities.length === 0) return;
 
-    // Collect filled-in loops
     const filledLoops = feierabendState.loops.map(l => l.trim()).filter(l => l.length > 0);
+    const today = new Date().toISOString().split('T')[0];
+
+    // Remove any existing entry for today (in case of reopen)
+    feierabendData.entries = feierabendData.entries.filter(e => !e.timestamp.startsWith(today));
 
     const entry = {
         id: Date.now(),
@@ -7030,10 +7072,10 @@ function saveFeierabendEntry() {
 
     saveFeierabendData();
 
-    // Reset state
-    feierabendState = { loops: [], activities: [], loopsHandled: false };
+    // Clear session
+    feierabendState = { loops: [], activities: [], sessionDate: null };
+    saveFeierabendSession();
 
-    // Hide reminder
     document.getElementById('feierabendReminder').classList.remove('visible');
 
     renderFeierabendCheckin();
