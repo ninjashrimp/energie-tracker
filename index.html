@@ -2129,6 +2129,310 @@
     }
 }
 
+/* Feierabend-Check Styles */
+.feierabend-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.feierabend-container h2 {
+    text-align: center;
+    color: #f39c12;
+    margin-bottom: 5px;
+}
+
+.feierabend-subtitle {
+    text-align: center;
+    color: #bbb;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.feierabend-section {
+    background: rgba(22, 33, 62, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.feierabend-section h3 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.feierabend-step-label {
+    color: #95a5a6;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Loop-Ablage */
+.feierabend-loops {
+    margin-bottom: 15px;
+}
+
+.feierabend-loop-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: center;
+}
+
+.feierabend-loop-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #eee;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.feierabend-loop-input::placeholder { color: #666; }
+
+.feierabend-loop-input:focus {
+    outline: none;
+    border-color: rgba(243, 156, 18, 0.5);
+}
+
+.feierabend-loop-remove {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+.feierabend-loop-remove:hover { opacity: 1; }
+
+.feierabend-add-loop {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px dashed rgba(243, 156, 18, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    color: #f39c12;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.feierabend-add-loop:hover { background: rgba(243, 156, 18, 0.15); }
+
+.feierabend-no-loops-btn {
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    color: #2ecc71;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+    transition: all 0.2s;
+}
+
+.feierabend-no-loops-btn:hover { background: rgba(46, 204, 113, 0.15); }
+
+/* Abend-Aktivitäten */
+.feierabend-activity-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.feierabend-activity-chip {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 8px 14px;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.feierabend-activity-chip:hover { background: rgba(255,255,255,0.1); }
+
+.feierabend-activity-chip.selected {
+    background: rgba(155, 89, 182, 0.2);
+    border-color: #9b59b6;
+    color: #bb8fce;
+}
+
+/* Abschluss-Animation */
+.feierabend-done-section {
+    display: none;
+}
+
+.feierabend-done-section.visible {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.feierabend-done-card {
+    background: linear-gradient(135deg, #1a2a4a 0%, #162035 100%);
+    border: 1px solid rgba(155, 89, 182, 0.3);
+    border-radius: 20px;
+    padding: 40px 25px;
+    text-align: center;
+}
+
+.feierabend-done-emoji {
+    font-size: 64px;
+    margin-bottom: 15px;
+}
+
+.feierabend-done-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #bb8fce;
+    margin-bottom: 8px;
+}
+
+.feierabend-done-sub {
+    color: #95a5a6;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.feierabend-done-loops {
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.feierabend-done-loop-item {
+    color: #bbb;
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.feierabend-done-loop-item:last-child { border-bottom: none; }
+
+.feierabend-save-btn {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: none;
+    margin: 20px auto 0;
+    transition: all 0.3s ease;
+}
+
+.feierabend-save-btn.visible { display: block; }
+.feierabend-save-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4); }
+
+/* History */
+.feierabend-history-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 8px;
+    border-left: 4px solid #9b59b6;
+}
+
+.feierabend-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.feierabend-history-date {
+    font-weight: bold;
+    font-size: 14px;
+    color: #eee;
+}
+
+.feierabend-history-delete {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 5px;
+}
+
+.feierabend-history-delete:hover { opacity: 1; }
+
+.feierabend-history-body {
+    font-size: 13px;
+    color: #bbb;
+}
+
+.feierabend-history-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.feierabend-history-tag {
+    background: rgba(155, 89, 182, 0.15);
+    color: #bb8fce;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 11px;
+}
+
+.feierabend-history-loops-summary {
+    color: #95a5a6;
+    font-size: 12px;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* Reminder-Banner (global) */
+.feierabend-reminder {
+    display: none;
+    background: linear-gradient(135deg, rgba(155, 89, 182, 0.2), rgba(142, 68, 173, 0.15));
+    border: 1px solid rgba(155, 89, 182, 0.4);
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.feierabend-reminder.visible { display: block; animation: fadeIn 0.5s ease; }
+
+.feierabend-reminder:hover { background: linear-gradient(135deg, rgba(155, 89, 182, 0.3), rgba(142, 68, 173, 0.2)); }
+
+.feierabend-reminder-text {
+    color: #bb8fce;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.feierabend-reminder-sub {
+    color: #95a5a6;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
 /* Sensorischer Umgebungs-Check Styles */
 .sensorik-container {
     max-width: 800px;
@@ -2459,8 +2763,14 @@
             <button class="nav-btn" onclick="showPage('masking')">Masking</button>
             <button class="nav-btn" onclick="showPage('switches')">Switches</button>
             <button class="nav-btn" onclick="showPage('erholung')">Erholung</button>
+            <button class="nav-btn" onclick="showPage('feierabend')">Feierabend</button>
         </div>
         
+        <!-- Feierabend-Reminder (global, all pages) -->
+        <div class="feierabend-reminder" id="feierabendReminder" onclick="showPage('feierabend'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Feierabend')b.classList.add('active')});">
+            <div class="feierabend-reminder-text">🌙 Zeit für den Feierabend-Check</div>
+            <div class="feierabend-reminder-sub">Offene Loops ablegen, Kopf freimachen</div>
+        </div>
 
         <!-- Tracker Page -->
         <div class="page active" id="trackerPage">
@@ -2928,6 +3238,52 @@
                 <div class="erholung-section">
                     <h3>🔍 Muster & Erkenntnisse</h3>
                     <div id="erholungPatternList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feierabend-Check Page -->
+        <div class="page" id="feierabendPage">
+            <div class="feierabend-container">
+                <h2>🌙 Feierabend-Check</h2>
+                <p class="feierabend-subtitle">Offene Loops ablegen, Kopf freimachen</p>
+
+                <div class="feierabend-section" id="feierabendCheckinSection">
+                    <h3>📝 Check-in</h3>
+
+                    <p class="feierabend-step-label">Hast du noch offene Loops?</p>
+                    <p style="color:#95a5a6; font-size:13px; text-align:center; margin-bottom:15px;">Ungelöste Probleme, Arbeitsthemen, Entscheidungen – ein Satz reicht zum Ablegen</p>
+
+                    <div class="feierabend-loops" id="feierabendLoops"></div>
+
+                    <button class="feierabend-add-loop" onclick="addFeierabendLoop()">+ Offenen Loop ablegen</button>
+                    <button class="feierabend-no-loops-btn" id="feierabendNoLoopsBtn" onclick="feierabendNoLoops()">✅ Keine offenen Loops</button>
+
+                    <div id="feierabendStep2" style="display:none;">
+                        <p class="feierabend-step-label" style="margin-top:25px;">Was machst du heute Abend?</p>
+                        <div class="feierabend-activity-grid" id="feierabendActivityGrid"></div>
+
+                        <button class="feierabend-save-btn" id="feierabendSaveBtn" onclick="saveFeierabendEntry()">🌙 Feierabend für den Kopf</button>
+                    </div>
+                </div>
+
+                <div class="feierabend-done-section" id="feierabendDoneSection">
+                    <div class="feierabend-done-card">
+                        <div class="feierabend-done-emoji">🌙</div>
+                        <div class="feierabend-done-title">Feierabend für den Kopf</div>
+                        <div class="feierabend-done-sub">Loops sind abgelegt. Guten Abend.</div>
+                        <div class="feierabend-done-loops" id="feierabendDoneLoops" style="display:none;"></div>
+                    </div>
+                </div>
+
+                <div class="feierabend-section">
+                    <h3>📊 Vergangene Abende</h3>
+                    <div id="feierabendHistoryList"></div>
+                </div>
+
+                <div class="feierabend-section">
+                    <h3>🔍 Muster</h3>
+                    <div id="feierabendPatternList"></div>
                 </div>
             </div>
         </div>
@@ -3578,6 +3934,12 @@ function showPage(page) {
     renderErholungForm();
     updateErholungHistory();
     analyzeErholungPatterns();
+ } else if (page === 'feierabend') {
+    document.getElementById('feierabendPage').classList.add('active');
+    loadFeierabendData();
+    renderFeierabendCheckin();
+    updateFeierabendHistory();
+    analyzeFeierabendPatterns();
  }
 }
 
@@ -3683,7 +4045,9 @@ function showPage(page) {
                 // Task-Switching
                 switchesDays: switchesData.days,
                 // Erholung
-                erholungEntries: erholungData.entries
+                erholungEntries: erholungData.entries,
+                // Feierabend
+                feierabendEntries: feierabendData.entries
             };
             
             const dataStr = JSON.stringify(exportObj, null, 2);
@@ -3765,6 +4129,15 @@ function showPage(page) {
                             saveErholungData();
                         }
 
+                        // Feierabend
+                        if (importObj.feierabendEntries) {
+                            const existingIds = new Set(feierabendData.entries.map(e => e.id));
+                            const newEntries = importObj.feierabendEntries.filter(e => !existingIds.has(e.id));
+                            feierabendData.entries = feierabendData.entries.concat(newEntries);
+                            feierabendData.entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                            saveFeierabendData();
+                        }
+
                         updateStatistics();
                         alert('Daten erfolgreich importiert!');
                     }
@@ -3812,6 +4185,8 @@ window.onload = function() {
     loadMaskingData(); // Load masking data
     loadSwitchesData(); // Load switches data
     loadErholungData(); // Load erholung data
+    loadFeierabendData(); // Load feierabend data
+    checkFeierabendReminder(); // Check if reminder should show
 };
 
 // Save to localStorage whenever data changes
@@ -6512,6 +6887,335 @@ function loadErholungData() {
     try {
         const saved = localStorage.getItem('erholungData');
         if (saved) erholungData = JSON.parse(saved);
+    } catch(e) {}
+}
+
+// ==========================================
+// Feierabend-Check
+// ==========================================
+
+let feierabendData = { entries: [] };
+
+let feierabendState = {
+    loops: [],
+    activities: [],
+    loopsHandled: false
+};
+
+const feierabendActivities = [
+    { id: 'ki_offen', name: '🤖 KI-Chat (offene Themen)', hasLoops: true },
+    { id: 'ki_geschlossen', name: '🤖 KI-Chat (ohne offene Themen)', hasLoops: false },
+    { id: 'special_interest', name: '🕷️ Special Interest', hasLoops: false },
+    { id: 'musik_sensorik', name: '🎵 Musik/Sensorik', hasLoops: false },
+    { id: 'schreiben', name: '✍️ Schreiben', hasLoops: false },
+    { id: 'vr', name: '🥽 VR', hasLoops: false },
+    { id: 'streaming', name: '📺 Streaming', hasLoops: false },
+    { id: 'gaming', name: '🎮 Gaming', hasLoops: false },
+    { id: 'ruminieren', name: '🔄 Ruminieren', hasLoops: true },
+    { id: 'recherche', name: '🔍 Recherche', hasLoops: true },
+    { id: 'sonstiges', name: '💤 Sonstiges', hasLoops: false }
+];
+
+function renderFeierabendCheckin() {
+    const today = new Date().toISOString().split('T')[0];
+    const todayEntry = feierabendData.entries.find(e => e.timestamp.startsWith(today));
+    const checkinSection = document.getElementById('feierabendCheckinSection');
+    const doneSection = document.getElementById('feierabendDoneSection');
+
+    // Already checked in today?
+    if (todayEntry) {
+        checkinSection.style.display = 'none';
+        doneSection.classList.add('visible');
+        const doneLoops = document.getElementById('feierabendDoneLoops');
+        if (todayEntry.loops && todayEntry.loops.length > 0) {
+            doneLoops.style.display = 'block';
+            doneLoops.innerHTML = '<div style="color:#95a5a6;font-size:11px;margin-bottom:6px;">Abgelegte Loops:</div>' +
+                todayEntry.loops.map(l => `<div class="feierabend-done-loop-item">📌 ${l}</div>`).join('');
+        } else {
+            doneLoops.style.display = 'none';
+        }
+        return;
+    }
+
+    checkinSection.style.display = 'block';
+    doneSection.classList.remove('visible');
+
+    // Render loops
+    const loopsContainer = document.getElementById('feierabendLoops');
+    loopsContainer.innerHTML = feierabendState.loops.map((loop, idx) => `
+        <div class="feierabend-loop-item">
+            <input class="feierabend-loop-input" type="text" value="${loop.replace(/"/g, '&quot;')}" placeholder="Ein Satz, der den Gedanken sichert…" maxlength="200"
+                onchange="updateFeierabendLoop(${idx}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); addFeierabendLoop();}">
+            <button class="feierabend-loop-remove" onclick="removeFeierabendLoop(${idx})">×</button>
+        </div>
+    `).join('');
+
+    // Update no-loops button text based on state
+    const noLoopsBtn = document.getElementById('feierabendNoLoopsBtn');
+    noLoopsBtn.textContent = feierabendState.loops.length > 0 ? '✅ Alle Loops abgelegt' : '✅ Keine offenen Loops';
+
+    // Show step 2 if loops handled
+    const step2 = document.getElementById('feierabendStep2');
+    step2.style.display = feierabendState.loopsHandled ? 'block' : 'none';
+
+    // Render activities
+    const actGrid = document.getElementById('feierabendActivityGrid');
+    actGrid.innerHTML = feierabendActivities.map(act => {
+        const isSelected = feierabendState.activities.includes(act.id);
+        return `<button class="feierabend-activity-chip${isSelected ? ' selected' : ''}" onclick="toggleFeierabendActivity('${act.id}')">${act.name}</button>`;
+    }).join('');
+
+    // Save button
+    const saveBtn = document.getElementById('feierabendSaveBtn');
+    saveBtn.classList.toggle('visible', feierabendState.loopsHandled && feierabendState.activities.length > 0);
+}
+
+function addFeierabendLoop() {
+    feierabendState.loops.push('');
+    renderFeierabendCheckin();
+    // Focus the new input
+    const inputs = document.querySelectorAll('.feierabend-loop-input');
+    if (inputs.length > 0) inputs[inputs.length - 1].focus();
+}
+
+function updateFeierabendLoop(idx, value) {
+    feierabendState.loops[idx] = value;
+}
+
+function removeFeierabendLoop(idx) {
+    feierabendState.loops.splice(idx, 1);
+    renderFeierabendCheckin();
+}
+
+function feierabendNoLoops() {
+    feierabendState.loopsHandled = true;
+    renderFeierabendCheckin();
+}
+
+function toggleFeierabendActivity(id) {
+    const idx = feierabendState.activities.indexOf(id);
+    if (idx >= 0) {
+        feierabendState.activities.splice(idx, 1);
+    } else {
+        feierabendState.activities.push(id);
+    }
+    renderFeierabendCheckin();
+}
+
+function saveFeierabendEntry() {
+    if (!feierabendState.loopsHandled || feierabendState.activities.length === 0) return;
+
+    // Collect filled-in loops
+    const filledLoops = feierabendState.loops.map(l => l.trim()).filter(l => l.length > 0);
+
+    const entry = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        loops: filledLoops,
+        loopCount: filledLoops.length,
+        activities: feierabendState.activities.map(aid => ({
+            id: aid,
+            label: feierabendActivities.find(a => a.id === aid)?.name || aid,
+            hasLoops: feierabendActivities.find(a => a.id === aid)?.hasLoops || false
+        })),
+        hasLoopActivities: feierabendState.activities.some(aid =>
+            feierabendActivities.find(a => a.id === aid)?.hasLoops
+        ),
+        energyAtTime: dayStarted ? currentEnergy : null
+    };
+
+    feierabendData.entries.unshift(entry);
+    feierabendData.entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    if (feierabendData.entries.length > 100) feierabendData.entries = feierabendData.entries.slice(0, 100);
+
+    saveFeierabendData();
+
+    // Reset state
+    feierabendState = { loops: [], activities: [], loopsHandled: false };
+
+    // Hide reminder
+    document.getElementById('feierabendReminder').classList.remove('visible');
+
+    renderFeierabendCheckin();
+    updateFeierabendHistory();
+    analyzeFeierabendPatterns();
+}
+
+function updateFeierabendHistory() {
+    const list = document.getElementById('feierabendHistoryList');
+
+    if (feierabendData.entries.length === 0) {
+        list.innerHTML = '<p style="color: #95a5a6; text-align: center; font-style: italic;">Noch keine Einträge</p>';
+        return;
+    }
+
+    list.innerHTML = feierabendData.entries.slice(0, 20).map(entry => {
+        const date = new Date(entry.timestamp);
+        const dateStr = date.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' })
+            + ', ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+
+        const actTags = entry.activities.map(a => `<span class="feierabend-history-tag">${a.label}</span>`).join('');
+        const loopInfo = entry.loopCount > 0
+            ? `<div class="feierabend-history-loops-summary">📌 ${entry.loopCount} Loop${entry.loopCount > 1 ? 's' : ''} abgelegt</div>`
+            : `<div class="feierabend-history-loops-summary">✅ Keine offenen Loops</div>`;
+
+        return `
+            <div class="feierabend-history-item">
+                <div class="feierabend-history-header">
+                    <span class="feierabend-history-date">${dateStr}</span>
+                    <button class="feierabend-history-delete" onclick="deleteFeierabendEntry(${entry.id})" title="Löschen">❌</button>
+                </div>
+                <div class="feierabend-history-tags">${actTags}</div>
+                ${loopInfo}
+            </div>
+        `;
+    }).join('');
+}
+
+function deleteFeierabendEntry(id) {
+    if (!confirm('Diesen Eintrag wirklich löschen?')) return;
+    feierabendData.entries = feierabendData.entries.filter(e => e.id !== id);
+    saveFeierabendData();
+    updateFeierabendHistory();
+    analyzeFeierabendPatterns();
+}
+
+function analyzeFeierabendPatterns() {
+    const patternList = document.getElementById('feierabendPatternList');
+    const entries = feierabendData.entries;
+
+    if (entries.length < 3) {
+        patternList.innerHTML = '<div class="masking-pattern-insight">Ab 3 Einträgen werden Muster sichtbar.</div>';
+        return;
+    }
+
+    const insights = [];
+
+    // Basic stats
+    const avgLoops = (entries.reduce((s, e) => s + (e.loopCount || 0), 0) / entries.length).toFixed(1);
+    const loopFreeNights = entries.filter(e => (e.loopCount || 0) === 0).length;
+    insights.push(`📊 ${entries.length} Abende erfasst, Ø ${avgLoops} offene Loops, ${loopFreeNights}x loopfrei`);
+
+    // Correlation: loop-free activities vs next-day energy
+    if (typeof allDays !== 'undefined' && allDays.length >= 3) {
+        const correlationPairs = [];
+
+        entries.forEach(entry => {
+            const entryDate = entry.timestamp.split('T')[0];
+            const nextDate = new Date(entryDate + 'T12:00:00');
+            nextDate.setDate(nextDate.getDate() + 1);
+            const nextStr = nextDate.toISOString().split('T')[0];
+
+            const nextDay = allDays.find(d => d.date === nextStr);
+            if (nextDay) {
+                correlationPairs.push({
+                    hasLoopActivities: entry.hasLoopActivities,
+                    loopCount: entry.loopCount || 0,
+                    nextStartEnergy: nextDay.startEnergy
+                });
+            }
+        });
+
+        if (correlationPairs.length >= 3) {
+            // Clean vs loop-heavy evenings
+            const cleanEvenings = correlationPairs.filter(p => !p.hasLoopActivities && p.loopCount === 0);
+            const loopEvenings = correlationPairs.filter(p => p.hasLoopActivities || p.loopCount > 2);
+
+            if (cleanEvenings.length >= 2 && loopEvenings.length >= 2) {
+                const avgClean = (cleanEvenings.reduce((s, p) => s + p.nextStartEnergy, 0) / cleanEvenings.length).toFixed(1);
+                const avgLoop = (loopEvenings.reduce((s, p) => s + p.nextStartEnergy, 0) / loopEvenings.length).toFixed(1);
+                const diff = (avgClean - avgLoop).toFixed(1);
+                if (diff > 0.3) {
+                    insights.push(`🔋 Nach ruhigen Abenden startest du mit Ø ${diff} Löffeln mehr (${avgClean} vs. ${avgLoop})`);
+                } else if (diff < -0.3) {
+                    insights.push(`🤔 Überraschend: Bisher kein messbarer Unterschied beim Morgenlevel`);
+                }
+            }
+
+            // Activity-specific analysis
+            const actCorrelation = {};
+            entries.forEach(entry => {
+                const entryDate = entry.timestamp.split('T')[0];
+                const nextDate = new Date(entryDate + 'T12:00:00');
+                nextDate.setDate(nextDate.getDate() + 1);
+                const nextStr = nextDate.toISOString().split('T')[0];
+                const nextDay = allDays.find(d => d.date === nextStr);
+                if (!nextDay) return;
+
+                entry.activities.forEach(act => {
+                    if (!actCorrelation[act.label]) actCorrelation[act.label] = [];
+                    actCorrelation[act.label].push(nextDay.startEnergy);
+                });
+            });
+
+            const actResults = Object.entries(actCorrelation)
+                .filter(([_, vals]) => vals.length >= 3)
+                .map(([name, vals]) => ({
+                    name,
+                    avg: vals.reduce((s, v) => s + v, 0) / vals.length,
+                    count: vals.length
+                }))
+                .sort((a, b) => b.avg - a.avg);
+
+            if (actResults.length >= 2) {
+                const best = actResults[0];
+                const worst = actResults[actResults.length - 1];
+                if (best.avg - worst.avg > 0.5) {
+                    insights.push(`⭐ Beste Abend-Aktivität: ${best.name} → Ø ${best.avg.toFixed(1)} Löffel morgens (${best.count}x)`);
+                    insights.push(`⚠️ Schlechteste: ${worst.name} → Ø ${worst.avg.toFixed(1)} Löffel morgens (${worst.count}x)`);
+                }
+            }
+        }
+    }
+
+    // Loop frequency per weekday
+    const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    const dayLoops = {};
+    entries.forEach(e => {
+        const dow = new Date(e.timestamp).getDay();
+        if (!dayLoops[dow]) dayLoops[dow] = { total: 0, count: 0 };
+        dayLoops[dow].total += (e.loopCount || 0);
+        dayLoops[dow].count++;
+    });
+
+    const peakLoopDay = Object.entries(dayLoops)
+        .map(([d, s]) => ({ day: dayNames[d], avg: s.total / s.count, count: s.count }))
+        .filter(d => d.count >= 2)
+        .sort((a, b) => b.avg - a.avg)[0];
+
+    if (peakLoopDay && peakLoopDay.avg > 1) {
+        insights.push(`📅 Meiste offene Loops: ${peakLoopDay.day} (Ø ${peakLoopDay.avg.toFixed(1)})`);
+    }
+
+    patternList.innerHTML = insights.map(i => `<div class="masking-pattern-insight">${i}</div>`).join('');
+}
+
+// Reminder system
+function checkFeierabendReminder() {
+    const now = new Date();
+    const hour = now.getHours();
+    const today = now.toISOString().split('T')[0];
+    const todayEntry = feierabendData.entries.find(e => e.timestamp.startsWith(today));
+    const reminder = document.getElementById('feierabendReminder');
+
+    if (hour >= 19 && !todayEntry) {
+        reminder.classList.add('visible');
+    } else {
+        reminder.classList.remove('visible');
+    }
+}
+
+// Check every 5 minutes
+setInterval(checkFeierabendReminder, 5 * 60 * 1000);
+
+function saveFeierabendData() {
+    try { localStorage.setItem('feierabendData', JSON.stringify(feierabendData)); } catch(e) {}
+}
+
+function loadFeierabendData() {
+    try {
+        const saved = localStorage.getItem('feierabendData');
+        if (saved) feierabendData = JSON.parse(saved);
     } catch(e) {}
 }
     </script>
