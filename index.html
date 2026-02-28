@@ -2795,7 +2795,14 @@
             <div class="energy-display hidden" id="mainDisplay">
                 <h2>Deine Energie heute</h2>
                 <div class="spoons-container" id="spoonsContainer"></div>
-                <div class="energy-number" id="energyNumber">8 / 10</div>
+                <div class="energy-number" id="energyNumber" onclick="showEnergyCorrection()" style="cursor:pointer;" title="Tippen zum Korrigieren">8 / 10</div>
+                <div id="energyCorrectionPanel" style="display:none; background:rgba(22,33,62,0.95); border:1px solid rgba(243,156,18,0.4); border-radius:12px; padding:15px; margin:10px 0; text-align:center;">
+                    <div style="color:#95a5a6; font-size:12px; margin-bottom:8px;">Start-Löffel korrigieren</div>
+                    <input type="range" min="1" max="12" id="correctionSlider" class="slider" style="margin-bottom:5px;">
+                    <div style="color:#eee; font-size:14px; margin-bottom:10px;" id="correctionValue">8</div>
+                    <button onclick="applyEnergyCorrection()" style="background:linear-gradient(135deg,#f39c12,#e67e22); border:none; border-radius:20px; padding:8px 20px; color:white; cursor:pointer; font-size:14px; margin-right:5px;">✅ Übernehmen</button>
+                    <button onclick="hideEnergyCorrection()" style="background:rgba(255,255,255,0.08); border:none; border-radius:20px; padding:8px 20px; color:#95a5a6; cursor:pointer; font-size:14px;">Abbrechen</button>
+                </div>
                 <div class="energy-status status-good" id="energyStatus">Alles im grünen Bereich!</div>
                 <div class="undo-container" id="undoContainer"></div>
             </div>
@@ -3505,6 +3512,34 @@ const activities = [
             
             updateDisplay();
             renderActivities();
+            saveToLocalStorage();
+        }
+
+        function showEnergyCorrection() {
+            const panel = document.getElementById('energyCorrectionPanel');
+            const slider = document.getElementById('correctionSlider');
+            const val = document.getElementById('correctionValue');
+            slider.value = maxEnergy;
+            val.textContent = maxEnergy;
+            slider.oninput = function() { val.textContent = this.value; };
+            panel.style.display = 'block';
+        }
+
+        function hideEnergyCorrection() {
+            document.getElementById('energyCorrectionPanel').style.display = 'none';
+        }
+
+        function applyEnergyCorrection() {
+            const newMax = parseInt(document.getElementById('correctionSlider').value);
+            const diff = newMax - maxEnergy;
+            maxEnergy = newMax;
+            currentEnergy = Math.max(0, Math.min(maxEnergy, currentEnergy + diff));
+            if (currentDay) {
+                currentDay.startEnergy = maxEnergy;
+                currentDay.endEnergy = currentEnergy;
+            }
+            hideEnergyCorrection();
+            updateDisplay();
             saveToLocalStorage();
         }
 
