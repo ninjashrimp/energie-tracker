@@ -2410,6 +2410,19 @@
     font-style: italic;
 }
 
+.feierabend-history-loops-detail {
+    display: none;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 6px;
+}
+
+.feierabend-history-loops-detail.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
 /* Reminder-Banner (global) */
 .feierabend-reminder {
     display: none;
@@ -7161,9 +7174,21 @@ function updateFeierabendHistory() {
             + ', ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 
         const actTags = entry.activities.map(a => `<span class="feierabend-history-tag">${a.label}</span>`).join('');
-        const loopInfo = entry.loopCount > 0
-            ? `<div class="feierabend-history-loops-summary">📌 ${entry.loopCount} Loop${entry.loopCount > 1 ? 's' : ''} abgelegt</div>`
-            : `<div class="feierabend-history-loops-summary">✅ Keine offenen Loops</div>`;
+        
+        let loopInfo = '';
+        if (entry.loopCount > 0 && entry.loops && entry.loops.length > 0) {
+            const loopItems = entry.loops.map(l => `<div class="feierabend-done-loop-item">📌 ${l}</div>`).join('');
+            loopInfo = `
+                <div class="feierabend-history-loops-summary" onclick="this.nextElementSibling.classList.toggle('visible')" style="cursor:pointer;">
+                    📌 ${entry.loopCount} Loop${entry.loopCount > 1 ? 's' : ''} abgelegt ▸
+                </div>
+                <div class="feierabend-history-loops-detail">${loopItems}</div>
+            `;
+        } else if (entry.loopCount > 0) {
+            loopInfo = `<div class="feierabend-history-loops-summary">📌 ${entry.loopCount} Loop${entry.loopCount > 1 ? 's' : ''} abgelegt</div>`;
+        } else {
+            loopInfo = `<div class="feierabend-history-loops-summary">✅ Keine offenen Loops</div>`;
+        }
 
         return `
             <div class="feierabend-history-item">
