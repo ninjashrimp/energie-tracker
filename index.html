@@ -4152,6 +4152,29 @@ window.onload = function() {
     checkBackupReminder();
     loadMotivaorData();
     
+    // Auto-detect day change: if active day is from yesterday or earlier, save and reset
+    if (dayStarted && currentDay && !retroDayMode) {
+        const today = new Date().toISOString().split('T')[0];
+        if (currentDay.date !== today) {
+            // Save yesterday's day
+            if (currentDay.activities.length > 0) {
+                allDays.push(currentDay);
+                updateStatistics();
+            }
+            currentDay = null;
+            dayStarted = false;
+            history = [];
+            saveToLocalStorage();
+            console.log('Tageswechsel erkannt – gestriger Tag wurde automatisch gespeichert.');
+        }
+    }
+
+    // Sync slider with last known maxEnergy
+    if (!dayStarted && maxEnergy) {
+        document.getElementById('morningSlider').value = maxEnergy;
+        document.getElementById('sliderValue').textContent = `${maxEnergy} Löffel`;
+    }
+    
     // If we have a saved state, restore it
     if (dayStarted) {
         document.getElementById('morningCheckin').classList.add('hidden');
@@ -4212,8 +4235,8 @@ function loadFromLocalStorage() {
         const saved = localStorage.getItem('energieTracker');
         if (saved) {
             const data = JSON.parse(saved);
-            currentEnergy = data.currentEnergy || 8;
-            maxEnergy = data.maxEnergy || 10;
+            currentEnergy = data.currentEnergy !== undefined ? data.currentEnergy : 8;
+            maxEnergy = data.maxEnergy !== undefined ? data.maxEnergy : 10;
             dayStarted = data.dayStarted || false;
             retroDayMode = data.retroDayMode || false;
             history = data.history || [];
