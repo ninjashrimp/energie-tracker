@@ -97,7 +97,7 @@
         .energy-display {
             background: #16213e;
             border-radius: 15px;
-            padding: 30px;
+            padding: 20px 30px 10px;
             margin-bottom: 30px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
@@ -107,12 +107,12 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 2px;
+            margin: 8px 0;
         }
 
         .spoon {
-            font-size: 40px;
+            font-size: 20px;
             transition: all 0.3s ease;
         }
 
@@ -126,14 +126,14 @@
         }
 
         .energy-number {
-            font-size: 48px;
+            font-size: 32px;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
         .energy-status {
-            font-size: 20px;
-            padding: 10px 20px;
+            font-size: 16px;
+            padding: 8px 16px;
             border-radius: 25px;
             display: inline-block;
         }
@@ -2907,7 +2907,7 @@
                     <button onclick="hideEnergyCorrection()" style="background:rgba(255,255,255,0.08); border:none; border-radius:20px; padding:8px 20px; color:#95a5a6; cursor:pointer; font-size:14px;">Abbrechen</button>
                 </div>
                 <div class="energy-status status-good" id="energyStatus">Alles im grünen Bereich!</div>
-                <div id="dreamSummary" style="display:none; text-align:center; margin:10px 0; cursor:pointer;" onclick="showDreamCorrection()" title="Tippen zum Korrigieren">
+                <div id="dreamSummary" style="display:none; text-align:center; margin:6px 0 0; cursor:pointer;" onclick="showDreamCorrection()" title="Tippen zum Korrigieren">
                     <span style="color:#95a5a6; font-size:13px;" id="dreamSummaryText"></span>
                 </div>
                 <div id="dreamCorrectionPanel" style="display:none; background:rgba(22,33,62,0.95); border:1px solid rgba(155,89,182,0.4); border-radius:12px; padding:15px; margin:10px 0;">
