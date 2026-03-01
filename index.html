@@ -159,31 +159,43 @@
         }
 
         .activities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
             margin-bottom: 30px;
         }
 
+        .activity-group-label {
+            color: #95a5a6;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 12px 0 6px;
+        }
+
+        .activity-group-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
         .activity-btn {
-            background: #2c3e50;
-            border: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
             border-radius: 10px;
-            padding: 15px;
+            border: none;
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
+            font-size: 14px;
+            transition: all 0.2s ease;
         }
 
         .activity-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
         }
+
+        .activity-btn .act-icon { font-size: 16px; }
+        .activity-btn .act-cost { font-weight: bold; font-size: 13px; opacity: 0.85; }
 
         .activity-btn.energy-gain {
             background: #27ae60;
@@ -199,11 +211,6 @@
 
         .activity-btn.energy-drain-high {
             background: #c0392b;
-        }
-
-        .energy-cost {
-            font-size: 20px;
-            font-weight: bold;
         }
 
         .undo-container {
@@ -3530,9 +3537,10 @@ const activities = [
     { name: 'Selbstkritik / Shame Spiral', cost: -4, icon: '🕳️' },
     { name: 'Selbstmitgefühl üben', cost: 2, icon: '💖' },
     { name: 'Selbststimulierung bewusst nutzen', cost: 2, icon: '🎛️' },
-    { name: 'Small Talk', cost: -5, icon: '💬' },
+    { name: 'Small Talk', cost: -4, icon: '💬' },
     { name: 'Soziales Tiefgespräch', cost: -2, icon: '🗨️' },
-    { name: 'Soziale Interaktion (Arbeit)', cost: -6, icon: '🗣️' },
+    { name: 'Fachlicher Austausch (Arbeit)', cost: -2, icon: '💬' },
+    { name: 'Erzwungene Sozialsituation (Arbeit)', cost: -6, icon: '😰' },
     { name: 'Soziale Interaktion (Privat)', cost: -1, icon: '☕' },
     { name: 'Spaziergang', cost: 3, icon: '🚶' },
     { name: 'Special Interest Zeit', cost: 5, icon: '⭐' },
@@ -3803,49 +3811,56 @@ const activities = [
             updateDreamSummary();
         }
 
+        function renderActivityGroups(grid, activityList) {
+    const groups = [
+        { label: '🟢 Gibt Energie', filter: a => a.cost > 0, cls: 'energy-gain' },
+        { label: '🟡 Kostet wenig', filter: a => a.cost <= 0 && a.cost >= -2, cls: 'energy-drain-low' },
+        { label: '🟠 Kostet viel', filter: a => a.cost < -2 && a.cost >= -4, cls: 'energy-drain-medium' },
+        { label: '🔴 Kostet sehr viel', filter: a => a.cost < -4, cls: 'energy-drain-high' }
+    ];
+
+    groups.forEach(group => {
+        const items = activityList.filter(group.filter);
+        if (items.length === 0) return;
+
+        const label = document.createElement('div');
+        label.className = 'activity-group-label';
+        label.textContent = group.label;
+        grid.appendChild(label);
+
+        const row = document.createElement('div');
+        row.className = 'activity-group-chips';
+
+        items.forEach(activity => {
+            const btn = document.createElement('button');
+            btn.className = 'activity-btn ' + group.cls;
+            btn.innerHTML = `<span class="act-icon">${activity.icon}</span> ${activity.name} <span class="act-cost">${activity.cost > 0 ? '+' : ''}${activity.cost}</span>`;
+            btn.onclick = () => doActivity(activity);
+            row.appendChild(btn);
+        });
+
+        grid.appendChild(row);
+    });
+}
+
         function renderActivities() {
     const grid = document.getElementById('activitiesGrid');
     grid.innerHTML = '';
     
-    // NEUE ADHS-OPTIMIERUNG: Nur passende Aktivitäten zeigen
     const relevantActivities = getRelevantActivities();
-    
-    relevantActivities.forEach(activity => {
-        const btn = document.createElement('button');
-        btn.className = 'activity-btn';
-        
-        // Color coding based on energy cost
-        if (activity.cost > 0) {
-            btn.classList.add('energy-gain');
-        } else if (activity.cost >= -2) {
-            btn.classList.add('energy-drain-low');
-        } else if (activity.cost >= -4) {
-            btn.classList.add('energy-drain-medium');
-        } else {
-            btn.classList.add('energy-drain-high');
-        }
-        
-        btn.innerHTML = `
-            <span style="font-size: 30px">${activity.icon}</span>
-            <span>${activity.name}</span>
-            <span class="energy-cost">${activity.cost > 0 ? '+' : ''}${activity.cost} 🥄</span>
-        `;
-        
-        btn.onclick = () => doActivity(activity);
-        grid.appendChild(btn);
-    });
+    renderActivityGroups(grid, relevantActivities);
     
     // Button um alle Aktivitäten zu zeigen
+    const showAllRow = document.createElement('div');
+    showAllRow.className = 'activity-group-chips';
+    showAllRow.style.marginTop = '12px';
     const showAllBtn = document.createElement('button');
-    showAllBtn.className = 'activity-btn';
-    showAllBtn.style.cssText = 'background: #7f8c8d; opacity: 0.8;';
-    showAllBtn.innerHTML = `
-        <span style="font-size: 20px">📋</span>
-        <span>Alle anzeigen</span>
-        <span style="font-size: 12px">${activities.length} Aktivitäten</span>
-    `;
+    showAllBtn.className = 'activity-btn energy-drain-low';
+    showAllBtn.style.opacity = '0.8';
+    showAllBtn.innerHTML = `<span class="act-icon">📋</span> Alle anzeigen <span class="act-cost">${activities.length}</span>`;
     showAllBtn.onclick = () => showAllActivities();
-    grid.appendChild(showAllBtn);
+    showAllRow.appendChild(showAllBtn);
+    grid.appendChild(showAllRow);
 }
 
 // NEUE FUNKTION: Relevante Aktivitäten auswählen
@@ -3920,40 +3935,18 @@ function showAllActivities() {
     grid.innerHTML = '';
     
     // Zurück-Button
+    const backRow = document.createElement('div');
+    backRow.className = 'activity-group-chips';
+    backRow.style.marginBottom = '8px';
     const backBtn = document.createElement('button');
     backBtn.className = 'activity-btn';
-    backBtn.style.cssText = 'background: #3498db;';
-    backBtn.innerHTML = `
-        <span style="font-size: 20px">←</span>
-        <span>Zurück zu Empfehlungen</span>
-    `;
+    backBtn.style.background = '#3498db';
+    backBtn.innerHTML = `<span class="act-icon">←</span> Zurück zu Empfehlungen`;
     backBtn.onclick = () => renderActivities();
-    grid.appendChild(backBtn);
+    backRow.appendChild(backBtn);
+    grid.appendChild(backRow);
     
-    // Alle Aktivitäten anzeigen (original Code)
-    activities.forEach(activity => {
-        const btn = document.createElement('button');
-        btn.className = 'activity-btn';
-        
-        if (activity.cost > 0) {
-            btn.classList.add('energy-gain');
-        } else if (activity.cost >= -2) {
-            btn.classList.add('energy-drain-low');
-        } else if (activity.cost >= -4) {
-            btn.classList.add('energy-drain-medium');
-        } else {
-            btn.classList.add('energy-drain-high');
-        }
-        
-        btn.innerHTML = `
-            <span style="font-size: 30px">${activity.icon}</span>
-            <span>${activity.name}</span>
-            <span class="energy-cost">${activity.cost > 0 ? '+' : ''}${activity.cost} 🥄</span>
-        `;
-        
-        btn.onclick = () => doActivity(activity);
-        grid.appendChild(btn);
-    });
+    renderActivityGroups(grid, activities);
 }
 
 
