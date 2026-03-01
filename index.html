@@ -341,6 +341,63 @@
             border: none;
         }
 
+        .morning-extra {
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .morning-extra-label {
+            color: #95a5a6;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 15px 0 8px;
+            text-align: center;
+        }
+
+        .morning-extra-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .morning-extra-btn {
+            background: rgba(255,255,255,0.06);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 8px 12px;
+            color: #bbb;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .morning-extra-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .morning-extra-btn.selected {
+            border-color: #f39c12;
+            color: #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+        }
+
+        .morning-extra-text {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #eee;
+            font-size: 14px;
+            font-family: inherit;
+            margin-top: 15px;
+            box-sizing: border-box;
+        }
+
+        .morning-extra-text::placeholder { color: #666; }
+        .morning-extra-text:focus { outline: none; border-color: rgba(243, 156, 18, 0.5); }
+
         .start-day-btn {
             background: #27ae60;
             border: none;
@@ -2797,6 +2854,26 @@
                 <h2>Guten Morgen! Wie viele Löffel hast du heute?</h2>
                 <input type="range" min="1" max="10" value="8" class="slider" id="morningSlider">
                 <div class="slider-value" id="sliderValue">8 Löffel</div>
+
+                <div class="morning-extra">
+                    <div class="morning-extra-label">Traumintensität letzte Nacht</div>
+                    <div class="morning-extra-row">
+                        <button class="morning-extra-btn" onclick="selectMorning('dream',0,this)" data-group="dream">😴 Keine</button>
+                        <button class="morning-extra-btn" onclick="selectMorning('dream',1,this)" data-group="dream">💭 Normal</button>
+                        <button class="morning-extra-btn" onclick="selectMorning('dream',2,this)" data-group="dream">🌀 Intensiv</button>
+                        <button class="morning-extra-btn" onclick="selectMorning('dream',3,this)" data-group="dream">⚡ Sehr intensiv</button>
+                    </div>
+
+                    <div class="morning-extra-label">Depersonalisation beim Aufwachen</div>
+                    <div class="morning-extra-row">
+                        <button class="morning-extra-btn" onclick="selectMorning('depers',0,this)" data-group="depers">✅ Keine</button>
+                        <button class="morning-extra-btn" onclick="selectMorning('depers',1,this)" data-group="depers">〰️ Leicht</button>
+                        <button class="morning-extra-btn" onclick="selectMorning('depers',2,this)" data-group="depers">⚠️ Stark</button>
+                    </div>
+
+                    <input class="morning-extra-text" id="morningDreamNote" type="text" placeholder="Traum-Stichwort (optional)" maxlength="100">
+                </div>
+
                 <button class="start-day-btn" onclick="startDay()">Tag starten</button>
                 <button class="retro-datetime-toggle" id="yesterdayCatchupBtn" onclick="startYesterdayCatchup()" style="margin-top:12px; display:inline-block;">📅 Gestrigen Tag nachtragen</button>
             </div>
@@ -2823,6 +2900,21 @@
                     <button onclick="hideEnergyCorrection()" style="background:rgba(255,255,255,0.08); border:none; border-radius:20px; padding:8px 20px; color:#95a5a6; cursor:pointer; font-size:14px;">Abbrechen</button>
                 </div>
                 <div class="energy-status status-good" id="energyStatus">Alles im grünen Bereich!</div>
+                <div id="dreamSummary" style="display:none; text-align:center; margin:10px 0; cursor:pointer;" onclick="showDreamCorrection()" title="Tippen zum Korrigieren">
+                    <span style="color:#95a5a6; font-size:13px;" id="dreamSummaryText"></span>
+                </div>
+                <div id="dreamCorrectionPanel" style="display:none; background:rgba(22,33,62,0.95); border:1px solid rgba(155,89,182,0.4); border-radius:12px; padding:15px; margin:10px 0;">
+                    <div style="color:#95a5a6; font-size:12px; margin-bottom:10px; text-align:center;">Traum/Aufwachen korrigieren</div>
+                    <div style="color:#bbb; font-size:13px; margin-bottom:6px;">Traumintensität</div>
+                    <div class="morning-extra-row" id="dreamCorrBtns"></div>
+                    <div style="color:#bbb; font-size:13px; margin:10px 0 6px;">Depersonalisation</div>
+                    <div class="morning-extra-row" id="dpersCorrBtns"></div>
+                    <input class="morning-extra-text" id="dreamCorrNote" type="text" placeholder="Traum-Stichwort (optional)" maxlength="100" style="margin-top:10px;">
+                    <div style="text-align:center; margin-top:12px;">
+                        <button onclick="applyDreamCorrection()" style="background:linear-gradient(135deg,#9b59b6,#8e44ad); border:none; border-radius:20px; padding:8px 20px; color:white; cursor:pointer; font-size:14px; margin-right:5px;">✅ Übernehmen</button>
+                        <button onclick="hideDreamCorrection()" style="background:rgba(255,255,255,0.08); border:none; border-radius:20px; padding:8px 20px; color:#95a5a6; cursor:pointer; font-size:14px;">Abbrechen</button>
+                    </div>
+                </div>
                 <div class="undo-container" id="undoContainer"></div>
             </div>
 
@@ -2877,6 +2969,12 @@
                         <div class="dashboard-card-label">🌿 Erholung</div>
                         <div class="dashboard-card-value" id="dashErholungValue">–</div>
                         <div class="dashboard-card-sub" id="dashErholungSub">Heute keine Einträge</div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="showPage('tracker'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent==='Tracker')b.classList.add('active')});">
+                        <div class="dashboard-card-label">🌙 Schlaf</div>
+                        <div class="dashboard-card-value" id="dashDreamValue">–</div>
+                        <div class="dashboard-card-sub" id="dashDreamSub">Noch kein Check-in</div>
                     </div>
                 </div>
 
@@ -3361,6 +3459,7 @@
         let maxEnergy = 10;
         let dayStarted = false;
         let retroDayMode = false;
+        let morningState = { dream: null, depers: null };
         let history = [];
         let currentDay = null;
         let allDays = [];
@@ -3460,6 +3559,12 @@ const activities = [
             sliderValue.textContent = `${this.value} Löffel`;
         });
 
+        function selectMorning(group, value, btn) {
+            morningState[group] = morningState[group] === value ? null : value;
+            document.querySelectorAll(`.morning-extra-btn[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
+            if (morningState[group] !== null) btn.classList.add('selected');
+        }
+
         function startDay() {
             maxEnergy = parseInt(slider.value);
             currentEnergy = maxEnergy;
@@ -3473,9 +3578,17 @@ const activities = [
                 dayOfWeek: new Date().getDay(),
                 startEnergy: maxEnergy,
                 endEnergy: currentEnergy,
-                activities: []
+                activities: [],
+                dreamIntensity: morningState.dream,
+                depersonalization: morningState.depers,
+                dreamNote: document.getElementById('morningDreamNote').value.trim() || null
             };
             
+            // Reset morning state
+            morningState = { dream: null, depers: null };
+            document.getElementById('morningDreamNote').value = '';
+            document.querySelectorAll('.morning-extra-btn').forEach(b => b.classList.remove('selected'));
+
             document.getElementById('morningCheckin').classList.add('hidden');
             document.getElementById('mainDisplay').classList.remove('hidden');
             document.getElementById('activitiesGrid').classList.remove('hidden');
@@ -3512,8 +3625,16 @@ const activities = [
                 dayOfWeek: yesterday.getDay(),
                 startEnergy: maxEnergy,
                 endEnergy: currentEnergy,
-                activities: []
+                activities: [],
+                dreamIntensity: morningState.dream,
+                depersonalization: morningState.depers,
+                dreamNote: document.getElementById('morningDreamNote').value.trim() || null
             };
+            
+            // Reset morning state
+            morningState = { dream: null, depers: null };
+            document.getElementById('morningDreamNote').value = '';
+            document.querySelectorAll('.morning-extra-btn').forEach(b => b.classList.remove('selected'));
             
             document.getElementById('morningCheckin').classList.add('hidden');
             document.getElementById('mainDisplay').classList.remove('hidden');
@@ -3562,6 +3683,77 @@ const activities = [
             saveToLocalStorage();
         }
 
+        let dreamCorrState = { dream: null, depers: null };
+
+        function updateDreamSummary() {
+            const summary = document.getElementById('dreamSummary');
+            const text = document.getElementById('dreamSummaryText');
+            if (!dayStarted || !currentDay) { summary.style.display = 'none'; return; }
+
+            const dreamLabels = ['😴 Keine Erinnerung', '💭 Normal', '🌀 Intensiv', '⚡ Sehr intensiv'];
+            const dpersLabels = ['✅ Keine', '〰️ Leicht', '⚠️ Stark'];
+            let parts = [];
+
+            if (currentDay.dreamIntensity !== null && currentDay.dreamIntensity !== undefined) {
+                parts.push(dreamLabels[currentDay.dreamIntensity]);
+            }
+            if (currentDay.depersonalization !== null && currentDay.depersonalization !== undefined && currentDay.depersonalization > 0) {
+                parts.push(dpersLabels[currentDay.depersonalization] + ' Depers.');
+            }
+            if (currentDay.dreamNote) {
+                parts.push('„' + currentDay.dreamNote + '"');
+            }
+
+            if (parts.length > 0) {
+                text.textContent = '🌙 ' + parts.join(' · ') + '  ✏️';
+                summary.style.display = 'block';
+            } else {
+                text.textContent = '🌙 Traum/Aufwachen nachtragen  ✏️';
+                summary.style.display = 'block';
+            }
+        }
+
+        function showDreamCorrection() {
+            const panel = document.getElementById('dreamCorrectionPanel');
+            const dreamBtns = document.getElementById('dreamCorrBtns');
+            const dpersBtns = document.getElementById('dpersCorrBtns');
+            const noteInput = document.getElementById('dreamCorrNote');
+
+            dreamCorrState.dream = (currentDay && currentDay.dreamIntensity !== undefined) ? currentDay.dreamIntensity : null;
+            dreamCorrState.depers = (currentDay && currentDay.depersonalization !== undefined) ? currentDay.depersonalization : null;
+            noteInput.value = (currentDay && currentDay.dreamNote) || '';
+
+            renderDreamCorrBtns();
+            panel.style.display = 'block';
+        }
+
+        function renderDreamCorrBtns() {
+            const dreamLabels = ['😴 Keine', '💭 Normal', '🌀 Intensiv', '⚡ Sehr intensiv'];
+            const dpersLabels = ['✅ Keine', '〰️ Leicht', '⚠️ Stark'];
+
+            document.getElementById('dreamCorrBtns').innerHTML = dreamLabels.map((l, i) =>
+                `<button class="morning-extra-btn${dreamCorrState.dream === i ? ' selected' : ''}" onclick="dreamCorrState.dream=${i}; renderDreamCorrBtns();">${l}</button>`
+            ).join('');
+
+            document.getElementById('dpersCorrBtns').innerHTML = dpersLabels.map((l, i) =>
+                `<button class="morning-extra-btn${dreamCorrState.depers === i ? ' selected' : ''}" onclick="dreamCorrState.depers=${i}; renderDreamCorrBtns();">${l}</button>`
+            ).join('');
+        }
+
+        function hideDreamCorrection() {
+            document.getElementById('dreamCorrectionPanel').style.display = 'none';
+        }
+
+        function applyDreamCorrection() {
+            if (!currentDay) return;
+            currentDay.dreamIntensity = dreamCorrState.dream;
+            currentDay.depersonalization = dreamCorrState.depers;
+            currentDay.dreamNote = document.getElementById('dreamCorrNote').value.trim() || null;
+            hideDreamCorrection();
+            updateDisplay();
+            saveToLocalStorage();
+        }
+
         function updateDisplay() {
             const spoonsContainer = document.getElementById('spoonsContainer');
             const energyNumber = document.getElementById('energyNumber');
@@ -3606,6 +3798,9 @@ const activities = [
             if (typeof updateOverloadMini === 'function') {
                 updateOverloadMini();
             }
+
+            // Update dream summary
+            updateDreamSummary();
         }
 
         function renderActivities() {
@@ -4072,6 +4267,68 @@ function showPage(page) {
             // Days tracked insight
             if (allDays.length >= 7) {
                 insights.push('📊 Mit ' + allDays.length + ' getrackten Tagen hast du genug Daten für aussagekräftige Muster!');
+            }
+
+            // Dream/Depersonalization insights
+            const dreamDays = allDays.filter(d => d.dreamIntensity !== null && d.dreamIntensity !== undefined);
+            const dpersDays = allDays.filter(d => d.depersonalization !== null && d.depersonalization !== undefined);
+
+            if (dreamDays.length >= 5) {
+                const dreamLabels = ['😴 Keine', '💭 Normal', '🌀 Intensiv', '⚡ Sehr intensiv'];
+                const intenseDreams = dreamDays.filter(d => d.dreamIntensity >= 2);
+                const pct = Math.round(intenseDreams.length / dreamDays.length * 100);
+                insights.push(`🌀 Intensive Träume in ${pct}% der Nächte (${intenseDreams.length} von ${dreamDays.length})`);
+
+                // Correlation: previous day load → dream intensity
+                const dreamCorr = [];
+                dreamDays.forEach(day => {
+                    const dayIdx = allDays.indexOf(day);
+                    if (dayIdx < allDays.length - 1) {
+                        const prevDay = allDays.find(d => {
+                            const prevDate = new Date(day.date + 'T12:00:00');
+                            prevDate.setDate(prevDate.getDate() - 1);
+                            return d.date === prevDate.toISOString().split('T')[0];
+                        });
+                        if (prevDay) {
+                            const drain = prevDay.startEnergy - prevDay.endEnergy;
+                            dreamCorr.push({ drain, dream: day.dreamIntensity });
+                        }
+                    }
+                });
+
+                if (dreamCorr.length >= 5) {
+                    const highDrain = dreamCorr.filter(c => c.drain >= 4);
+                    const lowDrain = dreamCorr.filter(c => c.drain < 4);
+                    if (highDrain.length >= 2 && lowDrain.length >= 2) {
+                        const avgDreamHigh = highDrain.reduce((s, c) => s + c.dream, 0) / highDrain.length;
+                        const avgDreamLow = lowDrain.reduce((s, c) => s + c.dream, 0) / lowDrain.length;
+                        if (avgDreamHigh - avgDreamLow > 0.4) {
+                            insights.push(`📈 Nach belastenden Tagen (4+ Löffel Verlust): Ø ${avgDreamHigh.toFixed(1)} Traumintensität vs. ${avgDreamLow.toFixed(1)} nach ruhigen Tagen`);
+                        }
+                    }
+                }
+            }
+
+            if (dpersDays.length >= 5) {
+                const dpersPresent = dpersDays.filter(d => d.depersonalization >= 1);
+                const pct = Math.round(dpersPresent.length / dpersDays.length * 100);
+                if (dpersPresent.length > 0) {
+                    insights.push(`👤 Depersonalisation an ${pct}% der Morgen (${dpersPresent.length} von ${dpersDays.length})`);
+                }
+
+                // Correlation: dream intensity → depersonalization
+                const bothDays = allDays.filter(d => d.dreamIntensity !== null && d.dreamIntensity !== undefined && d.depersonalization !== null && d.depersonalization !== undefined);
+                if (bothDays.length >= 5) {
+                    const intenseDreamDpers = bothDays.filter(d => d.dreamIntensity >= 2);
+                    const calmDreamDpers = bothDays.filter(d => d.dreamIntensity < 2);
+                    if (intenseDreamDpers.length >= 2 && calmDreamDpers.length >= 2) {
+                        const avgDpersIntense = intenseDreamDpers.reduce((s, d) => s + d.depersonalization, 0) / intenseDreamDpers.length;
+                        const avgDpersCalm = calmDreamDpers.reduce((s, d) => s + d.depersonalization, 0) / calmDreamDpers.length;
+                        if (avgDpersIntense - avgDpersCalm > 0.3) {
+                            insights.push(`🔗 Nach intensiven Träumen: Ø ${avgDpersIntense.toFixed(1)} Depersonalisation vs. ${avgDpersCalm.toFixed(1)} nach ruhigen Nächten`);
+                        }
+                    }
+                }
             }
             
             document.getElementById('insightsList').innerHTML = insights
@@ -5865,6 +6122,25 @@ function updateDashboard() {
         erholungSub.textContent = 'Heute keine Einträge';
     }
 
+    // === Schlaf/Traum-Karte ===
+    const dreamVal = document.getElementById('dashDreamValue');
+    const dreamSub = document.getElementById('dashDreamSub');
+    const dreamLabels = ['😴', '💭', '🌀', '⚡'];
+    const dpersLabels = ['✅', '〰️', '⚠️'];
+    if (dayStarted && currentDay && currentDay.dreamIntensity !== null && currentDay.dreamIntensity !== undefined) {
+        dreamVal.textContent = dreamLabels[currentDay.dreamIntensity];
+        const dreamWords = ['Keine Erinnerung', 'Normal', 'Intensiv', 'Sehr intensiv'];
+        let sub = dreamWords[currentDay.dreamIntensity];
+        if (currentDay.depersonalization >= 1) {
+            const dpersWords = ['', 'Leichte Depers.', 'Starke Depers.'];
+            sub += ' + ' + dpersWords[currentDay.depersonalization];
+        }
+        dreamSub.textContent = sub;
+    } else {
+        dreamVal.textContent = '–';
+        dreamSub.textContent = 'Noch kein Check-in';
+    }
+
     // === Wochenüberblick ===
     updateDashboardWeek(today);
 
@@ -6039,6 +6315,28 @@ function updateDashboardInsights(today, todayChecks, todayMasking) {
 
     if (weekOverloads.length >= 2) {
         insights.push('🔴 ' + weekOverloads.length + ' Overload-Events diese Woche – dein System braucht Erholung');
+    }
+
+    // Dream/Depersonalization today
+    if (dayStarted && currentDay) {
+        const dreamLabels = ['😴 Keine', '💭 Normal', '🌀 Intensiv', '⚡ Sehr intensiv'];
+        const dpersLabels = ['✅ Keine', '〰️ Leicht', '⚠️ Stark'];
+
+        if (currentDay.dreamIntensity >= 2) {
+            insights.push('🌀 Heute Morgen: ' + dreamLabels[currentDay.dreamIntensity] + ' Träume' +
+                (currentDay.depersonalization >= 1 ? ' + ' + dpersLabels[currentDay.depersonalization] + ' Depersonalisation' : ''));
+        } else if (currentDay.depersonalization >= 1) {
+            insights.push('👤 Heute Morgen: ' + dpersLabels[currentDay.depersonalization] + ' Depersonalisation');
+        }
+    }
+
+    // Dream pattern last 7 days
+    const recentDays = allDays.filter(d => d.date >= weekStartStr && d.dreamIntensity !== null && d.dreamIntensity !== undefined);
+    if (recentDays.length >= 3) {
+        const intenseCount = recentDays.filter(d => d.dreamIntensity >= 2).length;
+        if (intenseCount >= 3) {
+            insights.push('⚡ ' + intenseCount + ' intensive Traumnächte diese Woche – erhöhtes Stresslevel');
+        }
     }
 
     // Keine Insights
