@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nd-toolkit-v14';
+const CACHE_NAME = 'nd-toolkit-v15';
 const ASSETS = [
   './',
   './index.html',
